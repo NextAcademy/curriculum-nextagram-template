@@ -1,8 +1,8 @@
-## Flask Nextagram Template
+# Flask Nextagram Template
 
 version 0.0.1 (alpha)
 
-### Development
+## Development
 
 **Install dependencies**
 
@@ -50,7 +50,8 @@ Before git commiting, remember to ignore key files. Here's an example of `.gitig
 *.env
 ```
 
-### Database Migrations
+---
+## Database Migrations
 
 ```
 python migrate.py
@@ -58,24 +59,27 @@ python migrate.py
 
 \*_this template is configured to use Peewee's PooledConnection, however, migrations using Peewee-DB-Evolve doesn't work well. A hack was used to not use PooledConnection when running migration. Pending investigation. There are no known side effects to run this template in production._
 
-### Starting Server
+
+## Starting Server
 
 ```
 flask run
 ```
 
-### Staring Shell
+## Starting Shell
 
 ```
 flask shell
 ```
 
-### Deploying to Production
+---
+## Deploying to Production
 
 - ensure environment variables are configured appropriately
 - migrations will not run in interactive mode when FLASK_ENV is set to 'production'
 
-### Architecture
+---
+## Architecture
 
 This template separates out API and Web to separate packages. Both API and Web are configured to use Flask's Blueprints.
 
@@ -83,7 +87,8 @@ All new models should go into it's own file/script within the models directory.
 
 The entry point for a Flask server to start is located at `start.py`
 
-### Dependencies
+---
+## Dependencies
 
 This template was created against `Python 3.7`
 
