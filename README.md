@@ -11,9 +11,17 @@ version 0.0.1 (alpha)
 - Python 3.7.2 was tested
 - Postgresql 10.3 was tested
 
-```
-pip install -r requirements.txt
-```
+1. Delete `peewee-db-evolve==3.7.0` from `requirements.txt` during the first installation.
+   Because of how `peewee-db-evolve` created it's build process, we would first need to delete it.
+1. Run:
+   ```
+   pip install -r requirements.txt
+   ```
+1. Now add `peewee-db-evolve==3.7.0` back into `requirements.txt`
+1. Run again:
+   ```
+   pip install -r requirements.txt
+   ```
 
 If you're having trouble installing dependencies
 
