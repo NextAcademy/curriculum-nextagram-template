@@ -23,10 +23,11 @@ This project uses `python-dotenv`. When running commands using `flask`, environm
 
 When executing `python` scripts directly e.g. `python start.py`, environment variables are not loaded and will not work except `python migrate.py` _(read the script - `migrate.py` to know why it would load the environment variables `.env`)_
 
+Minimum environment variables that needs to be set
+
 ```
-FLASK_APP='start'
-FLASK_ENV='development'
-APP_SETTINGS="config.DevelopmentConfig"
+FLASK_APP='start' # based on the name of our entry point script
+FLASK_ENV='development' # use this in development, otherwise 'production' or 'test'
 DATABASE_URL="postgres://localhost:5432/nextagram_dev"
 SECRET_KEY= #generate your own key
 ```
