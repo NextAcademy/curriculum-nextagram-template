@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 If you're having trouble installing dependencies
 
-- Remove `certifi==2018.11.29`
+- Remove `certifi==2018.11.29` from requirements.txt
 
 If you're having trouble starting flask
 
