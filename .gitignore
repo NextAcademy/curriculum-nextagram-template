@@ -2,4 +2,5 @@
 *.DS_Store
 *__pycache__
 *.env
-
+instagram_web/static/.webassets-cache
+instagram_web/static/gen

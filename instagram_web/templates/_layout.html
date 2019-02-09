@@ -6,6 +6,14 @@
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
+    {% assets "home_css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+
+    {% assets "home_js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
     {% block header %}{% endblock %}
     <title>{% block title %}{% endblock %}NEXTAGRAM</title>
   </head>

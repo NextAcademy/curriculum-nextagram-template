@@ -11,17 +11,21 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG = False
+    ASSETS_DEBUG = False
 
 
 class StagingConfig(Config):
-    DEVELOPMENT = True
-    DEBUG = True
+    DEVELOPMENT = False
+    DEBUG = False
+    ASSETS_DEBUG = False
 
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-
+    ASSETS_DEBUG = True
 
 class TestingConfig(Config):
     TESTING = True
+    DEBUG = True
+    ASSETS_DEBUG = True
