@@ -112,6 +112,8 @@ This template was created against `Python 3.7`. Should work with newer versions 
 
 `Peewee` is used as ORM along with a database migration library `peewee-db-evolve`.
 
+This template also comes packaged with Bootstrap 4.1.3 and it's dependencies (jQuery).
+
 A copy of requirements.txt is included in the repository.
 
 ```
