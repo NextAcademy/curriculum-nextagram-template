@@ -6,7 +6,6 @@ version 0.0.1 (alpha)
 
 **Make a Fork**
 
-
 **Install dependencies**
 
 - Python 3.7.2 was tested
@@ -20,22 +19,28 @@ Remove `certifi==2018.11.29` if you're having trouble installing dependencies.
 
 **Create a `.env` file at the root of the directory**
 
+This project uses `python-dotenv`. When running commands using `flask`, environment variables from `.env` is automatically loaded.
+
+When executing `python` scripts directly e.g. `python start.py`, environment variables are not loaded and will not work except `python migrate.py` *(read the script - `migrate.py` to know why it would load the environment variables `.env`)*
+
 ```
 FLASK_APP='start'
 FLASK_ENV='development'
 APP_SETTINGS="config.DevelopmentConfig"
 DATABASE_URL="postgres://localhost:5432/nextagram_dev"
-```
-
-Since this app uses Pooled Connections, you may also want to set: _(see `database.py`)_
-
-```
-DB_TIMEOUT=300 # 5 minutes
-DB_POOL=5
 SECRET_KEY= #generate your own key
 ```
 
 Use `os.urandom(32)` to generate a random secret key and paste that in `.env`. It's important to keep this `SECRET_KEY` private.
+
+Since this app uses Pooled Connections, you may also want to set:
+
+```
+DB_TIMEOUT=300 # 5 minutes
+DB_POOL=5
+```
+
+_(see `database.py`)_
 
 **Create a Database**
 
@@ -44,6 +49,7 @@ Use `os.urandom(32)` to generate a random secret key and paste that in `.env`. I
 ```
 createdb nextagram_dev
 ```
+_*if you name your database something else, tweak the settings in `.env`_
 
 **Ignoring Files from Git**
 
