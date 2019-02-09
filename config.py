@@ -6,7 +6,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get(
-        'SECRET_KEY') or b'{;m\x18\xc5W{-zv\x9b@\xa0{|j\\\xa5\x0f\x19\x9b\x874\x88\xf8\xf2\xf1\xfc\x8cOm\xeb'
+        'SECRET_KEY') or os.urandom(32)
 
 
 class ProductionConfig(Config):
