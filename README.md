@@ -4,7 +4,7 @@ version 0.0.1 (alpha)
 
 ## Development
 
-**Make a Fork**
+**Make a fork before cloning**
 
 **Install dependencies**
 
@@ -21,7 +21,7 @@ Remove `certifi==2018.11.29` if you're having trouble installing dependencies.
 
 This project uses `python-dotenv`. When running commands using `flask`, environment variables from `.env` is automatically loaded.
 
-When executing `python` scripts directly e.g. `python start.py`, environment variables are not loaded and will not work except `python migrate.py` *(read the script - `migrate.py` to know why it would load the environment variables `.env`)*
+When executing `python` scripts directly e.g. `python start.py`, environment variables are not loaded and will not work except `python migrate.py` _(read the script - `migrate.py` to know why it would load the environment variables `.env`)_
 
 ```
 FLASK_APP='start'
@@ -49,7 +49,8 @@ _(see `database.py`)_
 ```
 createdb nextagram_dev
 ```
-_*if you name your database something else, tweak the settings in `.env`_
+
+_\*if you name your database something else, tweak the settings in `.env`_
 
 **Ignoring Files from Git**
 
