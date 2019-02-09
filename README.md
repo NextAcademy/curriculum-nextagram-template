@@ -29,7 +29,10 @@ Since this app uses Pooled Connections, you may also want to set: _(see `databas
 ```
 DB_TIMEOUT=300 # 5 minutes
 DB_POOL=5
+SECRET_KEY= #generate your own key
 ```
+
+Use `os.urandom(32)` to generate a random secret key and paste that in `.env`. It's important to keep this `SECRET_KEY` private.
 
 **Create a Database**
 
@@ -51,6 +54,7 @@ Before git commiting, remember to ignore key files. Here's an example of `.gitig
 ```
 
 ---
+
 ## Database Migrations
 
 ```
@@ -58,7 +62,6 @@ python migrate.py
 ```
 
 \*_this template is configured to use Peewee's PooledConnection, however, migrations using Peewee-DB-Evolve doesn't work well. A hack was used to not use PooledConnection when running migration. Pending investigation. There are no known side effects to run this template in production._
-
 
 ## Starting Server
 
@@ -73,12 +76,15 @@ flask shell
 ```
 
 ---
+
 ## Deploying to Production
 
 - ensure environment variables are configured appropriately
 - migrations will not run in interactive mode when FLASK_ENV is set to 'production'
+- It's important to set your own `SECRET_KEY` environment variable and keep that private.
 
 ---
+
 ## Architecture
 
 This template separates out API and Web to separate packages. Both API and Web are configured to use Flask's Blueprints.
@@ -88,6 +94,7 @@ All new models should go into it's own file/script within the models directory.
 The entry point for a Flask server to start is located at `start.py`
 
 ---
+
 ## Dependencies
 
 This template was created against `Python 3.7`
