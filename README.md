@@ -4,6 +4,9 @@ version 0.0.1 (alpha)
 
 ## Development
 
+**Make a Fork**
+
+
 **Install dependencies**
 
 - Python 3.7.2 was tested
@@ -97,11 +100,11 @@ The entry point for a Flask server to start is located at `start.py`
 
 ## Dependencies
 
-This template was created against `Python 3.7`
+This template was created against `Python 3.7`. Should work with newer versions of Python. Not tested with older versions.
 
 `Peewee` is used as ORM along with a database migration library `peewee-db-evolve`.
 
-A copy of requirements.txt is included with this project.
+A copy of requirements.txt is included in the repository.
 
 ```
 autopep8==1.4.3
