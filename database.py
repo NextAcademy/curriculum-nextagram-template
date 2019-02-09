@@ -17,7 +17,12 @@ def return_db():
     if os.getenv('MIGRATION', '0') == '1':
         from playhouse.postgres_ext import PostgresqlExtDatabase
 
-        return PostgresqlExtDatabase('nextagram_dev')
+        return PostgresqlExtDatabase(
+            db_config['database'],
+            user=db_config.get('user', None),
+            password=db_config.get('password', None),
+            host=db_config.get('host', 'localhost'),
+            port=db_config.get('port', '5432'))
 
     else:
         from playhouse.pool import PooledPostgresqlExtDatabase
