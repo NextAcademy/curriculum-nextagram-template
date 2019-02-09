@@ -15,7 +15,13 @@ version 0.0.1 (alpha)
 pip install -r requirements.txt
 ```
 
-Remove `certifi==2018.11.29` if you're having trouble installing dependencies.
+If you're having trouble installing dependencies
+
+- Remove `certifi==2018.11.29`
+
+If you're having trouble starting flask
+
+- Restart your terminal as well and reactivate conda source
 
 **Create a `.env` file at the root of the directory**
 
