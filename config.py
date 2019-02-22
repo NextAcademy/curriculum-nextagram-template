@@ -23,7 +23,7 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-    ASSETS_DEBUG = True
+    ASSETS_DEBUG = False
 
 class TestingConfig(Config):
     TESTING = True
