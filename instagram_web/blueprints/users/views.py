@@ -1,4 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from models.user import User
+from werkzeug.security import generate_password_hash
+
+
 
 
 users_blueprint = Blueprint('users',
@@ -13,7 +17,15 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
-    pass
+    s = User(name=request.form['name'], email=request.form['email'], password= generate_password_hash(request.form['password']))
+
+    if s.save():
+        flash("Successfully saved")
+        return redirect(url_for("users.index"))
+    else:
+        return render_template('users/new.html', errors=s.errors)
+
+    
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
