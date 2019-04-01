@@ -7,14 +7,21 @@
 {{error}}
 {% endfor %}
 
-<form action="{{ url_for('users.create') }}" method="POST">
+<form action="{{ url_for('users.create') }}" class="col-md-4" method="POST">
+
+    <div class="form-row">
+        <div class="col">
+            <input type='text' name='new_firstname' class="form-control mb-2" placeholder="First Name" />
+        </div>
+        <div class="col">
+            <input type='text' name='new_lastname' class="form-control mb-2" placeholder="Last Name" />
+        </div>
+    </div>
 
     <div class="form-group">
-        <input type='text' name='new_username' class="form-control" placeholder="Username" /><br    />
-        <input type='text' name='new_firstname' class="form-control" placeholder="First Name" /><br />
-        <input type='text' name='new_lastname' class="form-control" placeholder="Last Name" /><br />
-        <input type='text' name='new_email' class="form-control" placeholder="Email" /><br />
-        <input type='password' name='new_password' class="form-control" placeholder="Password" />
+        <input type='text' name='new_username' class="form-control mb-2" placeholder="Username" />
+        <input type='text' name='new_email' class="form-control mb-2" placeholder="Email" />
+        <input type='password' name='new_password' class="form-control mb-2" placeholder="Password" />
     </div>
     <button type="submit" class="btn btn-success">Sign Up</button>
 </form><br />
