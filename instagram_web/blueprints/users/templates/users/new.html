@@ -1,2 +1,20 @@
+
 <h1>Users#new</h1>
-<p> this is a valid path </p>
+
+{% for error in errors if errors|length > 0 %}
+{{error}}
+{% endfor %}
+
+<form action="{{ url_for('users.create') }}" method="POST">
+
+    <div class="form-group">
+        <input type='text' name='new_username' class="form-control" placeholder="Username" /><br    />
+        <input type='text' name='new_firstname' class="form-control" placeholder="First Name" /><br />
+        <input type='text' name='new_lastname' class="form-control" placeholder="Last Name" /><br />
+        <input type='text' name='new_email' class="form-control" placeholder="Email" /><br />
+        <input type='password' name='new_password' class="form-control" placeholder="Password" /><br />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>
+
