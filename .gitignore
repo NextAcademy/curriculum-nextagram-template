@@ -4,3 +4,5 @@
 *.env
 instagram_web/static/.webassets-cache
 instagram_web/static/gen
+nextagram_notes.txt
+flask_notes_copy.txt
