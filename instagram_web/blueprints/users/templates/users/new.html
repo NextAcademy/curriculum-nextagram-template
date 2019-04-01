@@ -1,5 +1,7 @@
+{% extends "./_layout.html" %}
+{% block content %}
 
-<h1>Users#new</h1>
+<h3>Sign Up</h3>
 
 {% for error in errors if errors|length > 0 %}
 {{error}}
@@ -12,9 +14,11 @@
         <input type='text' name='new_firstname' class="form-control" placeholder="First Name" /><br />
         <input type='text' name='new_lastname' class="form-control" placeholder="Last Name" /><br />
         <input type='text' name='new_email' class="form-control" placeholder="Email" /><br />
-        <input type='password' name='new_password' class="form-control" placeholder="Password" /><br />
+        <input type='password' name='new_password' class="form-control" placeholder="Password" />
     </div>
+    <button type="submit" class="btn btn-success">Sign Up</button>
+</form><br />
 
-    <button type="submit" class="btn btn-primary">Sign Up</button>
-</form>
+<p>Already have an account? Sign in.</p>
 
+{% endblock %}
