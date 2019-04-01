@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash
 from models.user import User
-import os
+import re
+
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -13,6 +14,8 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
+    if not re.search(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})', request.form.get('new_password')):
+        return render_template('users/new.html', errors=["Password must be at least 6 chars long, contain at least 1 capital letter, number, & symbol."])
     new_pw_hashed = generate_password_hash(request.form.get('new_password'))
     u = User(username=request.form.get('new_username'),
             first_name=request.form.get('new_firstname'),
