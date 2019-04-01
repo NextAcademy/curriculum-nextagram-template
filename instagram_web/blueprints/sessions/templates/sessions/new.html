@@ -1,9 +1,5 @@
-{% for error in errors if errors|length > 0 %}
-  <li>{{error}}</li>
-  {% endfor %}
-
-<h1>Users Sign Up</h1>
-<form action="{{ url_for('users.create') }}" method="POST">
+<h1>Users Sign In</h1>
+<form action="{{ url_for('sessions.new') }}" method="POST">
     <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
     <div class="form-group">
       <label for="name"> Name:</label>
