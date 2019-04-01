@@ -1,7 +1,8 @@
 from models.base_model import BaseModel
 import peewee as pw
+import os
 
-# from flask_wtf import FlaskForm
+
 
 class User(BaseModel):
     first_name = pw.CharField()
@@ -18,3 +19,4 @@ class User(BaseModel):
             self.errors.append('Username has been registered. Please try another.')
         elif duplicate_email:
             self.errors.append('Email has been registered. Please try another.')
+

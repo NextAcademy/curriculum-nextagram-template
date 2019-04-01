@@ -8,7 +8,7 @@
 {% endfor %}
 
 <form action="{{ url_for('users.create') }}" class="col-md-4" method="POST">
-
+    <input type='hidden' name='csrf_token' value="{{csrf_token()}}" />
     <div class="form-row">
         <div class="col">
             <input type='text' name='new_firstname' class="form-control mb-2" placeholder="First Name" />

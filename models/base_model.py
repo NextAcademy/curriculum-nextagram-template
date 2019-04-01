@@ -2,6 +2,8 @@ import os
 import peewee as pw
 import datetime
 from database import db
+import os
+
 
 
 class BaseModel(pw.Model):

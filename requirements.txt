@@ -11,10 +11,12 @@ itsdangerous==1.1.0
 Jinja2==2.10
 jsmin==2.2.2
 MarkupSafe==1.1.0
-peewee==3.8.2
+peewee==3.1.0
 peewee-db-evolve==3.7.0
+peewee-validates==1.0.7
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
+python-dateutil==2.8.0
 python-dotenv==0.10.1
 six==1.12.0
 webassets==0.12.1
