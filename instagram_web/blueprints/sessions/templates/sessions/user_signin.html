@@ -1,0 +1,17 @@
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+<h1>Sign in as {{user_id}}</h1>
+
+<form action="{{ url_for('sessions.logout') }}" method="POST">
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary">log out</button>
+</form>
+    
+
