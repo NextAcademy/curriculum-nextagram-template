@@ -1,19 +1,24 @@
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
 <h1>Users Sign In</h1>
-<form action="{{ url_for('sessions.new') }}" method="POST">
+<form action="{{ url_for('sessions.login') }}" method="POST">
     <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
     <div class="form-group">
       <label for="name"> Name:</label>
       <input type='text' name='name' class="form-control" / >
     </div>
-
-    <div class="form-group">
-        <label for="email"> Email:</label>
-        <input type='text' name='email' class="form-control" / >
-    </div>
   
     <div class="form-group">
         <label for="password"> password:</label>
-        <input type='password' name='password' class="form-control" pattern="[A-Za-z]{6}" / >
+        <input type='password' name='password' class="form-control"  / >
     </div>
     
   

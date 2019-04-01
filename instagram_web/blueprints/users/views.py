@@ -21,10 +21,9 @@ def create():
 
     if s.save():
         flash("Successfully saved")
-        return redirect(url_for("users.index"))
+        return redirect(url_for("users.new"))
     else:
         return render_template('users/new.html', errors=s.errors)
-
     
 
 
