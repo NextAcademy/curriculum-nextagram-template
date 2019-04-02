@@ -1,0 +1,23 @@
+{% extends "./_layout.html" %}
+{% block content %}
+
+<h3>Login to Nextagram</h3>
+
+<ul>
+    {% for error in errors if errors|length > 0 %}
+    <li>{{error}}</li>
+    {% endfor %}
+</ul>
+
+<form action="{{ url_for('sessions.login') }}" class="col-md-4" method="POST">
+    <input type='hidden' name='csrf_token' value="{{csrf_token()}}" />
+    <div class="form-group">
+        <input type='text' name='login_email' class="form-control mb-2" placeholder="Email" />
+        <input type='password' name='login_password' class="form-control mb-2" placeholder="Password" />
+    </div>
+    <button type="submit" class="btn btn-success">Login</button>
+</form><br />
+
+<p>Don't hava an account yet? <a href="{{url_for('users.new')}}">Sign up.</a></p>
+
+{% endblock %}

@@ -29,6 +29,5 @@ class User(BaseModel):
         class Meta:
             messages = {
                 "email.validators": "Email address is invalid.",
-                "password.validators": "Password invalid. Please use a combination of alphanumeric chars & symbols.",
                 "required": "This field is required."
             }
