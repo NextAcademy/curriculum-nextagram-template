@@ -17,8 +17,10 @@ def login():
         test_passwords = check_password_hash(hashed_pw, password)
 
         if test_passwords:
+            flash("Sign in successful")
             return redirect(url_for('home'))
         else:
+            flash("Sign in unsuccessful. Try again.")
             return render_template('sessions/login.html')
         # get the email & password from db = if they match then redirect to home page
         # if no match, return error
