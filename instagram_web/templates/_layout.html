@@ -32,6 +32,8 @@
           <a class="nav-item nav-link" href="#">/emptylinktwo/</a>
           <a class="nav-item nav-link" href="{{url_for('users.new')}}">Sign Up</a>
           <a class="nav-item nav-link" href="{{url_for('sessions.login')}}">Login</a>
+          <a class="nav-item nav-link" href="{{url_for('sessions.logout')}}">Logout</a>
+
         </div>
       </div>
     </nav>
@@ -48,5 +50,11 @@
 
     {% block content %}
     {% endblock %}
+
+    {% if current_user.is_authenticated %}
+    <p>{{current_user.first_name}}</p>
+    {% endif %}
+
+
   </body>
 </html>

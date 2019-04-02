@@ -1,10 +1,12 @@
 from models.base_model import BaseModel
 import peewee as pw
 import os
+from flask_login import UserMixin
 from peewee_validates import ModelValidator, validate_email, StringField
 
 
-class User(BaseModel):
+
+class User(BaseModel, UserMixin):
     first_name = pw.CharField()
     last_name = pw.CharField(null=True)
     username = pw.CharField(unique=True)
