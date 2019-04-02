@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
 import re
 
@@ -30,11 +30,9 @@ def create():
         flash("Failed to create new user. Try again?")
         return render_template('users/new.html', errors=u.errors)
 
-
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
     pass
-
 
 @users_blueprint.route('/', methods=["GET"])
 def index():

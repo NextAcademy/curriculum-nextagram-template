@@ -31,11 +31,30 @@
           <a class="nav-item nav-link" href="#">/emptylinkone/</a>
           <a class="nav-item nav-link" href="#">/emptylinktwo/</a>
           <a class="nav-item nav-link" href="{{url_for('users.new')}}">Sign Up</a>
+          <a class="nav-item nav-link" href="{{url_for('sessions.login')}}">Login</a>
+          <a class="nav-item nav-link" href="{{url_for('sessions.logout')}}">Logout</a>
+
         </div>
       </div>
     </nav>
 
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
     {% block content %}
     {% endblock %}
+
+    {% if current_user.is_authenticated %}
+    <p>{{current_user.first_name}}</p>
+    {% endif %}
+
+
   </body>
 </html>
