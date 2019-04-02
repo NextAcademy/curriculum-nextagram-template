@@ -1,1 +1,33 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+
+{% block content %}
+
+{% if errors %}
+{% for error in errors %}
+<div class="alert alert-danger">
+  {{ error }}
+</div>
+{% endfor %}
+{% endif %}
+
+<h1>Sign Up</h1>
+<br/>
+<form action="{{ url_for('users.create') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="name">Name: </label>
+        <input type='text' name='name' class="form-control">
+        <br/>
+        <label for='password'>Password: </label>
+        <input type='password' name='password' class="form-control">
+        <br/>
+        <label for='email'>Email: </label>
+        <input type='text' name='email' class="form-control">
+        <br/>
+        <label for='username'>Username: </label>
+        <input type='text' name='username' class="form-control">
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>
+{% endblock %}

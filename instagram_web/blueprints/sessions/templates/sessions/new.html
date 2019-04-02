@@ -1,0 +1,27 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+
+{% if errors %}
+{% for error in errors %}
+<div class="alert alert-danger">
+  {{ error }}
+</div>
+{% endfor %}
+{% endif %}
+
+<h1>Login</h1>
+<br/>
+<form action="{{ url_for('sessions.create') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for='username'>Username: </label>
+        <input type='text' name='username' class="form-control">
+        <br/>
+        <label for='password'>Password: </label>
+        <input type='password' name='password' class="form-control">
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Log In</button>
+</form>
+{% endblock %}

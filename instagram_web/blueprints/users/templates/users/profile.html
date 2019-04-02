@@ -1,0 +1,13 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+
+{% if errors %}
+{% for error in errors %}
+    <div class="alert alert-danger">
+{{ error }}
+</div>
+{% endfor %}
+{% endif %}
+<h1>Profile page</h1>
+{% endblock %}
