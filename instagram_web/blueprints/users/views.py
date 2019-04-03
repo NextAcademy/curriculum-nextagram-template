@@ -112,6 +112,30 @@ def upload(id):
         return redirect(url_for('home'))
 
 
-# @users_blueprint.route('/wall', method=["GET"])
-# def view_wall():
-#     return render_template('sessions/wall.html')
+# Profile page for current user
+@users_blueprint.route('/<id>/profile', methods=['GET'])
+def view_profile(id):
+    user = User.get(User.id == id)
+
+    
+    username = request.form.get('username')
+    email = request.form.get('email')
+    name = request.form.get('name')
+
+    if current_user == user:
+        if name:
+            user.name = name
+        if email:
+            user.email = email
+        if username:
+            user.username = username
+    return render_template('profile.html',user = user)
+
+
+# Direct users to the wall (All the users images)
+
+@users_blueprint.route('/<id>/wall', methods=['GET'])
+def view_wall(id):
+    user = User.get(User.id == id)
+
+    return render_template('wall.html',user = user)

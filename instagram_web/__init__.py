@@ -2,6 +2,7 @@ from app import app
 from flask import render_template
 from instagram_web.blueprints.users.views import users_blueprint
 from instagram_web.blueprints.sessions.views import sessions_blueprint
+from instagram_web.blueprints.images.views import images_blueprint
 from models.user import User
 from flask_assets import Environment, Bundle
 from flask_login import LoginManager, current_user
@@ -14,6 +15,7 @@ login_manager = LoginManager(app)
 
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
+app.register_blueprint(images_blueprint, url_prefix="/images" )
 
 @login_manager.user_loader
 def load_user(id):
