@@ -1,0 +1,9 @@
+<form action="{{ url_for('users.upload_image_update', id=id)}}" method="POST" enctype="multipart/form-data">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <label for="user_file">Upload Your Image</label>
+    <br></br>
+    <input type="file" name="user_file">
+    <br></br>
+    <button type="submit">Upload</button>
+
+</form>

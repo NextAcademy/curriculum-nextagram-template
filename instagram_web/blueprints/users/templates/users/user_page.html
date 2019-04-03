@@ -1,0 +1,59 @@
+{%extends "_layout.html"%}
+{%block content%}
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+{% if current_user.is_authenticated %}
+<h1>Hi {{ current_user.name }}!</h1>
+
+<div>
+  <p>Profile picture:</p>
+  <img src="http://nextagramtao.s3.amazonaws.com/{{current_user.profile_picture}}" style="width: 250px">
+  
+</div>
+
+
+
+<div class="mt-5">
+  <p>Posts:</p>
+  {%for image in current_user.images%}
+  <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
+  {%endfor%}
+</div>
+
+<div class="mt-5">
+
+  <form action="{{ url_for('users.index') }}" method="GET" class="d-inline-block">
+      <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+      <button type="submit" class="btn btn-primary">Users</button>
+  </form>
+
+  <form action="{{ url_for('users.upload_image', id= current_user.id) }}" method="GET" class="d-inline-block">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary">upload images</button>
+  </form>
+  
+ 
+  
+  <form action="{{ url_for('users.edit', id= current_user.id) }}" method="GET" class="d-inline-block">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary">edit profile</button>
+  </form>
+  
+  
+  
+  <form action="{{ url_for('sessions.logout') }}" method="POST" class="d-inline-block">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary">logout</button>
+  </form>
+  
+</div>
+
+{% endif %}     
+{%endblock%}
