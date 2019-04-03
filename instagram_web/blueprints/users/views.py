@@ -2,6 +2,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from models.user import User
 from werkzeug.security import generate_password_hash
 from flask_login import current_user
+from instagram_web.helpers.helpers import upload_file_to_s3, allowed_file
+from werkzeug.utils import secure_filename
+import re
+from app import app
+import datetime
 
 
 users_blueprint = Blueprint('users',
@@ -76,3 +81,37 @@ def update(id):
         return redirect(url_for('store_list'))
     else:
         return redirect(url_for('edit', user = user))
+
+
+# UPLOAD USER PIC Method
+
+@users_blueprint.route('/<id>/upload', methods=['GET'])
+def show_upload(id):    
+    return render_template('uploadprofile.html')
+
+@users_blueprint.route('/<id>/upload', methods=['POST'])
+def upload(id):    
+    user = User.get_by_id(id)
+    if "user_file" not in request.files:
+        flash("Please select a file to upload", "danger")
+
+    file = request.files["user_file"]
+
+    if file.filename == "":
+        flash("Please choose a file that has a name", "danger")
+
+    if file and allowed_file(file.filename):
+        file.filename = secure_filename(str(id) + "_" + file.filename + str(datetime.datetime.now()))
+        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+        user.profile_image_path = output
+        user.save()
+        flash("Successfully uploaded profile image", "success")
+        return redirect(url_for('home'))
+
+    else:
+        return redirect(url_for('home'))
+
+
+# @users_blueprint.route('/wall', method=["GET"])
+# def view_wall():
+#     return render_template('sessions/wall.html')

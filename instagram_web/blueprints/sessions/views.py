@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from models.user import User
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -38,3 +38,4 @@ def logout():
     logout_user()
     flash("You have logged out.", "info")
     return redirect(url_for('sessions.new'))
+

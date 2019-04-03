@@ -4,7 +4,7 @@ from instagram_web.blueprints.users.views import users_blueprint
 from instagram_web.blueprints.sessions.views import sessions_blueprint
 from models.user import User
 from flask_assets import Environment, Bundle
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from .util.assets import bundles
 
 assets = Environment(app)
@@ -29,4 +29,5 @@ def internal_server_error(e):
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+    user = User.get(User.id == current_user.id)
+    return render_template('home.html', user=user)

@@ -1,10 +1,13 @@
 autopep8==1.4.3
 backcall==0.1.0
+boto3==1.9.127
+botocore==1.12.127
 certifi==2019.3.9
 Click==7.0
 colorama==0.4.1
 cssmin==0.2.0
 decorator==4.4.0
+docutils==0.14
 Flask==1.0.2
 Flask-Assets==0.12
 Flask-Cors==3.0.7
@@ -16,6 +19,7 @@ ipython-genutils==0.2.0
 itsdangerous==1.1.0
 jedi==0.13.3
 Jinja2==2.10
+jmespath==0.9.4
 jsmin==2.2.2
 MarkupSafe==1.1.1
 parso==0.3.4
@@ -26,9 +30,12 @@ prompt-toolkit==2.0.9
 psycopg2==2.7.7
 pycodestyle==2.5.0
 Pygments==2.3.1
+python-dateutil==2.8.0
 python-dotenv==0.10.1
+s3transfer==0.2.0
 six==1.12.0
 traitlets==4.3.2
+urllib3==1.24.1
 wcwidth==0.1.7
 webassets==0.12.1
 Werkzeug==0.15.1

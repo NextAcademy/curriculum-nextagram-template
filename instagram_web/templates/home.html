@@ -51,13 +51,18 @@
 {% endblock %}
 {% block content %}
 <!-- {{ current_user.username }} -->
-<div class="jumbotron jumbotron-fluid">
-    <h1 class="display-4">Nextagram</h1>
-    <p class="lead">Custom-made by Kindred</p>
-    <hr class="my-4">
-    <p>Don't have an account? Sign-up here!</p>
+<div class="jumbotron jumbotron-fluid" style="background-image: url(http://4.bp.blogspot.com/-lW88y2ENLEQ/UbAN49rP1FI/AAAAAAAAAvA/VNMVYb5LXX8/s1600/Free+background+images.jpg); background-size: 100%;">
+    <h1 class="display-4" style="color: white">Nextagram</h1>
+    <p class="lead" style="color: white">Custom-made by Kindred</p>
+    <br/>
+    <p style="color: white">Don't have an account? Sign-up here!</p>
     <a class="btn btn-success" href="{{ url_for('users.new')}}">Sign Up</a>
   </div>
+
+  <div>
+    <img src="{{ user.profile_image_url }}" alt="profile pic" width="300px">
+  </div>
+
 {% endblock %}
 
 </body>
