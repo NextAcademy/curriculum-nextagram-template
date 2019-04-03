@@ -1,0 +1,45 @@
+{%extends "_layout.html"%}
+{%block content%}
+{% if current_user.is_authenticated %}
+<form action="{{ url_for('users.update',id=id)}}" method="POST" id="">
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <div class="form-group" >
+          <label for="name"> new name:</label>
+          <input type='text' name='name' class="form-control" / >
+        </div>
+
+        <div class="form-group">
+                <label for="email"> new email:</label>
+                <input type='text' name='email' class="form-control" / >
+        </div>
+
+        <div class="form-group">
+                <label for="old_password">old password:</label>
+                <input type='password' name='old_password' class="form-control"  / >
+        </div>
+
+        <div class="form-group">
+                <label for="confirm_password"> confirm password:</label>
+                <input type='password' name='confirm_password' class="form-control"  / >
+        </div>
+      
+        <div class="form-group">
+            <label for="password">new password:</label>
+            <input type='password' name='password' class="form-control"  / >
+        </div>
+        
+
+        <button type="submit" class="btn btn-primary">edit</button>
+</form>
+
+<br>
+
+<form action="{{ url_for('users.profile_pic_edit',id=id) }}" method="GET">
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary">edit profile pic</button>
+</form>
+
+
+
+{% endif %}     
+{%endblock%}

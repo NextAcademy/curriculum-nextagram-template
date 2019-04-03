@@ -6,4 +6,27 @@
 {% endblock %}
 {% block content %}
 <h1>Homepage</h1>
+
+
+{%for user in users%}
+<div class="mt-5 bg-secondary">
+
+  <div>
+    <h2>{{user.name}}</h2>
+    <img src="http://nextagramtao.s3.amazonaws.com/{{user.profile_picture}}" style="width: 250px">
+  </div>
+  
+  
+  <div class="mt-5">
+    
+    {%for image in user.images%}
+    <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
+    {%endfor%}
+  </div> 
+  
+</div>
+
+{%endfor%}
+
+
 {% endblock %}

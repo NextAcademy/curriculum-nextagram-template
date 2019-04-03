@@ -17,6 +17,10 @@ app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404    
 
 @app.route("/")
 def home():

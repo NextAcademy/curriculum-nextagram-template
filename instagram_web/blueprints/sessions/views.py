@@ -2,6 +2,10 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from models.user import User
+from app import login_manager
+from flask_login import login_user, login_required, logout_user
+
+
 
 
 sessions_blueprint = Blueprint('sessions', #this blueprint is called sessions
@@ -12,33 +16,47 @@ sessions_blueprint = Blueprint('sessions', #this blueprint is called sessions
 def new():
     return render_template('sessions/new.html')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_by_id(user_id)
 
 @sessions_blueprint.route('/')
 def index():
-    if 'user_id' in session:
-        return render_template('sessions/user_signin.html',user_id= (session['user_id']))
-    return "you are not logged in"
-
+  
+    return render_template('sessions/user_signin.html')
+    
 
 @sessions_blueprint.route('/login', methods=['POST'])
 def login():
     password_to_check = request.form['password']
+    name = request.form.get('name')
+    user = User.get(User.name == name)
+    
+    result = check_password_hash(user.password, password_to_check)
 
-    query= User.select()
+    if  result:    
+       
+        login_user(user)
 
-    for user in query:
+        flash('Logged in successfully.')
 
-        result = check_password_hash(user.password, password_to_check)
-
-        if  request.form['name'] == user.name and result:
-            session["user_id"] = user.id
-            flash("Sign in successfully")
-            return redirect(url_for('sessions.index'))
+        return redirect(url_for('users.show', name=user.name))
        
     flash("Sign in failed")
     return redirect(url_for('sessions.new'))
 
-@sessions_blueprint.route('/logout', methods=['POST'])
+@sessions_blueprint.route("/logout", methods=['POST'])
+@login_required
 def logout():
-     session.pop('user_id', None)
-     return redirect(url_for('sessions.index'))
+    logout_user()
+    return "logged out"
+
+@sessions_blueprint.route('/<id>', methods=['POST'])
+def edit():
+    return render_template ()
+
+
+
+
+
+
