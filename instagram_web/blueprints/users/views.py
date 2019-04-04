@@ -1,10 +1,18 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
 from models.image import Image
+from models.donation import Donation
 from werkzeug.security import generate_password_hash
 from  flask_login import current_user
 from helpers import s3
 from peewee import prefetch
+from helpers import gateway
+from money.money import Money
+from money.currency import Currency
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+   
 
 
 users_blueprint = Blueprint('users',
@@ -32,6 +40,11 @@ def create():
 @users_blueprint.route('/<name>', methods=["GET"])
 def show(name):
     return render_template('users/user_page.html')
+
+@users_blueprint.route('/user/<id>', methods=['GET'])
+def show_user(id):
+    user= User.get_by_id(id)
+    return render_template('users/other_user_page.html', user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -104,4 +117,40 @@ def upload_image_update(id):
         }
     )
     return redirect(url_for('users.show', name=current_user.name))
+
+@users_blueprint.route("/client_token", methods=["GET"])
+def client_token():
+     client_token= gateway.client_token.generate()
+     return render_template('users/payment_form.html',client_token=client_token, image_id=request.args["image_id"] )
+
+@users_blueprint.route("/checkout", methods=["POST"])
+def create_purchase():
+    nonce_from_the_client = request.form["payment_method_nonce"]
+    amount_paid= request.form['amount_paid']
+    s = Donation(amount=amount_paid,user=current_user.id,image=request.form["image_id"])
+    s.save()
+
+    result = gateway.transaction.sale({
+    "amount": amount_paid,
+    "payment_method_nonce": nonce_from_the_client,
+    "options": {
+      "submit_for_settlement": True
+    }})
+
+    message = Mail(
+    from_email='from_email@example.com',
+    to_emails='seowyongtao96@gmail.com',
+    subject='Sending with SendGrid is Fun',
+    html_content=f'<strong>you donate{amount_paid}to nextagram.Thank you !</strong>')
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+    return redirect(url_for('users.index'))
+
+
     
