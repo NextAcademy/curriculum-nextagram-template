@@ -18,11 +18,16 @@
   
   
   <div class="mt-5">
-    
     {%for image in user.images%}
     <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
     {%endfor%}
   </div> 
+
+  <form action="{{ url_for('users.show_user',id=user.id, name=user.name) }}" method="GET">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary">see more</button>
+  </form>
+
   
 </div>
 
