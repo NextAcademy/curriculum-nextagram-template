@@ -10,47 +10,46 @@
 {% endfor %}
 {% endif %}
 
-<h1>Profile Page</h1>
-<br/>
-<div>
-    <table>
-        <tr>
-            <td width="30%">
-                <img src="{{ user.profile_image_url }}" alt="profile pic" width="300px" style="border-radius: 100%">
-            </td>
-            <td width="70%">
-                <h2 style="text-align: center">{{ current_user.username }}</h2>
-                <p style="text-align: center">{{ current_user.name }}</p>
-                <p style="text-align: center">{{ current_user.email }}</p>
-            </td>
-        </tr>
-    </table>
-</div>
-<br/>
-<br/>
-<a class="btn btn-primary btn-lg btn-block" href="#">The Wall</a></li>
-<br/>
 <div class="container">
-    <div class="row">
-        <div class="col order-first" width="30%">
-            <ul class="sidebar-nav" style="list-style: none;">
-                    <li class="sidebar-brand"> <a class="btn btn-success btn-lg" href="#">Upload Picture</a></li>
-                    <br/>
-                    <li> <a href="#">Update Profile Image</a> </li>
-                    <li> <a href="#">Edit Information</a> </li>
-            </ul>
-        </div>
-        <div class="col" width="70%">
-        USER IMAGESSSSSSS
+    <br/>
+    <h1>Profile Page</h1>
+    <br/>
+    <div>
+        <table>
+            <tr>
+                <td width="30%">
+                    <div class="profile-image" style="background-image: url('{{user.profile_image_url}}');"></div>
+                </td>
+                <td width="70%">
+                    <h2 style="text-align: center">{{ current_user.username }}</h2>
+                    <p style="text-align: center">{{ current_user.name }}</p>
+                    <p style="text-align: center">{{ current_user.email }}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br/>
+    <br/>
+    <a class="btn btn-primary btn-lg btn-block" href='wall'>The Wall</a></li>
+    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="sidebar-nav" style="list-style: none;">
+                        <li class="sidebar-brand"> <a class="btn btn-success btn-lg" href="{{ url_for('images.new') }}">Upload Picture</a></li>
+                        <br/>
+                        <li> <a href="{{ url_for('users.show_upload', id=current_user.id) }}">Update Profile Image</a> </li>
+                        <li> <a href='edit'>Edit Information</a> </li>
+                </ul>
+            </div>
+            <div class="col-md-9 d-flex flex-wrap">
+                {% for image in user.images %}
+                    <img src="{{image.image_url}}" alt="User's images"  height="250px" width="250px" style="margin-bottom: 10px; margin-right: 10px; object-fit: cover;">
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
 
-<!-- <div id="sidebar-wrapper">
-        <ul class="sidebar-nav" style="list-style: none;">
-            <li class="sidebar-brand"> <a class="btn btn-success btn-lg" href="#">Upload Picture</a></li>
-            <br/>
-            <li> <a href="#">Update Profile Image</a> </li>
-            <li> <a href="#">Edit Information</a> </li>
-        </ul> -->
+
 {% endblock %}

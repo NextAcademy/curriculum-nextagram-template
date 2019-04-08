@@ -19,14 +19,7 @@ class BaseModel(pw.Model):
             return 0
 
     def validate(self):
-        if self.name == "":
-            self.errors.append('Name cannot be blank!')
-        if len(self.username) < 6:
-            self.errors.append('Username must be more than 6 characters!')
-        if len(self.password) < 6:
-            self.errors.append('Password must be more than 6 characters!')
-        print(
-            f"Warning validation method not implemented for {str(type(self))}")
+        print(f"Warning validation method not implemented for {str(type(self))}")
         return True
 
     class Meta:

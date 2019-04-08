@@ -2,7 +2,9 @@ autopep8==1.4.3
 backcall==0.1.0
 boto3==1.9.127
 botocore==1.12.127
+braintree==3.52.0
 certifi==2019.3.9
+chardet==3.0.4
 Click==7.0
 colorama==0.4.1
 cssmin==0.2.0
@@ -14,6 +16,7 @@ Flask-Cors==3.0.7
 Flask-Login==0.4.1
 flask-shell-ipython==0.4.0
 Flask-WTF==0.14.2
+idna==2.8
 ipython==7.4.0
 ipython-genutils==0.2.0
 itsdangerous==1.1.0
@@ -22,6 +25,7 @@ Jinja2==2.10
 jmespath==0.9.4
 jsmin==2.2.2
 MarkupSafe==1.1.1
+oauth==1.0.1
 parso==0.3.4
 peewee==3.9.3
 peewee-db-evolve==3.7.0
@@ -32,6 +36,7 @@ pycodestyle==2.5.0
 Pygments==2.3.1
 python-dateutil==2.8.0
 python-dotenv==0.10.1
+requests==2.21.0
 s3transfer==0.2.0
 six==1.12.0
 traitlets==4.3.2

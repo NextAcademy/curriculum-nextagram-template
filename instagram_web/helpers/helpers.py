@@ -28,6 +28,7 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         return e
 
     return f"{file.filename}"
+    
 
 
 def allowed_file(filename):

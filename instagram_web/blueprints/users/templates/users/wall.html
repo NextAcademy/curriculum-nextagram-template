@@ -6,13 +6,32 @@
 {% for error in errors %}
 <div class="alert alert-danger">
   {{ error }}
-</div>
+</div class="container">
 {% endfor %}
 {% endif %}
-
-<h1>Wall</h1>
 <br/>
-<div>
-    <img src="{{ user.profile_image_url }}" alt="profile pic" width="300px">
+    <div class="container">
+      <h1>The Wall</h1>
+      <br/>
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="sidebar-nav" style="list-style: none;">
+                        <li class="sidebar-brand"> <a class="btn btn-success btn-lg" href="{{ url_for('images.new') }}">Upload Picture</a></li>
+                        </br>
+                        <li class="sidebar-brand"><a class="btn btn-warning btn-lg" href="#">Donate</a></li>
+                        <br/>
+                        <li> <a href="{{ url_for('users.show_upload', id=current_user.id) }}">Update Profile Image</a> </li>
+                        <li> <a href="edit">Edit Information</a> </li>
+                </ul>
+            </div>
+            <div class="col-md-9 d-flex flex-wrap">
+                {% for image in images %}
+                <a href="{{image.image_url}}" data-toggle="lightbox" data-title="CAPTION HERE PLEASE" data-gallery="example-gallery" data-footer="Donation">
+                    <img src="{{image.image_url}}" alt="User's images" height="260px" width="260px" style="margin-bottom: 10px; margin-right: 10px; object-fit: cover;">
+                </a>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

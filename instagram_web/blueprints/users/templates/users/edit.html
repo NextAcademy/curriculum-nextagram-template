@@ -9,29 +9,33 @@
 </div>
 {% endfor %}
 {% endif %}
-
-<h1>Edit Page</h1>
-<br/>
-<form action="{{ url_for('users.update', id=current_user.id) }}" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <div class="form-group">
-        <label for="name">Name: </label>
-        <input type='text' name='name' class="form-control" value="{{ user.name }}">
-        <br/>
-        <label for='email'>Email: </label>
-        <input type='text' name='email' class="form-control" value="{{ user.email }}">
-        <br/>
-        <label for='username'>Username: </label>
-        <input type='text' name='username' class="form-control" value="{{user.username}}">
-    </div>
-    <!-- <div class="form-group">
-        <label for='old_password'>Old Password: </label>
-        <input type='password' name='password' class="form-control">
-        <br/>
-        <label for='new_password'>New Password: </label>
-        <input type='password' name='password' class="form-control">
-    </div> -->
+<div class="container">
     <br/>
-    <button type="submit" class="btn btn-primary">Save changes</button>
-</form>
+    <h1>Edit Page</h1>
+    <br/>
+    <form action="{{ url_for('users.update', id=current_user.id) }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="form-group">
+            <label for="name">Name: </label>
+            <input type='text' name='name' class="form-control" value="{{ user.name }}">
+            <br/>
+            <label for='email'>Email: </label>
+            <input type='text' name='email' class="form-control" value="{{ user.email }}">
+            <br/>
+            <label for='username'>Username: </label>
+            <input type='text' name='username' class="form-control" value="{{user.username}}">
+        </div>
+
+        <!-- Future step, include password change function method -->
+        <!-- <div class="form-group">
+            <label for='old_password'>Old Password: </label>
+            <input type='password' name='password' class="form-control">
+            <br/>
+            <label for='new_password'>New Password: </label>
+            <input type='password' name='password' class="form-control">
+        </div> -->
+        <br/>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </form>
+</div>
 {% endblock %}

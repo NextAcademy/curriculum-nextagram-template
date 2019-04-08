@@ -1,0 +1,29 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+
+{% if errors %}
+{% for error in errors %}
+<div class="alert alert-danger">
+  {{ error }}
+  </div>
+  {% endfor %}
+  {% endif %}
+  </br>
+    <div class="container">
+      <h1>Upload pictures</h1>
+
+          <form action="{{ url_for('images.create', id=current_user.id) }}" method="POST" enctype="multipart/form-data" >
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <label for="user_file">Upload your pictures into your gallery</label>
+              <br></br>
+              <input type="file" name="user_file">
+              <br></br>
+              <button type="submit" class="btn btn-primary mt-3">Upload</button>
+
+          </form>
+        <br/>
+      </div>
+  </div>
+</div>
+{% endblock %}

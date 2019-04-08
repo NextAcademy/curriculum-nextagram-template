@@ -10,8 +10,14 @@ class Config(object):
     S3_BUCKET                 = os.environ.get("S3_BUCKET")
     S3_KEY                    = os.environ.get("S3_KEY")
     S3_SECRET                 = os.environ.get("S3_SECRET")
-    S3_LOCATION               = f'http://{S3_BUCKET}.s3.amazonaws.com/'
+    S3_LOCATION               = f'http://s3.amazonaws.com/{S3_BUCKET}/'
 
+    BT_MERCHANT_ID = os.environ.get('BT_MERCHANT_ID')
+    BT_PUBLIC_KEY = os.environ.get('BT_PUBLIC_KEY')
+    BT_PRIVATE_KEY = os.environ.get('BT_PRIVATE_KEY')
+
+    OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
+    OAUTH_CLIENT_KEY = os.environ.get('OAUTH_CLIENT_KEY')
 
 class ProductionConfig(Config):
     DEBUG = False
