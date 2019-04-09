@@ -44,7 +44,9 @@
             </div>
             <div class="col-md-9 d-flex flex-wrap">
                 {% for image in user.images %}
+                <a href="{{image.image_url}}" data-toggle="lightbox" data-title="CAPTION HERE PLEASE" data-gallery="example-gallery" data-footer="Donation">
                     <img src="{{image.image_url}}" alt="User's images"  height="250px" width="250px" style="margin-bottom: 10px; margin-right: 10px; object-fit: cover;">
+                </a>
                 {% endfor %}
             </div>
         </div>

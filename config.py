@@ -16,8 +16,8 @@ class Config(object):
     BT_PUBLIC_KEY = os.environ.get('BT_PUBLIC_KEY')
     BT_PRIVATE_KEY = os.environ.get('BT_PRIVATE_KEY')
 
-    OAUTH_CLIENT_ID = os.environ.get('OAUTH_CLIENT_ID')
-    OAUTH_CLIENT_KEY = os.environ.get('OAUTH_CLIENT_KEY')
+    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 
 class ProductionConfig(Config):
     DEBUG = False

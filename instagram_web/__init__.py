@@ -1,5 +1,6 @@
 import braintree
 import os
+import config
 
 from app import app
 from flask import render_template
@@ -7,11 +8,13 @@ from models.user import User
 from flask_assets import Environment, Bundle
 from flask_login import LoginManager, current_user
 from .util.assets import bundles
+from instagram_web.helpers.google_oauth import oauth
 
 assets = Environment(app)
 assets.register(bundles)
 
 login_manager = LoginManager(app)
+oauth.init_app(app)
 
 TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.Authorized,
@@ -66,3 +69,5 @@ def internal_server_error(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+
+
