@@ -48,12 +48,13 @@
           <li class="nav-item">
             <a class="btn btn-danger" href="{{ url_for('sessions.logout') }}">Logout</a>
           </li>
-          {% endif %}
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search Users" aria-label="Search">
+        <form action="{{ url_for('users.search_user') }}" class="form-inline my-2 my-lg-0" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <input class="form-control mr-sm-2" type="search" name="username" placeholder="Search Users" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
+          {% endif %}
       </div>
     </nav>
 

@@ -21,9 +21,9 @@
                     <div class="profile-image" style="background-image: url('{{user.profile_image_url}}');"></div>
                 </td>
                 <td width="70%">
-                    <h2 style="text-align: center">{{ current_user.username }}</h2>
-                    <p style="text-align: center">{{ current_user.name }}</p>
-                    <p style="text-align: center">{{ current_user.email }}</p>
+                    <h2 style="text-align: center">{{ user.username }}</h2>
+                    <p style="text-align: center">{{ user.name }}</p>
+                    <p style="text-align: center">{{ user.email }}</p>
                 </td>
             </tr>
         </table>
@@ -37,7 +37,11 @@
             <div class="col-md-3">
                 <ul class="sidebar-nav" style="list-style: none;">
                         <li class="sidebar-brand"> <a class="btn btn-success btn-lg" href="{{ url_for('images.new') }}">Upload Picture</a></li>
-                        <br/>
+                        </br>
+                        <!-- Do an 'if' statement if it's not current_user, render this button. -->
+                        <li class="sidebar-brand"> <a class="btn btn-warning btn-lg" href="#">Follow</a></li>
+                        </br>
+                        <!-- ------------------------------------------------------------------ -->
                         <li> <a href="{{ url_for('users.show_upload', id=current_user.id) }}">Update Profile Image</a> </li>
                         <li> <a href='edit'>Edit Information</a> </li>
                 </ul>

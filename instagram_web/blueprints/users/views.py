@@ -21,7 +21,7 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
-    name = request.form['name']
+    name = request.form.get('name')
     password = generate_password_hash(request.form['password'])
     email = request.form['email']
     username = request.form['username']
@@ -145,3 +145,18 @@ def view_wall(id):
 
     images = Image.select()
     return render_template('wall.html',user = user, images=images)
+
+
+# Search for user in search bar submit form
+
+@users_blueprint.route('/search_user', methods=['POST'])
+def search_user():
+    username = request.form.get('username')
+    user = User.get_or_none(User.username == username)
+
+    if user:
+       return redirect(url_for('users.show', id=user.id))
+    else:
+        flash('OH NO! Username not found! Please type in the right Username!', 'info')
+        return render_template('wall.html')
+
