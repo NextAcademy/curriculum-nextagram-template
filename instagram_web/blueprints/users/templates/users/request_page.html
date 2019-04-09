@@ -1,0 +1,14 @@
+{%for fan in fans%}
+    <p>{{fan.name}}</p>
+    <img src="http://nextagramtao.s3.amazonaws.com/{{fan.   profile_picture}}" style="width: 250px ; height: 200px;" class="mt-2">
+    <form action="{{ url_for('users.follow_accept', id=fan.id)}}" method="POST" >
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary"> Accept</button>
+    </form>
+    <form action="{{ url_for('users.follow_reject', id=fan.id)}}" method="POST" >
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary"> Reject</button>
+    </form>
+    
+
+{%endfor%}

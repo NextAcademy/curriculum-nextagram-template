@@ -14,25 +14,43 @@
 
 <div>
   <p>Profile picture:</p>
-  <img src="http://nextagramtao.s3.amazonaws.com/{{user.profile_picture}}" style="width: 250px">
-  
+  <img src="http://nextagramtao.s3.amazonaws.com/{{user.profile_picture}}" style="width: 250px" >
+  {%if following_status==False%}
+      <form action="{{ url_for('users.follow_update', id=user.id)}}" method="POST" >
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary"> Follow</button>
+      </form>
+  {%elif following_status==True%}
+      <form action="{{ url_for('users.unfollow_update', id=user.id)}}" method="POST" >
+        <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+        <button type="submit" class="btn btn-primary"> UnFollow</button>
+      </form>
+  {%elif following_status=="Pending"%}
+      <p>request pending...</p>
+  {%endif%}
+<!-- <script>
+console.log('hellooo');
+
+</script> -->
 </div>
 
 
 
 <div class="mt-5">
   <p>Posts:</p>
-  {%for image in user.images%}
-  <div class="d-inline-block">
-        <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
-        <form action="{{ url_for('users.client_token') }}" method="GET" >
-          <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
-          <input type='hidden' name="image_id" value="{{image.id}}"/>
-          <button type="submit" class="btn btn-primary">DONATE</button>
-        </form>
-  </div>
- 
-  {%endfor%}
+  {%if user.private!= true or following_status==True %}
+      {%for image in user.images%}
+      <div class="d-inline-block">
+            <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2 ;img-circle">
+            <form action="{{ url_for('users.client_token') }}" method="GET" >
+              <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+              <input type='hidden' name="image_id" value="{{image.id}}"/>
+              <button type="submit" class="btn btn-primary">DONATE</button>
+            </form>
+      </div>
+    
+      {%endfor%}
+  {%endif%}
 </div>
 
 <br>

@@ -1,6 +1,8 @@
+from __future__ import print_function
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
 from models.image import Image
+from models.idols_fans import Follows
 from models.donation import Donation
 from werkzeug.security import generate_password_hash
 from  flask_login import current_user
@@ -12,6 +14,7 @@ from money.currency import Currency
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import sys
    
 
 
@@ -39,12 +42,47 @@ def create():
 
 @users_blueprint.route('/<name>', methods=["GET"])
 def show(name):
-    return render_template('users/user_page.html')
+
+    fans_count= User.select().join(Follows, on=(Follows.fan_id==User.id)).where(Follows.idol_id==current_user.id, Follows.approval==True).count()
+
+    idols_count= User.select().join(Follows, on=(Follows.idol_id==User.id)).where(Follows.fan_id==current_user.id).count()
+
+
+    return render_template('users/user_page.html', fans_count=fans_count, idols_count=idols_count)
+
+@users_blueprint.route('/private/update', methods=['POST'])
+def private_update():
+    if current_user.private == False :
+         s=(User.update({User.private: True}).where(User.id==current_user.id))
+         s.execute()
+    elif current_user.private ==True:
+         s=(User.update({User.private: False}).where(User.id==current_user.id))
+         s.execute()
+    return redirect(url_for('users.show', name=current_user.name))
+
 
 @users_blueprint.route('/user/<id>', methods=['GET'])
 def show_user(id):
     user= User.get_by_id(id)
-    return render_template('users/other_user_page.html', user=user)
+    following_status= False
+    follow= Follows.select()
+
+    if  user.private == True:
+        if  follow.where(Follows.fan_id==current_user.id, Follows.idol_id==user.id, Follows.approval==False):
+            following_status= "Pending"
+            
+            return render_template('users/other_user_page.html', user=user, following_status=following_status)
+
+        
+        elif  follow.where(Follows.fan_id==current_user.id, Follows.idol_id==user.id, Follows.approval==True):
+            following_status= True
+            
+            return render_template('users/other_user_page.html', user=user, following_status=following_status)
+
+
+    if follow.where(Follows.fan_id==current_user.id, Follows.idol_id==user.id):
+        following_status=True
+    return render_template('users/other_user_page.html', user=user, following_status=following_status)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -53,7 +91,10 @@ def index():
     users= User.select()
     user_images= Image.select()
     user_with_images= prefetch(users, user_images)
-    return render_template('home.html', users=user_with_images)
+    follow= Follows.select()
+    # status= follow.where(Follows.fan_id==current_user.id, Follows.idol_id==user.id, Follows.approval==True)
+
+    return render_template('home.html', users=user_with_images, follow= follow, Follows=Follows)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
@@ -152,5 +193,74 @@ def create_purchase():
         print(e.message)
     return redirect(url_for('users.index'))
 
+
+@users_blueprint.route("/<id>/follow/update", methods=["POST"])
+def follow_update(id):
+    idol= User.get_by_id(id)
+    fan=User.get_by_id(current_user.id)
+   
+    # cannot follow ownself
+    if idol != fan:
+        s = Follows(idol=idol,fan=fan)
+        s.save()
+
+    return redirect(url_for('users.show_user', id= idol.id))
+
+@users_blueprint.route("/<id>/unfollow/update", methods=["POST"])
+def unfollow_update(id):
+    idol= User.get_by_id(id)
+    fan=User.get_by_id(current_user.id)
+
+    q= Follows.delete().where(Follows.idol_id==idol.id, Follows.fan_id==fan.id)
+    q.execute()
+
+
+    return redirect(url_for('users.show_user', id= idol.id))
+
+@users_blueprint.route("/friend_requests", methods=["GET"])
+def show_friend_request():
+
+        
+        fans= User.select().join(Follows, on=(Follows.fan_id==User.id)).where(Follows.idol_id==current_user.id, Follows.approval==False)
+
+        # breakpoint()
+        return render_template('users/request_page.html', fans=fans)
+
+@users_blueprint.route("/<id>/accept", methods=["POST"])
+def follow_accept(id):
+    idol= User.get_by_id(current_user.id)
+    fan=User.get_by_id(id)
+
+    s=(Follows.update({Follows.approval: True}).where(Follows.idol_id==idol.id, Follows.fan_id==fan.id))
+    s.execute()
+    
+    
+    
+    fans= User.select().join(Follows, on=(Follows.fan_id==User.id)).where(Follows.idol_id==current_user.id, Follows.approval==False)
+    return render_template('users/request_page.html', fans=fans)
+
+@users_blueprint.route("/<id>/reject", methods=["POST"])
+def follow_reject(id):
+    idol= User.get_by_id(current_user.id)
+    fan=User.get_by_id(id)
+
+    s=(Follows.delete().where(Follows.idol_id==idol.id, Follows.fan_id==fan.id))
+    s.execute()
+
+    fans= User.select().join(Follows, on=(Follows.fan_id==User.id)).where(Follows.idol_id==current_user.id, Follows.approval==False)
+    return render_template('users/request_page.html', fans=fans)
+
+
+    
+
+
+    
+
+
+
+
+
+
+   
 
     

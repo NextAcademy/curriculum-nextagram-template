@@ -8,6 +8,8 @@ class User(BaseModel, UserMixin):
     email= pw.CharField(unique=True)
     password= pw.CharField(unique=False)
     profile_picture= pw.CharField(unique=False, null=True)
+    private=pw.BooleanField(default=False)
+    
 
     def validate(self):
         duplicate_emails = User.get_or_none(User.email == self.email )
@@ -15,4 +17,10 @@ class User(BaseModel, UserMixin):
         if duplicate_emails:
             self.errors.append('email is already used')
 
+    # def follow(self, user):
+    #     fan=User.get_by_id(current_user.id)
+
+    #     if idol != fan:
+    #         s = Follows(idol=user,fan=fan)
+    #         s.save()
 

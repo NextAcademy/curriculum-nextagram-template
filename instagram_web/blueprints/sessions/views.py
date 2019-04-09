@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash
 from models.user import User
 from app import login_manager
 from flask_login import login_user, login_required, logout_user
+from helpers import oauth  
 
 
 
@@ -20,10 +21,10 @@ def new():
 def load_user(user_id):
     return User.get_by_id(user_id)
 
-@sessions_blueprint.route('/')
-def index():
+# @sessions_blueprint.route('/')
+# def index():
   
-    return render_template('sessions/user_signin.html')
+#     return render_template('sessions/user_signin.html')
     
 
 @sessions_blueprint.route('/login', methods=['POST'])
@@ -51,9 +52,28 @@ def logout():
     logout_user()
     return "logged out"
 
-@sessions_blueprint.route('/<id>', methods=['POST'])
-def edit():
-    return render_template ()
+@sessions_blueprint.route("/google", methods=['GET'])
+def google_authorize():
+    redirect_uri = url_for('sessions.google_sign_in', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+
+
+@sessions_blueprint.route("/authorize/google", methods=['GET'])
+def google_sign_in():
+     token = oauth.google.authorize_access_token()
+     email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+
+     user = User.get(User.email == email)
+
+     login_user(user)
+
+     flash('Logged in successfully.')
+
+     return redirect(url_for('users.show', name=user.name))
+
+
 
 
 

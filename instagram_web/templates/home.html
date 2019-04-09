@@ -9,18 +9,25 @@
 
 
 {%for user in users%}
-<div class="mt-5 bg-secondary">
+{%if user != current_user%}
+<div class="mt-5 ">
 
   <div>
     <h2>{{user.name}}</h2>
-    <img src="http://nextagramtao.s3.amazonaws.com/{{user.profile_picture}}" style="width: 250px">
+    <img src="http://nextagramtao.s3.amazonaws.com/{{user.profile_picture}}" style="width: 250px ; height: 250px;" class = "img-circle">
   </div>
   
   
   <div class="mt-5">
-    {%for image in user.images%}
-    <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
-    {%endfor%}
+    {%if user.private!= true %}
+        {%for image in user.images%}
+        <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
+        {%endfor%}
+    {%elif follow.where(Follows.fan_id==current_user.id, Follows.idol_id==user.id, Follows.approval==True)%}
+        {%for image in user.images%}
+        <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
+        {%endfor%}
+    {%endif%}
   </div> 
 
   <form action="{{ url_for('users.show_user',id=user.id, name=user.name) }}" method="GET">
@@ -30,6 +37,8 @@
 
   
 </div>
+
+{%endif%}
 
 {%endfor%}
 

@@ -19,6 +19,8 @@ MERCHANT_ID=os.environ.get("MERCHANT_ID")
 PUBLIC_KEY=os.environ.get("PUBLIC_KEY")
 PRIVATE_KEY=os.environ.get("PRIVATE_KEY")
 
+GOOGLE_CLIENT_ID=os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET=os.environ.get("GOOGLE_CLIENT_SECRET")
 
 class ProductionConfig(Config):
     DEBUG = False

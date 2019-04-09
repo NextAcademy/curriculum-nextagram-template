@@ -9,6 +9,13 @@
       {% endwith %}
 
 <h1>Users Sign In</h1>
+
+<form action="{{ url_for('sessions.google_authorize')}}" method="GET" >
+  <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+  <button type="submit" class="btn btn-primary"> Sign in with gmail</button>
+</form>
+
+
 <form action="{{ url_for('sessions.login') }}" method="POST">
     <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
     <div class="form-group">
@@ -25,3 +32,10 @@
   
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+
+  <form action="{{ url_for('users.show',name=current_user.name)}}" method="GET" >
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary"> Back to My Profile</button>
+</form>
+
+

@@ -10,48 +10,88 @@
         {% endif %}
       {% endwith %}
 {% if current_user.is_authenticated %}
-<h1>Hi {{ current_user.name }}!</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand font-weight-bold" href="#">NEXTAGRAM</a>
+  <div class="collapse navbar-collapse">
 
-<div>
-  <p>Profile picture:</p>
-  <img src="http://nextagramtao.s3.amazonaws.com/{{current_user.profile_picture}}" style="width: 250px">
-  
+    
+    <ul class="navbar-nav mr-auto">
+         <li class="nav-item active">
+               <a class="btn btn-sm btn-outline-success" href="{{ url_for('users.index') }}">Home </a>
+          </li>
+          <li class="nav-item active">         
+            {%if current_user.private != true%}
+              <form action="{{ url_for('users.private_update') }}" method="POST" class="form-inline">
+                    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+                    <button type="submit" class="btn btn-sm btn-outline-success">Private</button>
+              </form>
+              {%else%}
+                <form action="{{ url_for('users.private_update') }}" method="POST" class="form-inline">
+                    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+                    <button type="submit" class="btn btn-sm btn-outline-success">Public</button>
+                </form>
+                 {%endif%}    
+          </li>
+        </ul>
+        <form action="{{ url_for('sessions.logout') }}" method="POST" class="d-inline-block">
+          <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+          <button type="submit" class="btn btn-primary">logout</button>
+        </form>
+      </div>
+          
+        
+</nav>
+
+
+<div class="text-center ">
+  <h1>Hi {{ current_user.name }}!</h1>
+  <img src="http://nextagramtao.s3.amazonaws.com/{{current_user.profile_picture}}" style="width: 250px ; height:250px" class="rounded-circle">
+  <hr>
+  <br>
+  <br>
+  <h5>followers:{{fans_count}}</h5>
+  <h5>following:{{idols_count}}</h5>
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<hr>
 
-
-<div class="mt-5">
-  <p>Posts:</p>
+<div class="mt-7 row">
+  <h5 class="text-center col-12">Posts:</h5>
   {%for image in current_user.images%}
-  <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-2">
+  <div class="col-4 text-center">
+    <img src="http://nextagramtao.s3.amazonaws.com/{{image.image_url}}" style="width: 250px ; height: 200px;" class="mt-5 mb-3 d-inline-block img-thumbnail ">
+  </div>
   {%endfor%}
 </div>
 
-<div class="mt-5">
+<div class="mt-5 text-center ">
 
-  <form action="{{ url_for('users.index') }}" method="GET" class="d-inline-block">
-      <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
-      <button type="submit" class="btn btn-primary">Users</button>
-  </form>
-
-  <form action="{{ url_for('users.upload_image', id= current_user.id) }}" method="GET" class="d-inline-block">
-    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
-    <button type="submit" class="btn btn-primary">upload images</button>
-  </form>
-  
  
   
+      
+
+
+  <form action="{{ url_for('users.upload_image', id= current_user.id) }}" method="GET" class="d-inline-block  ">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary btn-block">Upload images</button>
+  </form>
+  
+  <form action="{{ url_for('users.show_friend_request')}}" method="GET" class="d-inline-block ">
+    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
+    <button type="submit" class="btn btn-primary btn-block">Friend requests</button>
+  </form>
+  
+
   <form action="{{ url_for('users.edit', id= current_user.id) }}" method="GET" class="d-inline-block">
     <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
-    <button type="submit" class="btn btn-primary">edit profile</button>
+    <button type="submit" class="btn btn-primary btn-block">Edit profile</button>
   </form>
   
-  
-  
-  <form action="{{ url_for('sessions.logout') }}" method="POST" class="d-inline-block">
-    <input type='hidden' name="csrf_token" value="{{ csrf_token()}}"/>
-    <button type="submit" class="btn btn-primary">logout</button>
-  </form>
+
   
 </div>
 
