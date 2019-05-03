@@ -1,5 +1,4 @@
 autopep8==1.4.3
-certifi==2018.11.29
 Click==7.0
 colorama==0.4.1
 cssmin==0.2.0
