@@ -3,6 +3,7 @@ from models.user import User
 from werkzeug.security import generate_password_hash
 import re
 
+
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')

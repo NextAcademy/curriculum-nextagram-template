@@ -22,7 +22,7 @@ class User(BaseModel):
 
     @classmethod
     def validate_password(self, password):
-        valid_password = False
+        valid_password = True
         while valid_password:
             if (len(password) < 6 or len(password) > 12):
                 break
@@ -37,7 +37,7 @@ class User(BaseModel):
             elif re.search("\s", password):
                 break
             else:
-                valid_password = True
+                valid_password = False
                 break
 
-        return valid_password
+        return not valid_password
