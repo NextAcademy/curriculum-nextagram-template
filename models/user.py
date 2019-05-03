@@ -12,7 +12,7 @@ class User(BaseModel):
 
         if duplicate_username:
             self.errors.append(
-                'Username is already taken. Please choose something else.')
+                'Username is already taken. Please choose something else please.')
 
         else:
             flash("Username available!")
