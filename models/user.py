@@ -10,9 +10,35 @@ class User(BaseModel):
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
 
-        if duplicate_username:
-            self.errors.append(
-                'Username is already taken. Please choose something else please.')
+    def validate(self):
+        duplicate_email = User.get_or_none(User.email == self.email)
 
+
+@classmethod
+def validate_password(self, password):
+    valid_password = True
+    while valid_password:
+        if (len(password) < 6 or len(password) > 12):
+            break
+        elif not re.search("[a-z]", password):
+            break
+        elif not re.search("[A-Z]", password):
+            break
+        elif not re.search("[0-9]", password):
+            break
+        elif not re.search("[#@$!]", password):
+            break
+        elif re.search("\s", password):
+            break
         else:
-            flash("Username available!")
+            valid_password = False
+            break
+
+    return valid_password
+
+    if duplicate_username:
+        self.errors.append(
+            'Username is already taken. Please choose something else please.')
+
+    else:
+        flash("Username available!")

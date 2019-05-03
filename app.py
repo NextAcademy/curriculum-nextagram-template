@@ -1,12 +1,15 @@
 import os
 import config
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect
 from models.base_model import db
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
 
+csrf = CSRFProtect()
 app = Flask('NEXTAGRAM', root_path=web_dir)
+csrf.init_app(app)
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")

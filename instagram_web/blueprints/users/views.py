@@ -23,6 +23,10 @@ def create():
     email = request.form.get('email')
     password = request.form.get('password')
     hashed_password = generate_password_hash(password)
+
+    if not User.validate_password(password):
+        flash(f'Password invalid')
+        return render_template('users/new.html')
     newuser = User(username=username, email=email, password=hashed_password)
 
     if newuser.save():
