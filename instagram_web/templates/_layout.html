@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% assets "home_css" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
+  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
-    {% assets "home_js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+  {% assets "home_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
 
-    {% block header %}{% endblock %}
-    <title>{% block title %}{% endblock %}NEXTAGRAM</title>
-  </head>
-  <body>
+  {% assets "home_js" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+
+  {% block header %}{% endblock %}
+  <title>{% block title %}{% endblock %}NEXTAGRAM</title>
+</head>
+
+<body>
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
-  </body>
+  </div>
+</body>
+
+
 </html>

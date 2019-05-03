@@ -1,5 +1,4 @@
 autopep8==1.4.3
-certifi==2018.11.29
 Click==7.0
 colorama==0.4.1
 cssmin==0.2.0
@@ -10,8 +9,8 @@ itsdangerous==1.1.0
 Jinja2==2.10
 jsmin==2.2.2
 MarkupSafe==1.1.0
-peewee==3.8.2
 peewee-db-evolve==3.7.0
+peewee==3.8.2
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
 python-dotenv==0.10.1

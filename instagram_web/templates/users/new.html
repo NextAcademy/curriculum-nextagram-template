@@ -1,0 +1,35 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<h1>New User</h1>
+
+<form method="POST" action="{{url_for('users.create')}}">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" aria-describedby="Username"
+                placeholder="Enter username">
+            <small id="user_name" class="form-text text-muted">Minimum 6 characters.</small>
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="email_address">Email address</label>
+        <input type="email" class="form-control" name="email" aria-describedby="Email" placeholder="Enter email">
+    </div>
+
+    <div class="form-group col-md-6">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password">
+        <small id="user_name" class="form-text text-muted">Minimum 6 characters.</small>
+    </div>
+
+
+    <!-- <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div> -->
+    <button type="submit" class="btn btn-primary">Add user</button>
+</form>
+
+
+{% endblock %}
