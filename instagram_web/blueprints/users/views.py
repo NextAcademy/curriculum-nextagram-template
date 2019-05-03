@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
 from werkzeug.security import generate_password_hash
+import re
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -18,7 +19,18 @@ def create():
     email = request.form.get('email')
     password = request.form.get('password')
     hashed_password = generate_password_hash(password)
-    newuser = User(username=user_name, email=email, password=hashed_password)
+
+    # use User.validate_password to call the function if it's got a @classmethod. Otherwise, do newuser.validate_password to call the function
+
+    if not User.validate_password(password):
+        flash(f'Password invalid')
+        return render_template('users/new.html')
+
+    newuser = User(
+        username=user_name,
+        email=email,
+        password=hashed_password
+    )
 
     if newuser.save():
         flash(f'Welcome {user_name}')
