@@ -38,6 +38,18 @@ def create():
         return render_template('users/new.html', errors=newuser.errors)
 
 
+@users_blueprint.route('/signin', methods=["GET"])
+def signin():
+    return render_template('sign_in.html')
+# def show(login):
+#     login = False
+#     if login = True:
+# return redirect(url_for('home'))
+#         flash("You have successfully logged in!")
+#     else:
+#         flash("Please log in to continue.")
+
+
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
     pass
