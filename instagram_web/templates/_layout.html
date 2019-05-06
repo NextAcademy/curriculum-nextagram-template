@@ -49,9 +49,21 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">Action</a>
           <a class="dropdown-item" href="#">Another action</a>
+
+          {% if not current_user.is_authenticated %}
+
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" href="{{ url_for('sessions.show')}}">Log In</a>
+
+          {% endif %}
+
+          {% if current_user.is_authenticated %}
+          
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{{ url_for('sessions.logout')}}">Logout</a>
+          {% endif %}
         </div>
+
       </li>
     </ul>
   </div>
