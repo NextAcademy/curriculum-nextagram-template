@@ -35,12 +35,19 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Notifications</a>
         </li>
+
+        {% if not current_user.is_authenticated %}
+        <li class="nav-item"> </li>
+        <a class="nav-link" href="{{ url_for('sessions.show') }}">Sign In</a>
+
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="/sessions/signin">Sign In</a>
+          <a class="nav-link " href="/sessions/logout">Log Out</a>
+          {% endif %}
         </li>
-        <li class="nav-item">
-          <a class="nav-link " href="/users/logout">Log Out</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/users/new">Sign Up</a>
         </li>

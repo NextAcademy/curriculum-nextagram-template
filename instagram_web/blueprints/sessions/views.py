@@ -40,6 +40,7 @@ def settings():
 
 
 @sessions_blueprint.route("/logout")
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('sessions/new'))
+    return redirect(url_for('sessions.show'))
