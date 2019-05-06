@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -56,10 +56,19 @@ def show():
 
 
 @users_blueprint.route('/', methods=['POST'])
-def signed_in(email, password):
+def signed_in():
+    email = request.form['email']
     password_to_check = request.form['password']
     hashed_password = create.hashed_password
     result = check_password_hash(hashed_password, password_to_check)
+
+    if not password_to_check == 'password' and email == 'email':
+        flash(f'{email} or {result} incorrect')
+        return render_template('users/sign_in.html')
+
+    else:
+        flash(f'Welcome back. You are logged in.')
+        redirect(url_for('home'))
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
