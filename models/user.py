@@ -1,4 +1,5 @@
 from models.base_model import BaseModel
+from flask_login import LoginManager
 import peewee as pw
 import re
 
@@ -42,3 +43,15 @@ class User(BaseModel):
 
         else:
             flash("Username available!")
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
