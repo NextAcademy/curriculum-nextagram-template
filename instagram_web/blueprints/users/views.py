@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import re
-
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -43,13 +42,14 @@ def create():
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
-def show(username):
+def show():
     pass
 
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return "USERS"
+    # return "USERS"
+    pass
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])

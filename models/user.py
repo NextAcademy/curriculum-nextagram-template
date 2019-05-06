@@ -1,9 +1,11 @@
 from models.base_model import BaseModel
+from flask_login import LoginManager, UserMixin
 import peewee as pw
 import re
 
 
-class User(BaseModel):
+class User(BaseModel, UserMixin):
+
     username = pw.CharField(unique=True, null=False)
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(null=False)
@@ -41,3 +43,15 @@ class User(BaseModel):
                 break
 
         return not valid_password
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
