@@ -41,34 +41,15 @@ def create():
         return render_template('users/new.html', errors=newuser.errors)
 
 
-# @users_blueprint.route('/<username>', methods=["GET"])
-# def show(username):
-#     return render_template('users/sign_in.html')
-
-@users_blueprint.route('/signin', methods=['GET'])
+@users_blueprint.route('/<username>', methods=["GET"])
 def show():
-    return render_template('users/sign_in.html')
-
-# @users_blueprint.route('/', methods=["GET"])
-# def index():
-#     # return "USERS"
-#     pass
+    pass
 
 
-@users_blueprint.route('/', methods=['POST'])
-def signed_in():
-    email = request.form['email']
-    password_to_check = request.form['password']
-    hashed_password = create.hashed_password
-    result = check_password_hash(hashed_password, password_to_check)
-
-    if not password_to_check == 'password' and email == 'email':
-        flash(f'{email} or {result} incorrect')
-        return render_template('users/sign_in.html')
-
-    else:
-        flash(f'Welcome back. You are logged in.')
-        redirect(url_for('home'))
+@users_blueprint.route('/', methods=["GET"])
+def index():
+    # return "USERS"
+    pass
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])

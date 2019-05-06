@@ -2,8 +2,8 @@
 {% block content%}
 
 <h1>Sign In</h1>
-<form method="post" action="{{url_for('users.show')}}"> 
-
+<form method="post" action="{{url_for('sessions.sign_in')}}"> 
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="form-group">
     <label for="">Email address</label>
     <input type="email" class="form-control" name="email"  placeholder="Enter email">
