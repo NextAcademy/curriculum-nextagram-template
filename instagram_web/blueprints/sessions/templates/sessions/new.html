@@ -3,7 +3,7 @@
 
 <h1>Log In</h1>
 
-<form action="{{url_for('users.sign_in')}}" method="POST">
+<form action="{{url_for('sessions.sign_in')}}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <div class="form-group col-md-6">
         <label for="email_address">Email address</label>
@@ -13,9 +13,8 @@
     <div class="form-group col-md-6">
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" placeholder="Password">
-        <small id="user_name" class="form-text text-muted">Minimum 6 characters.</small>
     </div>
-    <button type="submit" class="btn btn-primary">Add user</button>
+    <button type="submit" class="btn btn-primary">Log in</button>
 </form>
 
 

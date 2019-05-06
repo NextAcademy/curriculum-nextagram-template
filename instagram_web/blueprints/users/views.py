@@ -1,11 +1,7 @@
 import os
 from flask import Flask, Blueprint, request, redirect, url_for, render_template, flash
 from models.user import User
-from werkzeug.security import generate_password_hash
-
-app = Flask(__name__)
-
-app.secret_key = os.getenv('SECRET_KEY')
+from werkzeug.security import generate_password_hash, check_password_hash
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -27,6 +23,7 @@ def create():
     if not User.validate_password(password):
         flash(f'Password invalid')
         return render_template('users/new.html')
+
     newuser = User(username=username, email=email, password=hashed_password)
 
     if newuser.save():
@@ -38,21 +35,9 @@ def create():
         return render_template('users/new.html', errors=newuser.errors)
 
 
-@users_blueprint.route('/signin', methods=["GET"])
-def signin():
-    return render_template('sign_in.html')
-# def show(login):
-#     login = False
-#     if login = True:
-# return redirect(url_for('home'))
-#         flash("You have successfully logged in!")
-#     else:
-#         flash("Please log in to continue.")
-
-
-@users_blueprint.route('/<username>', methods=["GET"])
-def show(username):
-    pass
+# @users_blueprint.route('/<username>', methods=["GET"])
+# def show(username):
+#     pass
 
 
 @users_blueprint.route('/', methods=["GET"])
