@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -29,11 +30,15 @@ def sign_in():
         flash('Incorrect password! Please try again!')
         return render_template('sessions/new.html')
 
-    session['user_id'] = user.id
+    # session['user_id'] = user.id
+    login_user(user)
     flash(f'Welcome back {user.username}. You are logged in.')
     return redirect(url_for('home'))
 
 
-# @sessions_blueprint.route('/logout')
-# def logout():
-#     session.pop('')
+@sessions_blueprint.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Logged out')
+    return redirect('home')
