@@ -2,7 +2,7 @@ from app import app
 import boto3
 import botocore
 from flask import Blueprint, Flask, render_template, request, redirect, flash, url_for
-from config import S3_KEY, S3_SECRET, S3_BUCKET
+from config import S3_KEY, S3_SECRET, S3_LOCATION
 
 
 s3 = boto3.client(
@@ -28,4 +28,4 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         print("Something Happened: ", e)
         return e
 
-    return f'{app.config["S3_LOCATION"]}{file.filename}'
+    return f'{S3_LOCATION}{file.filename}'
