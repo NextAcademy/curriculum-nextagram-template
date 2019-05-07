@@ -3,7 +3,7 @@
 
 <h1>Edit your info here:</h1>
 
-<form action="{{url_for('users.update', id=user.id)}}" method='post'>
+<form action="{{url_for('users.update', id=current_user.id)}}" method='post'>
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <div class="form-group">
 <label for"">Username:</label>

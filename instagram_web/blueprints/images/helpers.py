@@ -3,6 +3,10 @@ import boto3
 import botocore
 from flask import Blueprint, Flask, render_template, request, redirect, flash, url_for
 from config import S3_KEY, S3_SECRET, S3_LOCATION
+from werkzeug import secure_filename
+
+#allowed extensions#
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 s3 = boto3.client(
@@ -10,6 +14,11 @@ s3 = boto3.client(
     aws_access_key_id=S3_KEY,
     aws_secret_access_key=S3_SECRET
 )
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower()in ALLOWED_EXTENSIONS
 
 
 def upload_file_to_s3(file, bucket_name, acl="public-read"):
