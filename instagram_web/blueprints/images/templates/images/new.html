@@ -1,0 +1,16 @@
+{% extends '_layout.html' %}
+{% block content %}
+
+<h1>Upload a Profile Picture</h1>
+
+<form action="{{url_for('images.upload_file')}}" method="post" enctype="multipart/form-data">
+<input type='hidden' name='csrf_token' value='{{csrf_token()}}' />
+<label for="user_profile_picture">Upload Your Picture</label>
+<br></br>
+<input type="file" name="user_profile_picture">
+<br></br>
+<button type ="submit">Upload</button>
+
+</form>
+
+{% endblock %}
