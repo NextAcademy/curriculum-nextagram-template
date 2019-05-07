@@ -50,9 +50,13 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-          
-          <a class="dropdown-item" href="">Edit Information</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          {% if not current_user.is_authenticated %}
+          <a class="dropdown-item" href="{{url_for('home')}}">Home</a>
+          {% endif %}
+
+          {% if current_user.is_authenticated %}
+          <a class="dropdown-item" href="{{url_for('users.edit', id=current_user.id)}}">Edit Information</a>
+          {% endif %}
 
           {% if not current_user.is_authenticated %}
 
