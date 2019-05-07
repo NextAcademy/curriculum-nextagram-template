@@ -31,6 +31,8 @@ def upload_file():
     if file and allowed_file(file.filename):
         file.filename = secure_filename(file.filename)
         output = upload_file_to_s3(file, S3_BUCKET)
-        return str(output)
+        # return str(output)
+        flash('Successfully uploaded image!')
+        return redirect(url_for('home'))
     else:
         return redirect('/')
