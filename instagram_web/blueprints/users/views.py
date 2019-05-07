@@ -1,16 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask_login import current_user
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
 users_blueprint = Blueprint('users',
                             __name__,
-                            template_folder='templates')
+                            template_folder='templates/users')
 
 
 @users_blueprint.route('/new', methods=['GET'])
 def new():
-    return render_template('users/new.html')
+    return render_template('new.html')
 
 
 @users_blueprint.route('/', methods=['POST'])
@@ -24,7 +25,7 @@ def create():
 
     if not User.validate_password(password):
         flash(f'Password invalid')
-        return render_template('users/new.html')
+        return render_template('new.html')
 
     newuser = User(
         username=user_name,
@@ -38,7 +39,7 @@ def create():
 
     else:
         flash(f'{user_name} is already taken. Pick another')
-        return render_template('users/new.html', errors=newuser.errors)
+        return render_template('new.html', errors=newuser.errors)
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
@@ -54,9 +55,32 @@ def index():
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
-    pass
+    return render_template('edit_user.html', user=User.get_by_id(id))
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    user = User.get_by_id(id)
+
+    if not current_user == user:
+        flash('You are not authorized to do this!')
+        return render_template('edit_user.html', user=user)
+
+    new_user_name = request.form.get('new_user_name')
+    new_email = request.form.get('new_email')
+    new_password = request.form.get('new_password')
+
+# use update because using save will execute the validation in users.py
+    update_user = User.update(
+        username=new_user_name,
+        email=new_email,
+        password=new_password
+    ).where(User.id == id)
+
+    if not update_user.execute():
+        flash(
+            f'Unable to update, please try again')
+        return render_template('edit_user.html', user=user)
+
+    flash('Successfully updated')
+    return redirect(url_for('home'))
