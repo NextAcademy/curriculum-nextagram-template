@@ -4,8 +4,8 @@ import peewee as pw
 
 class User(BaseModel):
     username = pw.CharField(unique=True)
-    password = pw.CharField()
     email = pw.CharField(unique=True)
+    password = pw.CharField()
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
@@ -13,5 +13,7 @@ class User(BaseModel):
 
         if duplicate_username:
             self.errors.append('Username not unique')
-        elif duplicate_email:
+        if duplicate_email:
             self.errors.append('Email not unique')
+        if len(self.password) <= 6:
+            self.errors.append('Password length is too short')
