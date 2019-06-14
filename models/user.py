@@ -16,6 +16,6 @@ class User(BaseModel):
         if duplicate_email:
             self.errors.append('Email not unique')
         if len(self.password) < 8:
-            self.error.append('Password too short')
+            self.errors.append('Password too short')
         else:
             self.password = generate_password_hash(self.password)
