@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash
 from flask import Flask, render_template, request,redirect, url_for, Blueprint,flash
 from models.user import User
 
@@ -14,13 +13,7 @@ def new():
 
 @users_blueprint.route('/new', methods=['POST'])
 def create():
-    password = request.form['password']
-    if len(password) >=8:
-        hashed_password = generate_password_hash(password)
-    else:
-        flash('Password too short')
-        return render_template('users/new.html', username=request.form['username'], email=request.form['email'])
-    u = User(username = request.form['username'], email = request.form['email'], password = hashed_password)
+    u = User(username = request.form['username'], email = request.form['email'], password = request.form['password'])
     if u.save():
         flash('New user created')
         return redirect(url_for('users.new'))

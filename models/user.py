@@ -1,6 +1,6 @@
 from models.base_model import BaseModel
 import peewee as pw
-
+from werkzeug.security import generate_password_hash
 
 class User(BaseModel):
     username = pw.CharField(unique=True)
@@ -15,5 +15,7 @@ class User(BaseModel):
             self.errors.append('Username not unique')
         if duplicate_email:
             self.errors.append('Email not unique')
-        if len(self.password) <= 6:
-            self.errors.append('Password length is too short')
+        if len(self.password) < 8:
+            self.error.append('Password too short')
+        else:
+            self.password = generate_password_hash(self.password)
