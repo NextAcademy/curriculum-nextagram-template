@@ -72,3 +72,7 @@ def update(id):
         flash('Incorrect password')
         return redirect(url_for('users.edit'))
     return render_template('home.html')
+
+@users_blueprint.route('/profileimage', methods=['GET'])
+def dp_edit():
+    return render_template('users/avatarform.html')
