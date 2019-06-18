@@ -31,6 +31,7 @@
 
     {%if current_user.is_authenticated%}
       <h1>Logged in as {{current_user.username}}</h1>
+      <img src={{current_user.profile_image_url}} width='100px'>
       <form aria-hidden="true" action="{{url_for('logout')}}">
         <button type="submit" class="btn btn-danger">Log out</button>
       </form>
