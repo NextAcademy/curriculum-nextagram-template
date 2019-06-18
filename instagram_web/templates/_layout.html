@@ -15,9 +15,10 @@
     {% endassets %}
 
     {% block header %}{% endblock %}
-    <title>{% block title %}{% endblock %}NEXTAGRAM</title>
+    <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
+    <a href="{{url_for('index')}}">Home!</a>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class=flashes>
@@ -27,6 +28,49 @@
         </ul>
       {% endif %}
     {% endwith %}
+
+    {%if current_user.is_authenticated%}
+      <h1>Logged in as {{current_user.username}}</h1>
+      <form aria-hidden="true" action="{{url_for('logout')}}">
+        <button type="submit" class="btn btn-danger">Log out</button>
+      </form>
+    {%else%}
+      <h1>Not logged in</h1>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signInModal">
+        Sign in
+      </button>
+      <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form action="{{url_for('users.signin')}}" method="POST">
+              <input type='hidden' name='csrf_token' value = "{{csrf_token()}}"/>
+              <div class="modal-header">
+                <h5 class="modal-title" id="signInModalLabel">Sign in</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="emailInput">Email</label>
+                  <input name="email" value="{{email}}" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
+                  <small id="emailHelp" class="form-text text-muted">Blep</small>
+                </div>
+                <div class="form-group">
+                  <label for="passwordInput">Password</label>
+                  <input name="password" type="password" class="form-control" id="passwordInput" placeholder="Password">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {%endif%}
+
     {% block content %}
     {% endblock %}
   </body>
