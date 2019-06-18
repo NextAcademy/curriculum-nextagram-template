@@ -1,16 +1,11 @@
 {% extends "_layout.html" %}
 {% block title %}
-  Homepage
+  New Profile Image
 {% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
-<h1>Homepage</h1>
+<h1>New profile image here:</h1>
 
 <a href="{{url_for('users.new')}}">Sign up here</a>
-<h1>{{ id }}</h1>
-
-
-
-<a href="{{url_for('users.edit')}}">Change details here</a>
 {% endblock %}
