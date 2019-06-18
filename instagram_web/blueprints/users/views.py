@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, Blueprint,
 from models.user import User
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user
+from instagram_web.util.helpers import *
+from app import app
 
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
-
 
 @users_blueprint.route('/new', methods=['GET'])
 def new():
@@ -15,9 +16,13 @@ def new():
 
 @users_blueprint.route('/new', methods=['POST'])
 def create():
-    u = User(username = request.form['username'], email = request.form['email'], password = request.form['password'])
+    if len(request.form['password']) < 8:
+        flash('Password too short!')
+        return render_template('users/new.html', username=request.form['username'], email=request.form['email'])
+    u = User(username = request.form['username'], email = request.form['email'], password = generate_password_hash(request.form['password']))
     if u.save():
         flash('New user created')
+        login_user(u)
         return redirect(url_for('users.new'))
     else:
         return render_template('users/new.html', username=request.form['username'], email=request.form['email'])
@@ -58,17 +63,46 @@ def edit():
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
+    user = User.get_or_none(User.id == current_user.id)
     if current_user.id==int(id) and check_password_hash(current_user.password, request.form['password_verification']):
         if request.form['email'] != '':
-            current_user.email = request.form['email']
+            user.email = request.form['email']
             flash('Email successfully changed')
         if request.form['username'] != '':
-            current_user.username = request.form['username']
+            user.username = request.form['username']
             flash('Username successfully changed')
         if request.form['password'] != '':
-            current_user.password = generate_password_hash(request.form['password'])
+            user.password = generate_password_hash(request.form['password'])
             flash('Password successfully changed')
+        user.save()
     else:
         flash('Incorrect password')
         return redirect(url_for('users.edit'))
-    return render_template('home.html')
+    return redirect(url_for('home'))
+
+@users_blueprint.route('/profileimage', methods=['GET'])
+def dp_edit():
+    return render_template('users/avatarform.html')
+
+@users_blueprint.route('/profileimage', methods=['POST'])
+def dp_update():
+    if "user_file" not in request.files:
+        return "No user_file key in request.files"
+
+    file = request.files["user_file"]
+
+    if file.filename == "":
+        return "Please select a file"
+
+	# D.
+    if file and current_user.is_authenticated:
+    # if file and allowed_file(file.filename):
+        # file.filename = secure_filename(file.filename)
+        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
+        current_user.profile_pic = file.filename
+        current_user.save()
+        return redirect(url_for('home'))
+        #http://my-bucket-now.s3.amazonaws.com/Screenshot_168.png
+
+    else:
+        return redirect("/")

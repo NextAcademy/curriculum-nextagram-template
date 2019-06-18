@@ -1,0 +1,19 @@
+{% extends "_layout.html" %}
+{% block title %}
+  Change profile picture
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <h1>Change profile picture</h1>
+
+    <form action="{{url_for('users.dp_edit')}}" method="POST" enctype="multipart/form-data">
+        <input type='hidden' name='csrf_token' value = "{{csrf_token()}}"/>
+        <label for="user_file">Upload Your File</label>
+        <br></br>
+        <input type="file" name="user_file">
+        <br></br>
+        <button type="submit">Upload</button>
+
+    </form>
+{% endblock %}
