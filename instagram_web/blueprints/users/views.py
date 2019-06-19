@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, Blueprint,
 from models.user import User
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import current_user, login_user
-from instagram_web.util.helpers import *
+from instagram_web.util.helpers import upload_file_to_s3
 from app import app
 
 users_blueprint = Blueprint('users',
@@ -29,7 +29,12 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    user = User.get_or_none(User.username == username)
+    return render_template('users/profile.html', user = user)
+
+@users_blueprint.route('/profile', methods=["GET"])
+def own_profile():
+    return render_template('users/profile.html', user = current_user)
 
 @users_blueprint.route('/', methods=['POST'])
 def signin():
@@ -78,7 +83,7 @@ def update(id):
     else:
         flash('Incorrect password')
         return redirect(url_for('users.edit'))
-    return redirect(url_for('home'))
+    return redirect(url_for('users.own_profile'))
 
 @users_blueprint.route('/profileimage', methods=['GET'])
 def dp_edit():
@@ -98,11 +103,35 @@ def dp_update():
     if file and current_user.is_authenticated:
     # if file and allowed_file(file.filename):
         # file.filename = secure_filename(file.filename)
-        output = upload_file_to_s3(file, app.config["S3_BUCKET"])
-        current_user.profile_pic = file.filename
+        filename = "profile." + file.filename.rsplit('.', 1)[1]
+        # output = upload_file_to_s3(file, app.config["S3_BUCKET"], filename=str(current_user.id)+'/'+filename)
+        upload_file_to_s3(file, app.config["S3_BUCKET"], filename=str(current_user.id)+'/'+filename)
+        current_user.profile_pic = filename
         current_user.save()
         return redirect(url_for('home'))
         #http://my-bucket-now.s3.amazonaws.com/Screenshot_168.png
 
     else:
         return redirect("/")
+
+#this method is better off with a checkbox
+# @users_blueprint.route('/update_privacy', methods=['POST'])
+# def toggle_privacy():
+#     if is_private:
+#         current_user.is_private=False
+#     else:
+#         current_user.is_private=True
+#     current_user.save()
+#     return redirect("url_for('show', username = current_user.username)")
+
+@users_blueprint.route('/make_public', methods=['POST'])
+def make_public():
+    current_user.is_private=False
+    current_user.save()
+    return redirect(url_for('users.own_profile'))
+
+@users_blueprint.route('/make_private', methods=['POST'])
+def make_private():
+    current_user.is_private=True
+    current_user.save()
+    return redirect(url_for('users.own_profile'))

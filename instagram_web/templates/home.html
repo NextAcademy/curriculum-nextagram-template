@@ -5,8 +5,10 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<h1>Homepage</h1>
-<a href="{{url_for('users.new')}}">Sign up here</a>
-<br>
-<a href="{{url_for('users.edit')}}">Change details here</a>
+  <h1>Homepage</h1>
+  <a href="{{url_for('users.new')}}">Sign up here</a>
+  <br>
+  <a href="{{url_for('users.edit')}}">Change details here</a>
+  <br>
+  <a href="{{url_for('users.show', username=current_user.username)}}">Profile!</a>
 {% endblock %}

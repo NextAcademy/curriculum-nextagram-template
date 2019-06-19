@@ -1,0 +1,34 @@
+{% extends "_layout.html" %}
+{% block title %}
+  {{user.username}}'s Profile
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    {% if user.id == current_user.id %}
+        <!-- The following only shows when the user logged in is viewing their own profile -->
+        {%if not current_user.is_private%}
+            <form aria-hidden="true" action="{{url_for('users.make_private')}}", method="POST">
+                <input type='hidden' name='csrf_token' value = "{{csrf_token()}}"/>
+                <button type="submit" class="btn btn-danger">Set profile to private</button>
+            </form>
+        {%else%}
+            <form aria-hidden="true" action="{{url_for('users.make_public')}}", method="POST">
+                <input type='hidden' name='csrf_token' value = "{{csrf_token()}}"/>
+                <button type="submit" class="btn btn-danger">Set profile to public</button>
+            </form>
+        {%endif%}
+    {%else%}
+        <!-- follow button goes here -->
+        
+    {%endif%}
+    <h1>{{user.username}}'s Profile</h1>
+    <img src={{user.profile_image_url}} width='300px'>
+    {%if user.id == current_user.id or not user.is_private %}
+        {%for post in user.posts%}
+            <img src={{post.post_url}} width='200px'>
+        {%endfor%}
+    {%else%}
+        <h1>oops private</h1>
+    {%endif%}
+{% endblock %}

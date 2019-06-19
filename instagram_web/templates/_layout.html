@@ -35,6 +35,7 @@
       <form aria-hidden="true" action="{{url_for('logout')}}">
         <button type="submit" class="btn btn-danger">Log out</button>
       </form>
+      <a href="{{url_for('posts.new')}}">Make a new post</a>
     {%else%}
       <h1>Not logged in</h1>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signInModal">

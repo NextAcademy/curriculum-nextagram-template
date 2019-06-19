@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+{% block title %}
+  Make new post
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <h1>Make new post</h1>
+
+    <form action="{{url_for('posts.create')}}" method="POST" enctype="multipart/form-data">
+        <input type='hidden' name='csrf_token' value = "{{csrf_token()}}"/>
+        <label for="newpic">Upload Your File</label>
+        <br></br>
+        <input type="file" name="newpic">
+        <br></br>
+        <button type="submit">Upload</button>
+    </form>
+{% endblock %}

@@ -9,12 +9,13 @@ class User(BaseModel, UserMixin):
     email = pw.CharField(unique=True)
     password = pw.CharField()
     profile_pic = pw.CharField(default="")
+    is_private = pw.BooleanField(default = False)
 
     @hybrid_property
     def profile_image_url(self):
         from app import app
         if self.profile_pic != "":
-            return app.config['S3_LOCATION']+self.profile_pic
+            return app.config['S3_LOCATION']+str(self.id)+'/'+self.profile_pic
         return app.config['S3_LOCATION']+'default_profile_pic.jpg'
 
     def validate(self):
