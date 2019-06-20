@@ -1,0 +1,15 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<h1>Nextagram</h1>
+<h3>Signup Here</h3>
+<form action="{{url_for('create_signup')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <div class="form-group">
+    <label for="user_name"> Upload User Image:</label>
+    <input type="text" name="username" class="form-control" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add Photos</button>
+</form>
+{% endblock %}

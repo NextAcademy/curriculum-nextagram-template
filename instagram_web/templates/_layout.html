@@ -16,9 +16,12 @@
 
     {% block header %}{% endblock %}
     <title>{% block title %}{% endblock %}NEXTAGRAM</title>
+    
   </head>
   <body>
+    <img src="{{current_user.profile_image_url}}" alt="" height="100px" width="100px">
     {% block content %}
+    
     {% endblock %}
   </body>
 </html>

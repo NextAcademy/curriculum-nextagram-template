@@ -1,7 +1,10 @@
+from flask_wtf.csrf import CSRFProtect
+import peeweedbevolve
 import os
 import config
-from flask import Flask
+from flask import Flask, render_template
 from models.base_model import db
+from models.user import User
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -13,6 +16,7 @@ if os.getenv('FLASK_ENV') == 'production':
 else:
     app.config.from_object("config.DevelopmentConfig")
 
+csrf = CSRFProtect(app)
 
 @app.before_request
 def before_request():

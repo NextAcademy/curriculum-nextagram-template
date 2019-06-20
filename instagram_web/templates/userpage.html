@@ -1,0 +1,28 @@
+{% extends "_layout.html" %}
+{% block title %}
+  User Personal Page
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<h1>Hi {{current_user.username}}, Welcome back</h1>
+<h2>Your email {{current_user.email}}</h2>
+
+<form action="{{url_for('edit_username')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+        <label for="user_name">re-edit username:</label>
+        <input type="text" name="name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit Username</button></form>
+
+<h3>Profile Picture</h3>
+<form action="{{url_for('upload_file')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  Upload profile picture: <input type="file" name="picture" class="form-control"><br><br>
+
+
+<button type="submit" class="btn btn-primary">Upload Profile Picture</button></form>
+
+{% endblock %}

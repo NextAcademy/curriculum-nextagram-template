@@ -6,4 +6,18 @@
 {% endblock %}
 {% block content %}
 <h1>Homepage</h1>
+
+
+<h1>Upload Your Files Bro</h1>
+
+<form action="{{url_for('upload_file')}}" method="POST" enctype="multipart/form-data">
+
+    <label for="user_file">Upload Your File</label>
+    <br></br>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="file" name="user_file">
+    <br></br>
+    <button type="submit">Upload</button>
+
+</form>
 {% endblock %}
