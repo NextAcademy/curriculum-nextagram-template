@@ -5,6 +5,7 @@ import config
 from flask import Flask, render_template
 from models.base_model import db
 from models.user import User
+from flask_login import LoginManager
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -29,3 +30,8 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
+
+# Login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
+

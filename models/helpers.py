@@ -1,6 +1,7 @@
 import boto3, botocore
 from config import S3_KEY, S3_SECRET, S3_BUCKET
 import os
+import braintree
 
 
 s3 = boto3.client(
@@ -33,3 +34,21 @@ def upload_file_to_s3(file, bucket_name, acl="public-read"):
         return e
 
     return "{}{}".format(os.environ.get("S3_LOCATION"), file.filename)
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        environment=os.environ.get('BT_ENVIRONMENT'),
+        merchant_id=os.environ.get('BT_MERCHANT_ID'),
+        public_key=os.environ.get('BT_PUBLIC_KEY'),
+        private_key=os.environ.get('BT_PRIVATE_KEY')
+    )
+)
+
+def generate_client_token():
+    return gateway.client_token.generate()
+
+def transact(options):
+    return gateway.transaction.sale(options)
+
+def find_transaction(id):
+    return gateway.transaction.find(id)
