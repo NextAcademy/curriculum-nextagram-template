@@ -40,8 +40,26 @@ class User(BaseModel, UserMixin):
 #         return self.id 
 
 class Images(BaseModel):
-    user = pw.ForeignKeyField(User, backref='images', unique=True)
+    user = pw.ForeignKeyField(User, backref='post')
     image_url = pw.TextField()
+    pictures = pw.CharField(default='')
+
+    # Hybrid properties to make sure user can can access post image url like this: user.profile_image_url
+    @hybrid_property
+    def post_image_url(self):
+        return os.environ.get("S3_LOCATION") + self.image_url
+
+
+class Follows(BaseModel):
+    myfan = pw.ForeignKeyField(User, backref='myidol_id')
+    myidol = pw.ForeignKeyField(User, backref='myfan_id')
+    follow_status = pw.BooleanField(default = False)
+
+class Payments(BaseModel):
+    user = pw.ForeignKeyField(User, backref='donate_user')
+    image = pw.ForeignKeyField(Images, backref="donate_image")
+    amount = pw.DecimalField(default='')
+
 
 
     
