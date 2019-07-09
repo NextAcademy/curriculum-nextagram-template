@@ -12,6 +12,7 @@ import braintree
 from instagram_web.util.google_oauth import oauth
 import config
 from instagram_web.blueprints.login.view import login_blueprint
+from instagram_web.blueprints.signup.view import signup_blueprint
 
 # import boto3, botocore
 import os
@@ -21,6 +22,7 @@ assets.register(bundles)
 
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(login_blueprint, url_prefix="/login")
+app.register_blueprint(signup_blueprint, url_prefix="/signup")
 
 # # Login manager
 # login_manager = LoginManager()
@@ -31,40 +33,49 @@ app.register_blueprint(login_blueprint, url_prefix="/login")
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+# user profile page
+@app.route("/userpage", methods=["GET"])
+def main_userpage():
+    # user = User.get_by_id(user_id)
+    return render_template("user_profile.html")
 
-@app.route("/", methods=["GET"])
+# feed wall
+@app.route("/feed", methods=["GET"])
 def home():
-    return render_template('home.html')
+    if (current_user.is_authenticated):
+        feed_images = Images.select().where(Images.user.in_(current_user.following())).order_by(Images.created_at.desc())
+        return render_template('home.html', feed_images = feed_images)
+    else:
+        return f'not login'
+
+# @app.route("/signup", methods=["GET"])
+# def signup():
+#     return render_template("signup.html")
 
 
-@app.route("/signup", methods=["GET"])
-def signup():
-    return render_template("signup.html")
+# @app.route("/signup", methods=["POST"])
+# def create_signup():
+#     username = request.form.get('username') 
+#     password=request.form.get('password') 
+#     email=request.form.get('email')
+#     hashed_password = generate_password_hash(password)
 
-
-@app.route("/signup", methods=["POST"])
-def create_signup():
-    username = request.form.get('username') 
-    password=request.form.get('password') 
-    email=request.form.get('email')
-    hashed_password = generate_password_hash(password)
-
-    name = User(
-        username = username,
-        email = email,
-        password = hashed_password
-    )
+#     name = User(
+#         username = username,
+#         email = email,
+#         password = hashed_password
+#     )
     
-    if name.save():
-        flash(f'Welcome {username}')
-        # session["user_id"] = user.id
+#     if name.save():
+#         flash(f'Welcome {username}')
+#         # session["user_id"] = user.id
 
-    # hashed_password = generate_password_hash(request.form.get('password'))
-    # name = User(username=request.form.get('username'), password=request.form.get(
-    #     'password'), email=request.form.get('email'))
+#     # hashed_password = generate_password_hash(request.form.get('password'))
+#     # name = User(username=request.form.get('username'), password=request.form.get(
+#     #     'password'), email=request.form.get('email'))
 
-    name.save()
-    return redirect(url_for('signup'))
+#     name.save()
+#     return redirect(url_for('signup'))
 
 
 # @app.route("/signin")
@@ -304,7 +315,7 @@ def show_checkout(transaction_id):
     else:
         result = {
             'header': 'Transaction Failed',
-            'icon': 'fail',
+            'icon': 'fail', 
             'message': 'Your test transaction has a status of ' + transaction.status + '. See the Braintree API response and try again.'
         }
 

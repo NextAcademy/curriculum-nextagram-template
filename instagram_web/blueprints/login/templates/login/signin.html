@@ -5,7 +5,7 @@
   <h3>You are logged in {{ current_user.email }}</h3>
 {% else %}
   <h3>Signin Here</h3>
-  <form action="{{url_for('login.signin')}}" method="POST">
+  <form action="{{ url_for('login.signin') }}" method="POST">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="form-group">
       <label for="user_name"> Username:</label>

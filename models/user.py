@@ -1,7 +1,7 @@
 from models.base_model import BaseModel
 import peewee as pw
 from werkzeug.security import generate_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from playhouse.postgres_ext import PostgresqlExtDatabase
 from sqlalchemy.ext.hybrid import hybrid_property
 import os
@@ -15,6 +15,12 @@ class User(BaseModel, UserMixin):
 
     def hash_password(self):
         self.password =  generate_password_hash(self.password)
+
+    def followers(self):
+        return User.select().join(Follows, on=Follows.myfan).where(Follows.myidol == self)
+
+    def following(self):
+        return User.select().join(Follows, on=Follows.myidol).where(Follows.myfan == self)
 
 
     # Hybrid properties to make sure user can can access profile image url like this: user.profile_image_url

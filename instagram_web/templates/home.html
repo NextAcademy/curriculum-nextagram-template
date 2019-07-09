@@ -5,6 +5,11 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<h1>Homepage</h1>
+<div class="container-fluid home">
+<h1>News Feed</h1><br>
 
+{% for img in feed_images %}
+ <img src="{{img.post_image_url}}" alt="" height="100px" width="100px"><br>
+</div>
+{% endfor %}
 {% endblock %}

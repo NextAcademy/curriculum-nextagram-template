@@ -1,0 +1,28 @@
+{% extends "_layout.html" %}
+{% block title %}
+  User Personal Page
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div>
+      <form action="{{url_for('upload_postfile')}}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      Upload profile picture : <input type="file" name="user_file">
+      <button type="submit" class="btn btn-primary">Upload</button></form>
+  </div><br><br>
+    
+  <div>
+      {% for i in current_user.post %}
+        <div class="img" width="0px">
+          <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg"  class="image">
+          <div class="middle">
+            <input type="submit" value="donate">
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

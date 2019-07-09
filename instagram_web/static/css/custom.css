@@ -4,5 +4,51 @@ body {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
+    color: white;
   }
   
+  .home{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img{
+    position: relative;
+    display:inline-block
+  }
+
+  .img .image{
+    opacity:1;
+    transition: 0.5s ease;
+    backface-visibility: hidden;
+    margin: 10px;
+    height: 200px;
+    width:200px;
+  }
+
+  .img .middle{
+    opacity: 0;
+    position:absolute;
+    transition: 0.5s ease; 
+    transform: translate(50%, -150%);
+    text-align: center;
+  }
+
+  .img:hover .image{
+    opacity: 0.5;
+  }
+
+  .img:hover .middle{
+    opacity: 1;
+  }
+
+  
+
+  
+
+  
+
+
+
+

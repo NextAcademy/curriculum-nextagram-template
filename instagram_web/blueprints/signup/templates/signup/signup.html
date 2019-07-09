@@ -3,7 +3,7 @@
 
 <h1>Nextagram</h1>
 <h3>Signup Here</h3>
-<form action="{{url_for('create_signup')}}" method="POST">
+<form action="{{ url_for('create_signup') }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <div class="form-group">
     <label for="user_name"> Username:</label>
@@ -20,6 +20,6 @@
     <input type="text" name="email" class="form-control" />
   </div>
 
-  <button type="submit" class="btn btn-primary">Add a Store</button>
+  <button type="submit" class="btn btn-primary">Signup Here</button>
 </form>
 {% endblock %}
