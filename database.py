@@ -12,7 +12,7 @@ def parse_db_url(database_url):
     }
 
 def return_db():
-    db_config = parse_db_url(os.environ['DATABASE_URL'])
+    db_config = parse_db_url(os.getenv('DATABASE_URL'))
 
     if os.getenv('MIGRATION', '0') == '1':
         from playhouse.postgres_ext import PostgresqlExtDatabase
