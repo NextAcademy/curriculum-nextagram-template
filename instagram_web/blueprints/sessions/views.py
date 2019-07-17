@@ -7,3 +7,8 @@ sessions_blueprint = Blueprint(
 @sessions_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('new.html')
+
+
+@sessions_blueprint.route('/', methods=['POST'])
+def create():
+    pass

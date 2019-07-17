@@ -7,3 +7,12 @@ class User(BaseModel):
     full_name = pw.CharField(null=False)
     username = pw.CharField(unique=True, null=False)
     password = pw.CharField(null=False)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False

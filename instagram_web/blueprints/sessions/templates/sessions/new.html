@@ -5,7 +5,7 @@ block content %}
     <div class="col-4">
       <div class="card p-5">
         <h1 id="main-title" class="text-center">Nextagram</h1>
-        <form action="" method="post">
+        <form action="{{ url_for('sessions.create') }}" method="post">
           <input
             class="form-control bg-light mt-2"
             type="text"
