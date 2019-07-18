@@ -1,0 +1,48 @@
+{% extends '_layout.html' %} {% block title %} Login &#8226; {% endblock %} {%
+block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center mt-3">
+    <div class="col-4">
+      <div class="card p-5">
+        <h1 id="main-title" class="text-center">Nextagram</h1>
+        <form action="{{ url_for('sessions.create') }}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input
+            class="form-control bg-light mt-2"
+            type="text"
+            name="email"
+            placeholder="Enter Email"
+          />
+          <input
+            class="form-control bg-light mt-1"
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+          />
+          <button class="btn btn-primary w-100 mt-3">Log In</button>
+        </form>
+        <div class="row mt-2">
+          <div class="col-5">
+            <hr />
+          </div>
+          <div class="col-2">
+            <h6 class="text-center text-muted mt-2">Or</h6>
+          </div>
+          <div class="col-5">
+            <hr />
+          </div>
+        </div>
+        <a href="" class="text-center mt-2"
+          ><i class="fab fa-facebook-square"></i> Log in with Facebook</a
+        >
+        <a href="" class="text-center mt-2"><small>Forgot password?</small></a>
+      </div>
+      <div class="card p-2 mt-2">
+        <p class="text-center mt-2">
+          Don't have an account? <a href="{{ url_for('home') }}">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
