@@ -6,6 +6,7 @@ block content %}
       <div class="card p-5">
         <h1 id="main-title" class="text-center">Nextagram</h1>
         <form action="{{ url_for('sessions.create') }}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
           <input
             class="form-control bg-light mt-2"
             type="text"
