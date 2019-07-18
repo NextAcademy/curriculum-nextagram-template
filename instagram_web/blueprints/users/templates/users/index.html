@@ -1,7 +1,7 @@
 {% from "macros/navbar.html" import navbar with context %}
 {{ navbar() }}
 {% extends '_layout.html' %} {% block content %}
-<div class="container mt-5 h-75">
+<div class="container mt-5 h-100">
   <div class="row justify-content-center h-100">
     <div class="col-7 h-100" style="overflow-y: scroll;">
       <div class="card">
@@ -30,9 +30,38 @@
           </p>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header bg-white">
+          <div class="d-flex flex-row w-100">
+            <img
+              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+              alt="placeholder"
+              class="border border-light rounded-circle"
+              width="40"
+              height="40"
+            />
+            <h6 class="ml-3 my-auto">Username</h6>
+            <h3 class="ml-auto">...</h3>
+          </div>
+        </div>
+        <img
+          src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+          class="card-img-top"
+          alt="placeholder"
+        />
+        <div class="card-body">
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="col-3 sticky-top">
-      <div class="d-flex flex-row">
+    <div class="col-3">
+      <div
+        class="d-flex flex-row"
+        style="position: sticky!important; top:10px;"
+      >
         <img
           src="{{url_for('static', filename='images/profile-placeholder.png')}}"
           alt="placeholder"
