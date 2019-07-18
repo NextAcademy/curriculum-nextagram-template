@@ -31,8 +31,8 @@ def return_db():
 
         return PooledPostgresqlExtDatabase(
             db_config['database'],
-            max_connections=os.getenv('DB_POOL', 10),
-            stale_timeout=os.getenv('DB_TIMEOUT', 300),  # 5 minutes.
+            max_connections=os.getenv('DB_POOL', 5),
+            stale_timeout=os.getenv('DB_TIMEOUT', 3000),  # 5 minutes.
             user=db_config.get('user', None),
             password=db_config.get('password', None),
             host=db_config.get('host', 'localhost'),

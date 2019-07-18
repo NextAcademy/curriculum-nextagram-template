@@ -3,7 +3,7 @@
 {% extends '_layout.html' %} {% block content %}
 <div class="container mt-5 h-100">
   <div class="row justify-content-center h-100">
-    <div class="col-7 h-100" style="overflow-y: scroll;">
+    <div class="col-7">
       <div class="card">
         <div class="card-header bg-white">
           <div class="d-flex flex-row w-100">
@@ -57,21 +57,30 @@
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div
-        class="d-flex flex-row"
-        style="position: sticky!important; top:10px;"
-      >
-        <img
-          src="{{url_for('static', filename='images/profile-placeholder.png')}}"
-          alt="placeholder"
-          class="border border-light rounded-circle"
-          width="50"
-          height="50"
-        />
-        <div id="news-feed-profile-card" class="ml-3 my-auto">
-          <h6>Username</h6>
-          <small class="text-muted">Full Name</small>
+    <div class="col-4">
+      <div style="position: sticky!important; top:10px;">
+        <div class="d-flex flex-row">
+          <img
+            src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+            alt="placeholder"
+            class="border border-light rounded-circle"
+            width="50"
+            height="50"
+          />
+          <div id="news-feed-profile-card" class="ml-3 my-auto">
+            <h6>Username</h6>
+            <small class="text-muted">Full Name</small>
+          </div>
+        </div>
+        <div class="card mt-2 p-3">
+          <h6 class="text-muted">
+            Stories
+          </h6>
+        </div>
+        <div class="card mt-2 p-3">
+          <h6 class="text-muted">
+            Suggestions For You
+          </h6>
         </div>
       </div>
     </div>
