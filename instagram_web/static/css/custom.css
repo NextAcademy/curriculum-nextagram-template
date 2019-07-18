@@ -38,3 +38,7 @@ body {
   color: lightgrey;
   font-size: 13px;
 }
+
+#news-feed-profile-card {
+  line-height: 0.25rem;
+}
