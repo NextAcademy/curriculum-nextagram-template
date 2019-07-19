@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session, escape
 
 from models.user import User
 
@@ -21,8 +21,6 @@ def create():
     username = request.form.get('username')
     password = request.form.get('password')
 
-
-
     user = User(first_name = first_name, last_name = last_name, email = email, username = username, password = password)
 
     if user.save():
@@ -38,7 +36,9 @@ def show(username):
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return "USERS"
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return "You are not logged in"
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])

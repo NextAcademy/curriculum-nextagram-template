@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
 from werkzeug.security import check_password_hash
+from flask_login import login_user
 
 
 sessions_blueprint = Blueprint('sessions',
@@ -20,7 +21,7 @@ def create():
     user = User.get_or_none(User.username == username)
    
     if not user:
-        flash("Username does not exist", "warning")
+        flash("Username does not exist", "danger")
         return redirect(url_for('sessions.new'))
     
     check_password = check_password_hash(user.password, password)
@@ -29,8 +30,9 @@ def create():
         flash("Incorrect password", "warning")
         return redirect(url_for('sessions.new'))
 
+    login_user(user)
     flash("logged in", "success")
-    return redirect(url_for('sessions.new'))
+    return redirect(url_for('index'))
 
     
 
