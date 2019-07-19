@@ -1,3 +1,53 @@
-{% extends '_layout.html' %} {% block content %}
-<h1>Users#profile</h1>
+{% from "macros/navbar.html" import navbar with context %}
+{{ navbar() }}
+{% extends '_layout.html' %} {% block title %} Edit Profile &#8226; {% endblock
+%} {% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center h-100">
+    <div class="col-3 card p-0">
+      <div class="list-group">
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+          style="border-left: 2px solid black!important;"
+        >
+          Edit Profile
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+        >
+          Change Password
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+        >
+          Authorized Applications
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+        >
+          Email and SMS
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+        >
+          Manage Contacts
+        </button>
+        <button
+          type="button"
+          class="list-group-item list-group-item-action border-0"
+        >
+          Privacy and Security
+        </button>
+      </div>
+    </div>
+    <div class="col-7 card">
+      <h1>Edit</h1>
+    </div>
+  </div>
+</div>
 {% endblock %}

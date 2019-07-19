@@ -38,7 +38,13 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    user = User.get_or_none(User.username == username)
+
+    if not user:
+        flash('No such user found', 'warning')
+        return redirect(url_for('users.index'))
+
+    return render_template('users/show.html', user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -54,7 +60,7 @@ def edit(id):
     if not user:
         flash('No such user exists!', 'warning')
         return redirect(url_for('users.index'))
-    return render_template('edit.html', user=user)
+    return render_template('users/edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
