@@ -1,1 +1,45 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+{% block content %}
+<h1>User sign up</h1>
+
+    {% for error in errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+
+<form action="{{ url_for('users.create') }}" method="POST">
+    <div>
+        <label for="first_name">
+            First name:
+        </label>
+        <input type="text" name="first_name" />
+    </div>
+    <div>
+        <label for="last_name">
+            Last name:
+        </label>
+        <input type="text" name="last_name" />
+    </div>
+    <div>
+        <label for="email">
+            Email:
+        </label>
+        <input type="email" name="email" />
+    </div>
+    <div>
+        <label for="username">
+            Username:
+        </label>
+        <input type="text" name="username" />
+    </div>
+    <div>
+        <label for="password">
+            password:
+        </label>
+        <input type="password" name="password" />
+    </div>
+    <div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{% endblock %}
