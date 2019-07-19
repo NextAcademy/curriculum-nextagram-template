@@ -1,5 +1,103 @@
 {% from "macros/navbar.html" import navbar with context %}
 {{ navbar() }}
 {% extends '_layout.html' %} {% block content %}
-<h1>News Feed</h1>
+<div class="container mt-5 h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-7">
+      {% for x in range(1,10) %}
+      <div class="card mt-3">
+        <div class="card-header bg-white">
+          <div class="d-flex flex-row w-100">
+            <img
+              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+              alt="placeholder"
+              class="border border-light rounded-circle"
+              width="40"
+              height="40"
+            />
+            <h6 class="ml-3 my-auto">Username</h6>
+            <h3 class="ml-auto">...</h3>
+          </div>
+        </div>
+        <img
+          src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+          class="card-img-top"
+          alt="placeholder"
+        />
+        <div class="card-body">
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-4">
+      <div style="position: sticky!important; top:10px;">
+        <div class="d-flex flex-row">
+          <img
+            src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+            alt="placeholder"
+            class="border border-light rounded-circle"
+            width="50"
+            height="50"
+          />
+          <div id="news-feed-profile-card" class="ml-3 my-auto">
+            <h6>Username</h6>
+            <small class="text-muted">Full Name</small>
+          </div>
+        </div>
+        <div class="card mt-2" style="height: 35%;">
+          <div class="card-header bg-white border-white">
+            <p class="text-muted my-auto">
+              Stories
+            </p>
+          </div>
+          <div class="card-body" style="overflow-y: scroll;">
+            {% for x in range(1,10) %}
+            <div class="d-flex flex-row mt-2">
+              <img
+                src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                alt="placeholder"
+                class="border border-light rounded-circle"
+                width="40"
+                height="40"
+              />
+              <div class="ml-3 my-auto" style="line-height: 0.25rem;">
+                <p>Username</p>
+                <small class="text-muted">10 Hours Ago</small>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="card mt-2" style="height: 35%;">
+          <div class="card-header bg-white border-white">
+            <p class="text-muted my-auto">
+              Suggestions For You
+            </p>
+          </div>
+          <div class="card-body" style="overflow-y: scroll;">
+            {% for x in range(1,10) %}
+            <div class="d-flex flex-row mt-2">
+              <img
+                src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                alt="placeholder"
+                class="border border-light rounded-circle"
+                width="40"
+                height="40"
+              />
+              <div class="ml-3 my-auto" style="line-height: 0.25rem;">
+                <p>Username</p>
+                <small class="text-muted">10 Hours Ago</small>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
