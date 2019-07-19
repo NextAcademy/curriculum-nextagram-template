@@ -48,8 +48,13 @@ def index():
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
-    pass
+    user = User.get_or_none(User.id == id)
+    if not user:
+        flash('No such user exists!', 'warning')
+        return redirect(url_for('users.index'))
+    return render_template('edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
