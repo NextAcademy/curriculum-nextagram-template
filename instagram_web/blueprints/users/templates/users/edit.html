@@ -48,17 +48,123 @@
     <div class="col-7 card">
       <div class="row justify-content-center mt-4">
         <div class="col-10">
-          <div class="d-flex flex-row">
-            <img
-              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
-              alt="profile"
-              width="40"
-              height="40"
-              class="border rounded-circle"
-            />
+          <div class="row">
+            <div class="col-2">
+              <img
+                src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                alt="profile"
+                width="40"
+                height="40"
+                class="border rounded-circle"
+              />
+            </div>
+            <div class="col-8">
+              <div id="small-line-height">
+                <h5>{{ user.username }}</h5>
+                <small><a href="#">Change Profile Photo</a></small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <form class="mt-4">
+        <div class="form-group row justify-content-center">
+          <label for="full_name" class="col-sm-2 col-form-label text-right"
+            >Name</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="full_name"
+              value="{{ user.full_name }}"
+            />
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="username" class="col-sm-2 col-form-label text-right"
+            >Username</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="username"
+              value="{{ user.username }}"
+            />
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="website" class="col-sm-2 col-form-label text-right"
+            >Website</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="website"
+              value=""
+            />
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="bio" class="col-sm-2 col-form-label text-right"
+            >Bio</label
+          >
+          <div class="col-sm-8">
+            <textarea
+              class="form-control form-control-sm"
+              name="bio"
+              value=""
+            ></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
+            <h6 class="text-muted">Private Information</h6>
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="email" class="col-sm-2 col-form-label text-right"
+            >Email</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="email"
+              class="form-control form-control-sm"
+              name="email"
+              value="{{ user.email }}"
+            />
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="phone_number" class="col-sm-2 col-form-label text-right"
+            >Phone Number</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="phone_number"
+              value="{{ user.phone_number }}"
+            />
+          </div>
+        </div>
+        <div class="form-group row justify-content-center">
+          <label for="inputPassword" class="col-sm-2 col-form-label text-right"
+            >Gender</label
+          >
+          <div class="col-sm-8">
+            <small>Male</small>
+          </div>
+        </div>
+        <div class="d-flex flex-row w-75 mx-auto d-block mt-4">
+          <button class="btn btn-primary btn-sm">Submit</button>
+          <a class="my-auto ml-5" href="#">Temporarily Disable My Account</a>
+        </div>
+      </form>
     </div>
   </div>
 </div>
