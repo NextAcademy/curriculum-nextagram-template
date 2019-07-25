@@ -7,7 +7,7 @@
   <div class="row justify-content-center">
     <div class="col-3">
       <img
-        src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+        src="{{ user.profile_url }}"
         alt="profile"
         class="w-75 mx-auto d-block rounded-circle border"
       />
