@@ -1,6 +1,8 @@
 {% from "macros/navbar.html" import navbar with context %}
 {{ navbar() }}
-{% extends '_layout.html' %} {% block content %}
+{% extends '_layout.html' %} {% block title %} {{ user.full_name }} (@{{
+  user.username
+}}) &#8226; {% endblock %} {% block content %}
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-3">
@@ -29,10 +31,7 @@
         </div>
         <div class="mt-3 w-50">
           <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus,
-            possimus sequi eos veritatis laudantium, labore cum reprehenderit
-            quae doloremque illo sunt dolorem vero inventore sapiente sed qui
-            nisi modi et!
+            {{ user.bio }}
           </p>
         </div>
       </div>
