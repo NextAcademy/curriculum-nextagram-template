@@ -3,9 +3,10 @@ from flask_login import current_user, login_required
 from instagram_web.util.helpers import upload_file_to_s3
 from werkzeug.utils import secure_filename
 from models.user import User
+from models.image import Image
 
 images_blueprint = Blueprint(
-    'images', __name__, template_folder='templates/images'
+    'images', __name__, template_folder='templates'
 )
 
 
@@ -39,7 +40,7 @@ def create_profile():
 @images_blueprint.route('/new', methods=['GET'])
 @login_required
 def new():
-    return render_template('new.html')
+    return render_template('images/new.html')
 
 
 @images_blueprint.route('/upload', methods=['POST'])

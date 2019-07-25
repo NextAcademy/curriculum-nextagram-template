@@ -38,5 +38,26 @@
     </div>
   </div>
   <hr />
+  <div class="mt-3">
+    <a
+      href="{{ url_for('images.new') }}"
+      class="w-50 btn btn-light mx-auto d-block"
+    >
+      Create a Post
+    </a>
+    {% if not user.has_posts %}
+    <h1 class="text-muted text-center">No Posts To Show</h1>
+    {% else %}
+    <div class="container mt-4">
+      <div class="d-flex flex-row justify-content-center">
+        {% for image in user.images %}
+        <div class="card w-25 p-2">
+          <img class="w-100" src="{{ image.image_url }}" alt="no image" />
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

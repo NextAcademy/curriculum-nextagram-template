@@ -1,0 +1,29 @@
+{% from "macros/navbar.html" import navbar with context %}
+{{ navbar() }}
+{% extends '_layout.html' %} {% block title %} Add Post &#8226; {% endblock %}
+{% block content %}
+<div class="container">
+  <div class="card w-50 mx-auto d-block mt-4 h-75 p-3">
+    <h5 class="text-center">Create a Post</h5>
+    <form
+      action="{{ url_for('images.create_image') }}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="custom-file w-75 mx-auto d-block mt-4">
+        <input type="file" class="custom-file-input" name="image_file" />
+        <label class="custom-file-label" for="image_file">Choose file...</label>
+      </div>
+      <div class="form-group mt-4 w-75 mx-auto">
+        <textarea
+          name="caption"
+          class="form-control"
+          placeholder="Enter Caption..."
+        ></textarea>
+      </div>
+      <button class="btn btn-light mx-auto d-block w-50">Upload</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

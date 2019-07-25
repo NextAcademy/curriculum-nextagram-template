@@ -49,3 +49,9 @@ class User(BaseModel):
     @hybrid_property
     def profile_url(self):
         return f"{S3_HOST_URL}/{self.profile_picture}"
+
+    @hybrid_property
+    def has_posts(self):
+        from models.image import Image
+        images = Image.select().where(Image.user_id == self.id)
+        return True if len(images) > 0 else False
