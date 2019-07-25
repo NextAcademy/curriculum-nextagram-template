@@ -41,8 +41,8 @@
       <li class="nav-item">
         <a class="nav-link" href="#"><h3 class="my-auto"><i class="far fa-heart text-dark"></i></h3></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#"><h3 class="my-auto"><i class="far fa-user text-dark"></i></h3></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('users.show', username=current_user.username)}}"><h3 class="my-auto"><i class="far fa-user text-dark"></i></h3></a>
       </li>
     </ul>
   </div>
