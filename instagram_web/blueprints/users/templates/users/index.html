@@ -38,7 +38,7 @@
         <div class="d-flex flex-row">
           <a href="{{url_for('users.show', username=current_user.username)}}">
             <img
-              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+              src="{{ current_user.profile_url }}"
               alt="placeholder"
               class="border border-light rounded-circle"
               width="50"
