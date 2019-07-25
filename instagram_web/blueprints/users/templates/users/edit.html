@@ -49,19 +49,23 @@
       <div class="row justify-content-center mt-4">
         <div class="col-10">
           <div class="row">
-            <div class="col-2">
-              <img
-                src="{{url_for('static', filename='images/profile-placeholder.png')}}"
-                alt="profile"
-                width="40"
-                height="40"
-                class="border rounded-circle"
-              />
-            </div>
-            <div class="col-8">
-              <div id="small-line-height">
-                <h5>{{ user.username }}</h5>
-                <small><a href="#">Change Profile Photo</a></small>
+            <div class="col-sm-8">
+              <div class="row justify-content-center">
+                <div class="col-2">
+                  <img
+                    src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                    alt="profile"
+                    width="40"
+                    height="40"
+                    class="border rounded-circle"
+                  />
+                </div>
+                <div class="col-8">
+                  <div id="small-line-height">
+                    <h5>{{ user.username }}</h5>
+                    <small><a href="#">Change Profile Photo</a></small>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

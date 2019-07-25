@@ -46,3 +46,7 @@ body {
 #small-line-height {
   line-height: 0.25rem;
 }
+
+button:focus {
+  outline: 0 !important;
+}
