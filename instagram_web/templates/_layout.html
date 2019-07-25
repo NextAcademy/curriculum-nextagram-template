@@ -1,43 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link
-      rel="shortcut icon"
-      href="{{ url_for('static', filename='images/instagram.png') }}"
-    />
-
-    <script src="https://kit.fontawesome.com/a0300900c9.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
     {% assets "home_css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} {% assets "home_js" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% block header %}{% endblock %}
-    <title>{% block title %}{% endblock %}Nextagram</title>
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+
+    {% assets "home_js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% block header %}{% endblock %}
+    <title>{% block title %}{% endblock %}NEXTAGRAM</title>
   </head>
   <body>
-    {% with messages = get_flashed_messages(with_categories=True) %} {% if
-    messages %} {% for category, message in messages %}
-    <div
-      class="alert alert-{{ category }} alert-dismissible fade show"
-      role="alert"
-    >
-      {{ message }}
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endfor %} {% endif %} {% endwith %} {% block content %} {% endblock %}
+    {% block content %}
+    {% endblock %}
   </body>
 </html>
