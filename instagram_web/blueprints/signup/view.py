@@ -4,18 +4,16 @@ from flask import Blueprint
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
 
-# signup_blueprint = Blueprint('signup', __name__,template_folder='template/signup')
-
 signup_blueprint = Blueprint('signup',
                             __name__,
                             template_folder='templates/signup')
 
-@app.route("/", methods=["GET"])
+@signup_blueprint.route("/", methods=["GET"])
 def signup():
     return render_template("signup.html")
 
 
-@app.route("/signup", methods=["POST"])
+@signup_blueprint.route("/", methods=["POST", "GET"])
 def create_signup():
     username = request.form.get('username') 
     password=request.form.get('password') 
@@ -37,7 +35,8 @@ def create_signup():
     #     'password'), email=request.form.get('email'))
 
     name.save()
-    return redirect(url_for('home'))
+    # return redirect(url_for('home'))
+    return render_template("home.html")
     # return f'signin'
 
   

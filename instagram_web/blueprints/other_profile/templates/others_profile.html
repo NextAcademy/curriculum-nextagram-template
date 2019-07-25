@@ -1,0 +1,56 @@
+{% extends "_layout.html" %}
+{% block title %}
+  User Personal Page
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<!-- <img src="{{user.profile_image_url}}" alt="" height="100px" width="100px"> -->
+<div class="container">
+  <div class="row">
+  <div class="col text-right">
+    {% if user.picture == "" %}
+      <img src="http://static.digg.com/static/fe/4bef2d/images/profiles/no-profile-img_lg.png" alt="" height="100px" width="100px" class="other-profile-img">
+    {% else %}
+      <img src="{{user.profile_image_url}}" alt="" height="100px" width="100px" class="other-profile-img">
+      {% endif %}
+      <!-- <img src="https://www.wikihow.com/images/thumb/0/0c/Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg/aid470617-v4-728px-Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg" alt="" height="100px" width="100px" class="other-profile-img"> -->
+  </div>
+
+  <div class="col">
+      <h2> {{user.username}} </h2>
+
+      {% if follows == current_user.following() %}
+      <form action="{{url_for('follow', username=user.username)}}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <input class="btn btn-primary" type="submit" value="Follow"/>
+      </form>
+      {% else %}
+      <img src="https://i0.wp.com/thumbs.dreamstime.com/b/tick-like-button-blue-108617940.jpg?w=600" alt="" height="40px" width="40px" class="border border-dark rounded-circle"><br>
+      {% endif %}
+       
+      <span>Follower: {{user.followers()|length}}</span><br>
+      <span>Following: {{user.following()|length}}</span>
+  </div>
+</div><br><br><br>
+
+  <div class="row" style="justify-content: center">
+      <h2>~~The Post~~</h2>
+  </div><br><br>
+
+  <div class="row">
+      {% for i in user.post %}
+      <div class="img" width="0px">
+        <img src="{{i.post_image_url}}" alt="" height="200px" width="200px" class="image"><br>
+        <!-- <img src="https://www.wikihow.com/images/thumb/0/0c/Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg/aid470617-v4-728px-Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg" alt="" height="200px" width="200px" class="image"> -->
+        <div class="middle">
+          <form action="{{url_for('donate')}}" method="GET">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="submit" value="donate" class="btn btn-secondary">
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}

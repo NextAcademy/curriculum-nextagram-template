@@ -46,7 +46,7 @@ class User(BaseModel, UserMixin):
 #         return self.id 
 
 class Images(BaseModel):
-    user = pw.ForeignKeyField(User, backref='post')
+    user = pw.ForeignKeyField(User, backref='posted')
     image_url = pw.TextField()
     pictures = pw.CharField(default='')
 

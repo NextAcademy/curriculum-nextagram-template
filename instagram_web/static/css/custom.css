@@ -1,10 +1,65 @@
 body {
-    background: url('https://mdbootstrap.com/img/Photos/Others/images/91.jpg') no-repeat center center fixed;
+    background: url('https://external-preview.redd.it/RfwNrAe_r303Zh_vkEEUFzvikxlaBQFuJTBeZyK6z74.jpg?auto=webp&s=c04302c821264a13b1c72694c2fadd50596b7467') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
     color: white;
+  }
+
+  .other-profile-img{
+    margin: 10px;
+  }
+
+  .search{
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+
+  .search-input{
+    width: 100%;
+    border: 3px solid  #40E0D0;
+    border-right: none;
+    padding: 5px;
+    height: 40px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+  }
+
+  .search-btn{
+    width: 40px;
+    height: 40px;
+    border: 1px solid #40E0D0;
+    background:  #40E0D0;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  .upload-btn{
+    border: solid 1px #40E0D0;
+    background-color: transparent;
+    color: white;
+  }
+
+  .main-btn{
+    border:none;
+    background: none;
+    color:	#40E0D0;
+    margin: 5px
+  }
+
+  .logout-btn{
+    background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    margin:5px;
   }
   
   .home{

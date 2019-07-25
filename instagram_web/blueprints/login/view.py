@@ -22,12 +22,12 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.get_or_none(User.id == user_id)
 
-@login_blueprint.route("/signin", methods=["POST", "GET"])
+@login_blueprint.route("/", methods=["POST","GET"])
 def signin():
-    # breakpoint()
+        # breakpoint()
         username = request.form.get('username')
         password_to_check = request.form.get('password')
-
+ 
         user = User.get_or_none(User.username == username)
 
         if not user:
@@ -42,8 +42,8 @@ def signin():
 
         login_user(user)
         # flash(f"Welcome back {user.username}!")
-        # return render_template('userpage.html')
-        return redirect(url_for('main_userpage'))
+        return render_template("home.html")
+        # return redirect(url_for('home'))
 
 
 

@@ -13,6 +13,9 @@ from instagram_web.util.google_oauth import oauth
 import config
 from instagram_web.blueprints.login.view import login_blueprint
 from instagram_web.blueprints.signup.view import signup_blueprint
+from instagram_web.blueprints.home.view import home_blueprint
+from instagram_web.blueprints.my_profile.view import myprofile_blueprint
+from instagram_web.blueprints.other_profile.view import otherprofile_blueprint
 
 # import boto3, botocore
 import os
@@ -20,9 +23,12 @@ import os
 assets = Environment(app)
 assets.register(bundles)
 
-app.register_blueprint(users_blueprint, url_prefix="/users")
-app.register_blueprint(login_blueprint, url_prefix="/login")
-app.register_blueprint(signup_blueprint, url_prefix="/signup")
+app.register_blueprint(users_blueprint, url_prefix='/users')
+app.register_blueprint(login_blueprint, url_prefix='/login')
+app.register_blueprint(signup_blueprint, url_prefix='/signup')
+app.register_blueprint(home_blueprint, url_prefix='/home')
+app.register_blueprint(myprofile_blueprint, url_prefix='/my_profile')
+app.register_blueprint(otherprofile_blueprint,url_prefix='/other_profile')
 
 # # Login manager
 # login_manager = LoginManager()
@@ -40,13 +46,13 @@ def main_userpage():
     return render_template("user_profile.html")
 
 # feed wall
-@app.route("/feed", methods=["GET"])
-def home():
-    if (current_user.is_authenticated):
-        feed_images = Images.select().where(Images.user.in_(current_user.following())).order_by(Images.created_at.desc())
-        return render_template('home.html', feed_images = feed_images)
-    else:
-        return f'not login'
+# @app.route("/feed", methods=["GET"])
+# def home():
+#     if (current_user.is_authenticated):
+#         feed_images = Images.select().where(Images.user.in_(current_user.following())).order_by(Images.created_at.desc())
+#         return render_template('home.html', feed_images = feed_images)
+#     else:
+#         return f'not login'
 
 # @app.route("/signup", methods=["GET"])
 # def signup():
@@ -135,14 +141,15 @@ def home():
 #     app.register_error_handler(404, page_not_found)
 #     return app
 
-@app.route("/logout", methods=["POST"])
+@app.route("/logout", methods=["POST", "GET"])
 def logout():
     # breakpoint()
     session.clear()
     if logout_user():
-        return redirect(url_for("home"))
+        # return redirect(url_for("home.index"))
+        return render_template("signin.html")
     else:
-        return redirect(url_for("home"))
+        return redirect(url_for("home.index"))
 
 
 @app.errorhandler(404)
@@ -166,7 +173,7 @@ from models.helpers import upload_file_to_s3
 # logic to send the file from the user’s computer directly to the bucket
 @app.route("/profile_img", methods=["POST", "GET"])
 def upload_file():
-
+    
     # A
     if "user_file" not in request.files:
         return "No user_file key in request.files"
@@ -191,16 +198,16 @@ def upload_file():
 	# D.
     if file:
         # file.filename = secure_filename(file.filename)
-        output   	  = upload_file_to_s3(file, "my-bucket-now", acl="public-read")
+        output   	  = upload_file_to_s3(file, "hipster-bucket", acl="public-read")
         # return str(output)
         # breakpoint()
         current_user.picture = file.filename
         # breakpoint()
         current_user.save()
-        return render_template('userpage.html')
+        return render_template('my_profile.html')
 
     else:
-        return redirect(url_for('home'))
+        return render_template('my_profile.html')
 
 @app.route("/post_img", methods=["POST", "GET"])
 def upload_postfile():
@@ -230,16 +237,16 @@ def upload_postfile():
     if file:
         # file.filename = secure_filename(file.filename)
         # breakpoint()
-        output   	  = upload_file_to_s3(file, "my-bucket-now", acl="public-read")
+        output   	  = upload_file_to_s3(file, "hipster-bucket", acl="public-read")
         # return str(output)
         # breakpoint()
         new_image = Images(user = current_user.id, image_url = file.filename)
         # breakpoint()
         new_image.save()
-        return render_template('userpage.html')
+        return render_template('my_profile.html')
 
     else:
-        return redirect(url_for('home'))
+        return render_template('my_profile.html')
 
 # ##test to upload to s3 bucket here
 #let python turn into s3 and become user code
@@ -264,23 +271,23 @@ def upload_postfile():
     # return '{}{}'.format(os.environ.get("S3_LOCATION"), user_pic.filename)
 
 # view other person profile page
-@app.route("/other_user/<username>", methods=["GET"])
-def view_othersProfile(username):
-    u = User.get_or_none(User.username == username)
+# @app.route("/other_user/<username>", methods=["GET"])
+# def view_othersProfile(username):
+#     u = User.get_or_none(User.username == username)
 
-    return render_template("others_profile.html", user = u)
+#     return render_template("others_profile.html", user = u)
 
 
-@app.route("/other_user/<username>", methods=["POST"])
-def follow(username):
-    # breakpoint()
-    x = User.get_or_none(User.username == username)
-    # my_idols = User.select().join(Follows, on=(User.id == Follows.myidol_id)).where(Follows.myfan_id == current_user.id)
+# @app.route("/other_user/<username>", methods=["POST"])
+# def follow(username):
+#     # breakpoint()
+#     x = User.get_or_none(User.username == username)
+#     # my_idols = User.select().join(Follows, on=(User.id == Follows.myidol_id)).where(Follows.myfan_id == current_user.id)
 
-    follow = Follows(myfan_id = current_user.id, myidol_id= x.id)
-    follow.save()
-    return redirect(url_for('others_profile'))
-    # return render_template("others_profile.html")
+#     follow = Follows(myfan_id = current_user.id, myidol_id= x.id)
+#     follow.save()
+#     return redirect(url_for('others_profile'))
+#     # return render_template("others_profile.html")
 
 
 @app.route("/image/payment", methods=["GET"])
