@@ -1,0 +1,10 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class='container'>
+    <img class="col-12 col-md-6 d-block mx-auto my-3" src='{{ image.image_url }}' />
+    <a class="btn btn-outline-secondary w-25 d-block mx-auto" href="{{ url_for('payments.new', id=image.id) }}">Donate</a>
+</div>
+
+
+
+{% endblock %}

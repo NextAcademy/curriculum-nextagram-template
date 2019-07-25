@@ -1,0 +1,32 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class='container'>
+    <div class="row mt-2">
+        <div class="col-6 col-sm-4 col-lg-3 mx-auto">
+            <img style="width:100%;" src="{{user.profile_picture_url}}">
+        </div>
+        <div class="col-12 col-sm-8 col-lg-9 text-center text-sm-left">
+            <h1>{{user.username}}</h1>
+            {% if user.username == current_user.username %}
+                <a class="btn btn-outline-secondary" href="{{ url_for('users.edit', id=user.id) }}">Edit Profile</a>
+                <a class="btn btn-outline-secondary" href="{{ url_for('images.new') }}">Upload Photos</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class='row'>
+    {% for image in user.images %}
+    
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 p-1">
+            <a class="w-100 d-block square" style="background-image:url({{image.image_url}})" href="{{ url_for('images.show', id=image.id) }}">
+            </a>
+        </div>
+
+    {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

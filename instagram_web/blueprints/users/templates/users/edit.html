@@ -1,0 +1,58 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<div class="container col-lg-8 col-xl-6">
+    <h2 class="text-center m-3">Add or change your profile picture:</h2>
+    <form class="text-center" action="{{ url_for('users.upload_file', id=user.id)}}" method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="user_file" id="user_file" class="inputfile" />
+        <label for="user_file">Choose a file</label>
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button class="btn btn-outline-secondary w-25 mx-auto" type="submit">Upload</button>
+
+    </form>
+
+    <h2 class="text-center m-3">Or edit profile details:</h2>
+
+    <form action="{{ url_for('users.update', id=user.id) }}" method="POST">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                <label for="first_name">
+                    First name:
+                </label>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}"/>
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="last_name">
+                    Last name:
+                </label>
+                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">
+                Email:
+            </label>
+            <input type="email" class="form-control" name="email" value="{{ user.email }}"/>
+        </div>
+        <div class="form-group">
+            <label for="new_password">
+                New password:
+            </label>
+            <input type="password" class="form-control" name="new_password" />
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">
+                Old password:
+            </label>
+            <input type="password" class="form-control" name="old_password" />
+        </div>
+        <div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button class="btn btn-outline-secondary w-25 mx-auto d-block" type="submit">Submit</button>
+        </div>
+    </form>
+    <a class="btn btn-outline-danger w-25 mx-auto d-block my-3" href="{{url_for('users.show', username=user.username)}}">Cancel</a>
+</div>
+{% endblock %}

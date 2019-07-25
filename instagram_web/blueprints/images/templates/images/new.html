@@ -1,0 +1,17 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+<div class="container col-lg-8 col-xl-6 text-center mt-3">
+    <h2>Upload photo for {{user.username}}</h2>
+    <form action="{{ url_for('images.create')}}" method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="user_file" id="user_file" class="inputfile" />
+        <label for="user_file">Choose a file</label>
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button class="btn btn-outline-secondary w-25 mx-auto" type="submit">Upload</button>
+        <a class="btn btn-outline-secondary w-25 mx-auto" href="{{url_for('users.show', username=user.username)}}">Cancel</a>
+
+    </form>
+</div>
+{% endblock %}
