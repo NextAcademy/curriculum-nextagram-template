@@ -5,7 +5,7 @@ import peewee as pw
 from playhouse.hybrid import hybrid_property
 
 
-class Post(BaseModel):
+class Image(BaseModel):
     user = pw.ForeignKeyField(User, backref='posts')
     image_name = pw.CharField(null=False)
     caption = pw.CharField(null=True)
