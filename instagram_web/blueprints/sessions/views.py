@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
 from werkzeug.security import check_password_hash
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 
 sessions_blueprint = Blueprint('sessions',
@@ -55,3 +55,8 @@ def edit(id):
 @sessions_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     pass
+
+@sessions_blueprint.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for("sessions.new"))

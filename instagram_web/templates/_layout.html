@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Fascinate&display=swap" rel="stylesheet">
 
     {% assets "home_css" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}">
@@ -18,10 +19,43 @@
     <title>{% block title %}{% endblock %}NEXTAGRAM</title>
   </head>
   <body>
+    
+
+      <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #004f31;">
+          <a class="navbar-brand" style="font-family: 'Fascinate', cursive;" href="{{ url_for('index') }}">Nextagram</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              {% if not current_user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('sessions.new') }}">Log In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('users.new') }}">Sign Up</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('users.show', username=current_user.username) }}">My Profile</a>
+                </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('sessions.logout') }}">Log Out</a>
+                </li>
+              {% endif %}
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>
+
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show">
+        <div class="alert alert-{{ category }} alert-dismissible fade show m-0">
           <strong>{{ message }}</strong>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>

@@ -1,0 +1,59 @@
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin: 0 auto;
+    width: 25%;
+    color: #6c757d;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid #6c757d;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+.square {
+    border-radius: .2rem;
+    opacity: 0.90;
+    padding-bottom: 100%;
+    background: #EEEEEE;
+    background-size: cover;
+    background-position: center;
+}
+
+.square:hover {
+    opacity: 1;
+}
+
+.head-link {
+    background: #004f31;
+    text-decoration: none;
+    color: rgba(255,255,255,0.6);
+    transition: all 0.2s ease;
+}
+
+.head-link:hover {
+    color: white;
+    text-decoration: none;
+    letter-spacing: 0.25px;
+}

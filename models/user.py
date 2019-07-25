@@ -1,6 +1,7 @@
 from models.base_model import BaseModel
 import peewee as pw
 from werkzeug.security import generate_password_hash
+from playhouse.hybrid import hybrid_property
 
 
 class User(BaseModel):
@@ -9,6 +10,15 @@ class User(BaseModel):
     email = pw.CharField(unique=True, null=False)
     username = pw.CharField(unique=True, null=False)
     password = pw.CharField(null=False)
+    photo = pw.CharField(null=True)
+
+    @hybrid_property
+    def profile_picture_url(self):
+        from instagram_web.util.helpers import S3_LOCATION
+        if self.photo:
+            return S3_LOCATION + self.photo
+        else:
+            return "https://afcm.ca/wp-content/uploads/2018/06/no-photo.png"
 
     def is_authenticated(self):
         return True
