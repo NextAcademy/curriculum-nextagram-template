@@ -38,7 +38,13 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    user = User.get_or_none(User.username == username)
+
+    if not user:
+        flash('No such user found', 'warning')
+        return redirect(url_for('users.index'))
+
+    return render_template('users/show.html', user=user)
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -48,10 +54,36 @@ def index():
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
-    pass
+    user = User.get_or_none(User.id == id)
+
+    if not user:
+        flash('No such user exists!', 'warning')
+        return redirect(url_for('users.index'))
+
+    return render_template('users/edit.html', user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    user = User.get_or_none(User.id == id)
+
+    if not user:
+        flash('Invalid user', 'warning')
+        return redirect(url_for('users.index'))
+
+    user.email = request.form.get('email')
+    user.full_name = request.form.get('full_name')
+    user.username = request.form.get('username')
+    user.website = request.form.get('website')
+    breakpoint()
+    user.bio = request.form.get('bio')
+    user.phone_number = request.form.get('phone_number')
+
+    if user.save():
+        flash('Successfully updated details', 'success')
+        return redirect(url_for('users.edit', id=user.id))
+
+    flash('Unable to update details', 'warning')
+    return redirect(url_for('users.edit', id=user.id))

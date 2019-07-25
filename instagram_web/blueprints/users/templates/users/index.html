@@ -36,16 +36,24 @@
     <div class="col-4">
       <div style="position: sticky!important; top:10px;">
         <div class="d-flex flex-row">
-          <img
-            src="{{url_for('static', filename='images/profile-placeholder.png')}}"
-            alt="placeholder"
-            class="border border-light rounded-circle"
-            width="50"
-            height="50"
-          />
+          <a href="{{url_for('users.show', username=current_user.username)}}">
+            <img
+              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+              alt="placeholder"
+              class="border border-light rounded-circle"
+              width="50"
+              height="50"
+            />
+          </a>
           <div id="news-feed-profile-card" class="ml-3 my-auto">
-            <h6>Username</h6>
-            <small class="text-muted">Full Name</small>
+            <h6>
+              <a
+                class="text-dark"
+                href="{{url_for('users.show', username=current_user.username)}}"
+                >{{ current_user.username }}</a
+              >
+            </h6>
+            <small class="text-muted">{{ current_user.full_name }}</small>
           </div>
         </div>
         <div class="card mt-2" style="height: 35%;">
