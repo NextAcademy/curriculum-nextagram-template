@@ -1,0 +1,63 @@
+{% from "macros/navbar.html" import navbar with context %}
+{{ navbar() }}
+{% extends '_layout.html' %} {% block title %} {{ user.full_name }} (@{{
+  user.username
+}}) &#8226; {% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-3">
+      <img
+        src="{{ user.profile_url }}"
+        alt="profile"
+        class="w-75 mx-auto d-block rounded-circle border"
+      />
+    </div>
+    <div class="col-7">
+      <div class="card bg-transparent border-0 p-2">
+        <div class="d-flex flex-row justify-content-start">
+          <h3 class="my-auto">{{ user.username }}</h3>
+          <a
+            href="{{url_for('users.edit', id=user.id)}}"
+            class="btn btn-light btn-sm border ml-4 h-50 my-auto"
+          >
+            Edit Profile
+          </a>
+          <h2 class="ml-4 text-black my-auto"><i class="fas fa-cog"></i></h2>
+        </div>
+        <div class="d-flex flex-row justify-content mt-3">
+          <h6>29 posts</h6>
+          <h6 class="ml-4">92 followers</h6>
+          <h6 class="ml-4">308 following</h6>
+        </div>
+        <div class="mt-3 w-50">
+          <p>
+            {{ user.bio }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="mt-3">
+    <a
+      href="{{ url_for('images.new') }}"
+      class="w-50 btn btn-light mx-auto d-block"
+    >
+      Create a Post
+    </a>
+    {% if not user.has_posts %}
+    <h1 class="text-muted text-center">No Posts To Show</h1>
+    {% else %}
+    <div class="container mt-4">
+      <div class="d-flex flex-row justify-content-center">
+        {% for image in user.images %}
+        <div class="card w-25 p-2 m-2">
+          <img class="w-100" src="{{ image.image_url }}" alt="no image" />
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

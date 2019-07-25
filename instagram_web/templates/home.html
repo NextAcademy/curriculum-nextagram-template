@@ -1,9 +1,74 @@
-{% extends "_layout.html" %}
-{% block title %}
-  Homepage
-{% endblock %}
-{% block header %}
-{% endblock %}
-{% block content %}
-<h1>Homepage</h1>
+{% extends "_layout.html" %} {% block header %} {% endblock %} {% block content
+%}
+<div class="container-fluid p-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <img
+        src="{{url_for('static', filename='images/instagram-iphone.png')}}"
+        alt="mobile phone"
+      />
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card p-5">
+        <h1 id="main-title" class="text-center">Nextagram</h1>
+        <h6 class="text-muted text-center">
+          Sign up to see photos and videos from your friends.
+        </h6>
+        <button class="btn btn-primary w-100">
+          <i class="fab fa-facebook-square"></i> Log in with Facebook
+        </button>
+        <div class="row mt-2">
+          <div class="col-5">
+            <hr />
+          </div>
+          <div class="col-2">
+            <h6 class="text-muted mt-2">Or</h6>
+          </div>
+          <div class="col-5">
+            <hr />
+          </div>
+        </div>
+        <form action="{{ url_for('users.create') }}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input
+            type="text"
+            name="email"
+            class="form-control bg-light mt-1"
+            placeholder="Email"
+          />
+          <input
+            type="text"
+            name="full_name"
+            class="form-control bg-light mt-1"
+            placeholder="Full name"
+          />
+          <input
+            type="text"
+            name="username"
+            class="form-control bg-light mt-1"
+            placeholder="Username"
+          />
+          <input
+            type="password"
+            name="password"
+            class="form-control bg-light mt-1"
+            placeholder="Password"
+          />
+          <button class="btn btn-primary btn-sm mx-auto d-block w-100 mt-3">
+            Sign Up
+          </button>
+        </form>
+        <p class="text-center mt-2 text-muted">
+          By signing up, you agree to our <strong>Terms</strong> ,
+          <strong>Data Policy</strong> and <strong>Cookies Policy</strong> .
+        </p>
+      </div>
+      <div class="card mt-2 p-3">
+        <p class="text-center mt-1">
+          Have an Account? <a href="{{ url_for('sessions.new') }}">Log In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

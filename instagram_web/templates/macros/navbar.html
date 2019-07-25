@@ -1,0 +1,50 @@
+{% macro navbar() %}
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-white border-bottom"
+  style="height: 75px;"
+>
+  <div class="container">
+    <a class="navbar-brand" href="{{url_for('users.index')}}">
+      <img src="{{url_for('static', filename='images/insta-bw.png')}}" width="30" height="30" class="d-inline-block align-top" alt="">
+      | <span id="main-title">Nextagram</span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <form class="form-inline my-2 my-lg-0 mx-auto d-block">
+        <input
+          class="form-control form-control-sm text-center bg-light mx-auto d-block"
+          type="search"
+          placeholder="&#128269 Search"
+          aria-label="Search"
+        />
+      </form>
+    </div>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a
+        class="nav-link"
+        href="#"
+        ><h3 class="my-auto"><i class="far fa-compass text-dark"></i></h3></a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><h3 class="my-auto"><i class="far fa-heart text-dark"></i></h3></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('users.show', username=current_user.username)}}"><h3 class="my-auto"><i class="far fa-user text-dark"></i></h3></a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endmacro %}
