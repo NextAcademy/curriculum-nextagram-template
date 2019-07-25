@@ -9,6 +9,9 @@ class User(BaseModel):
     full_name = pw.CharField(null=False)
     username = pw.CharField(unique=True, null=False)
     password = pw.CharField(null=False)
+    website = pw.CharField(null=True)
+    bio = pw.TextField(null=True)
+    phone_number = pw.CharField(null=True)
 
     def validate(self):
         email_valid = re.match(r"[^@]+@[^@]+\.[^@]+", self.email)
