@@ -77,7 +77,6 @@ def update(id):
     user.full_name = request.form.get('full_name')
     user.username = request.form.get('username')
     user.website = request.form.get('website')
-    breakpoint()
     user.bio = request.form.get('bio')
     user.phone_number = request.form.get('phone_number')
 

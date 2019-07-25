@@ -1,7 +1,9 @@
 from models.base_model import BaseModel
 import peewee as pw
 import re
+from config import S3_HOST_URL
 from werkzeug.security import generate_password_hash
+from playhouse.hybrid import hybrid_property
 
 
 class User(BaseModel):
@@ -12,6 +14,7 @@ class User(BaseModel):
     website = pw.CharField(null=True)
     bio = pw.TextField(null=True)
     phone_number = pw.CharField(null=True)
+    profile_picture = pw.CharField(null=True)
 
     def validate(self):
         email_valid = re.match(r"[^@]+@[^@]+\.[^@]+", self.email)
@@ -42,3 +45,7 @@ class User(BaseModel):
 
     def is_anonymous(self):
         return False
+
+    @hybrid_property
+    def profile_url(self):
+        return f"{S3_HOST_URL}/{self.profile_picture}"

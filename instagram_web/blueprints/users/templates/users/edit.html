@@ -53,7 +53,7 @@
               <div class="row justify-content-center">
                 <div class="col-2">
                   <img
-                    src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                    src="{{ user.profile_url }}"
                     alt="profile"
                     width="40"
                     height="40"
@@ -63,7 +63,14 @@
                 <div class="col-8">
                   <div id="small-line-height">
                     <h5>{{ user.username }}</h5>
-                    <small><a href="#">Change Profile Photo</a></small>
+                    <!-- Button trigger modal -->
+                    <a
+                      data-toggle="modal"
+                      class="text-primary"
+                      data-target="#exampleModalCenter"
+                    >
+                      <small>Change Profile Photo</small>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -175,4 +182,67 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div
+  class="modal border-0 fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-transparent">
+      <div class="modal-header">
+        <h5 class="modal-title mx-auto">Change Profile Photo</h5>
+      </div>
+      <div class="modal-body p-0">
+        <div class="list-group w-100 border-0">
+          <a
+            id="trigger-file"
+            href=""
+            class="list-group-item list-group-item-action text-center text-primary"
+          >
+            Upload New Photo
+          </a>
+          <form
+            action="{{ url_for('images.create_profile') }}"
+            method="POST"
+            class="d-none"
+            enctype="multipart/form-data"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input
+              id="image-file"
+              name="image_file"
+              type="file"
+              onchange="form.submit()"
+            />
+          </form>
+          <a
+            href="#"
+            class="list-group-item list-group-item-action text-center text-danger"
+            >Remove Current Photo<input type="file" class="d-none"
+          /></a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-link text-dark mx-auto d-block"
+          data-dismiss="modal"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#trigger-file").click(e => {
+    e.preventDefault();
+    $("#image-file").trigger("click");
+  });
+</script>
 {% endblock %}
