@@ -48,7 +48,11 @@ class User(BaseModel):
 
     @hybrid_property
     def profile_url(self):
-        return f"{S3_HOST_URL}/{self.profile_picture}"
+        from flask import url_for
+        if self.profile_picture:
+            return f"{S3_HOST_URL}/{self.profile_picture}"
+        else:
+            return url_for('static', filename="images/profile-placeholder.png")
 
     @hybrid_property
     def has_posts(self):

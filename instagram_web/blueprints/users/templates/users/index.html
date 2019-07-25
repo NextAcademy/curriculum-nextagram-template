@@ -4,34 +4,33 @@
 <div class="container mt-5 h-100">
   <div class="row justify-content-center h-100">
     <div class="col-7">
-      {% for x in range(1,10) %}
+      {% for user in users %} {% for image in user.images %}
       <div class="card mt-3">
         <div class="card-header bg-white">
           <div class="d-flex flex-row w-100">
             <img
-              src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+              src="{{ image.user.profile_url }}"
               alt="placeholder"
               class="border border-light rounded-circle"
               width="40"
               height="40"
             />
-            <h6 class="ml-3 my-auto">Username</h6>
+            <h6 class="ml-3 my-auto">{{ image.user.username }}</h6>
             <h3 class="ml-auto">...</h3>
           </div>
         </div>
         <img
-          src="{{url_for('static', filename='images/profile-placeholder.png')}}"
-          class="card-img-top"
+          src="{{ image.image_url }}"
+          class="card-img-top mt-1 w-75 mx-auto d-block"
           alt="placeholder"
         />
         <div class="card-body">
           <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {{ image.caption }}
           </p>
         </div>
       </div>
-      {% endfor %}
+      {% endfor %} {% endfor %}
     </div>
     <div class="col-4">
       <div style="position: sticky!important; top:10px;">
@@ -63,17 +62,17 @@
             </p>
           </div>
           <div class="card-body" style="overflow-y: scroll;">
-            {% for x in range(1,10) %}
+            {% for user in users %}
             <div class="d-flex flex-row mt-2">
               <img
-                src="{{url_for('static', filename='images/profile-placeholder.png')}}"
+                src="{{ user.profile_url }}"
                 alt="placeholder"
                 class="border border-light rounded-circle"
                 width="40"
                 height="40"
               />
               <div class="ml-3 my-auto" style="line-height: 0.25rem;">
-                <p>Username</p>
+                <p>{{ user.username }}</p>
                 <small class="text-muted">10 Hours Ago</small>
               </div>
             </div>
