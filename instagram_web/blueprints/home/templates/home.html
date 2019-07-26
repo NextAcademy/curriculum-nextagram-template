@@ -1,0 +1,31 @@
+{% extends "_layout.html" %}
+{% block title %}
+  Homepage
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row" style="justify-content: center">
+    <h1>News Feed</h1>
+  </div><br><br>
+  
+  <div class="container">
+    {% for img in feed_images %}
+    <div class="row">
+      <div class="col" style="text-align: right">
+       
+          <img src="{{img.user.profile_image_url}}" alt="" height="70px" width="70px" class="border border-dark rounded-circle">
+          <!-- <img src="https://thumbs.dreamstime.com/z/hipster-hat-jazz-bow-55478991.jpg" alt="" height="70px" width="70px" class="border border-dark rounded-circle"> -->
+          <p >{{ img.user.username }}</p>
+      
+      </div>
+      <div class="col">
+      <img src="{{img.post_image_url}}" alt=""height="200px" width="200px" style="margin: 10px"><br>
+        <!-- <img src="https://www.wikihow.com/images/thumb/0/0c/Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg/aid470617-v4-728px-Be-a-Hipster-%28Teen-Boys%29-Step-7-Version-3.jpg" alt="" height="200px" width="200px" style="margin: 10px"> -->
+      </div>
+    </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %} 

@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- <link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='bootstrap.min.css') }}"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
+ 
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
 
     {% assets "home_css" %}
@@ -15,10 +18,84 @@
     {% endassets %}
 
     {% block header %}{% endblock %}
-    <title>{% block title %}{% endblock %}NEXTAGRAM</title>
+    <title>{% block title %}{% endblock %}NEXTAGRAM</title> 
+    
   </head>
-  <body>
-    {% block content %}
+    <body class = "body">
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+            <img src="https://cdn2.iconfinder.com/data/icons/party-entertainment-1/614/2573_-_Hipster_Man-512.png" width="50px">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <form action="{{url_for('home.index')}}", method="GET">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="submit" value="Homepage" class="main-btn">
+                    </form>
+                </li>
+                <li class="nav-item active">
+                    <form action="{{url_for('my_profile.index')}}", method="GET">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="submit" value="My profile" class="main-btn">
+                    </form> 
+                </li>
+                <li class="nav-item active text-center">
+                    <form action="{{ url_for('others_profile.kkk') }}" method="POST" class="search">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="text" placeholder="Search.." name="username" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+              </ul>
+
+              <form action="{{url_for('login.signin')}}", method="GET">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type='submit' class="logout-btn">Login</a>
+              </form>
+              
+              <form action="{{url_for('signup.create_signup')}}", method="GET">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type='submit' class="logout-btn">Signup</a>
+              </form>
+
+              <form action="{{url_for('logout')}}", method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type='submit' class="logout-btn">Logout</a>
+              </form>
+        
+            </div>
+          </nav>
+  <div class="d-flex justify-content-center"> 
+
+</div>
+<div class="container">
+  <div class="d-flex justify-content-center row">
+    <div class="col">
+    <!-- <img src="{{current_user.profile_image_url}}" alt="" height="80px" width="80px" class="border border-dark rounded-circle"> -->
+    {% if current_user.username %}
+    <div class="row">
+      {% if current_user.picture=="" %}
+       <img src="http://static.digg.com/static/fe/4bef2d/images/profiles/no-profile-img_lg.png" alt="" height="70px" width="70px" class="border border-dark rounded-circle">
+      {% else %}
+       <img src="{{current_user.profile_image_url}}" alt="" height="70px" width="70px" class="border border-dark rounded-circle">
+       <!-- <img src="https://thumbs.dreamstime.com/z/hipster-hat-jazz-bow-55478991.jpg" alt="" height="70px" width="70px" class="border border-dark rounded-circle"> -->
+      {% endif %}
+        <div class="col" style="font-family: 'Oleo Script', cursive; margin-top: 20px">
+          <h4>{{current_user.username}}</h4>
+        </div>
+   </div>
+    {% else %}
+    <h3 style="justify-content: center">Hi there!Please sign to enjoy Hipstergram</h3>
+    {% endif %}
+    </div>
+  </div>
+</div>
+ <div class="d-flex justify-content-center">
+    {% block content %} 
     {% endblock %}
+  </div>
   </body>
 </html>

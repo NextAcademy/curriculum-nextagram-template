@@ -1,5 +1,9 @@
 import os
 
+S3_BUCKET                 = os.getenv("S3_BUCKET")
+S3_KEY                    = os.getenv("S3_KEY")
+S3_SECRET                 = os.getenv("S3_SECRET")
+S3_LOCATION               = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
 class Config(object):
     DEBUG = False
@@ -7,6 +11,8 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get(
         'SECRET_KEY') or os.urandom(32)
+    GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 
 
 class ProductionConfig(Config):
@@ -29,3 +35,5 @@ class TestingConfig(Config):
     TESTING = True
     DEBUG = True
     ASSETS_DEBUG = True
+
+

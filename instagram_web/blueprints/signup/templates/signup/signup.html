@@ -1,0 +1,38 @@
+{% extends "_layout.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+  <h3>You are logged in {{current_user.email}} </h3>
+{% else %}
+<div class="container">
+  <div class="row">
+
+    <div class="col text-right"> 
+      <h3>Signup Here</h3>
+    </div>
+
+    <div class="col">
+      <form action="{{ url_for('signup.create_signup') }}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="form-group">
+          <label for="user_name"> Username:</label>
+          <input type="text" name="username" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="password"> Password:</label>
+          <input type="password" name="password" class="form-control" />
+        </div>
+
+        <div class="form-group">
+          <label for="email"> Email:</label>
+          <input type="text" name="email" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Signup Here</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endif %}
+{% endblock %}

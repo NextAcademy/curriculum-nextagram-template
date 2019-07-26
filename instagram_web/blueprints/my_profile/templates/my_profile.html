@@ -1,0 +1,37 @@
+{% extends "_layout.html" %}
+{% block title %}
+  User Personal Page
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div>
+  <form action="{{url_for('upload_file')}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <input type="file" name="user_file" id="file" />
+  <button type="submit" class="upload-btn">Upload</button></form>
+  </div><br><br>
+  <span>Follower: {{ current_user.followers()|length }}</span><br>
+  <span>Following: {{ current_user.following()|length }}</span>
+    
+  <div>
+      <h2 style="text-align:center ">~POST~</h2>
+      <form action="{{url_for('upload_postfile')}}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="file" name="user_file" id="file" />
+        <button type="submit" class="upload-btn">Upload</button></form>
+      </div><br><br>
+      {% for i in current_user.posted %}
+        <div class="img" width="0px">
+          <!-- <img src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/full page/img(20).jpg"  class="image"> -->
+          <img src="{{i.post_image_url}}" alt="" class="image">
+          <div class="middle">
+            <input type="submit" value="donate">
+          </div>
+        </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
