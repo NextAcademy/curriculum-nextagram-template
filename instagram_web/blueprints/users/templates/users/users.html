@@ -1,0 +1,27 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class='container mt-3'>
+    <h3 class='text-center'>Displaying:</h3>
+    <h4 class='text-center'>{{text}}</h4>
+    {% for user in users %}
+
+        <a class="user-list" href="{{ url_for('users.show', username=user.username) }}">
+        <div class="card w-50 mx-auto user-list" style="border-color: transparent">
+            <div class="card-body p-1 d-flex flex-row">
+                <div class="d-block" style="width:40px;height:40px;overflow:hidden;background-color:white;">
+                    <img class="h-100 d-block mx-auto" src="{{user.profile_picture_url}}" alt="">
+                </div>
+                <div class="d-flex align-items-center ml-2">
+                    {{user.username}}
+                </div>
+            </div>
+        </div>
+        </a>
+            
+        
+
+        
+    {% endfor %}
+</div>
+
+{% endblock %}

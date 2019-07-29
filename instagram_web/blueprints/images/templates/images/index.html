@@ -1,0 +1,26 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class='container-fluid mt-3'>
+    <div class="card-columns mx-auto">
+    {% for image in images %}
+        <div class="card" style="overflow:hidden;border-color:#004f31;">
+            {% for user in users %}
+                {% if user.id == image.user_id %}
+                <a class="head-link" href="{{ url_for('users.show', username = user.username ) }}">
+                <div class="card-header p-0" style="background-color: #004f31;">
+                    <img style="height:40px;background-color:white;" src="{{user.profile_picture_url}}"/>
+                    {{user.username}}
+                </div>
+                </a>
+                {% endif %}
+            {% endfor %}
+            <a href="{{ url_for('images.show', id=image.id)}}">
+            <img src="{{image.image_url}}" class="card-img-bottom"></a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

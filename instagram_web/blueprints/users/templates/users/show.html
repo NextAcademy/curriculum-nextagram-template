@@ -1,0 +1,173 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class='container'>
+    <div class='text-center mt-3'>
+        {% if user.username == current_user.username %}
+            <a class="btn btn-outline-secondary mr-1" href="{{ url_for('users.edit', id=user.id) }}">Edit Profile</a>
+            <a class="btn btn-outline-secondary m1-1" href="{{ url_for('images.new') }}">Upload Photos</a>
+        {% endif %}
+    </div>
+    <div class="row mt-2">
+        <div class="col-6 col-sm-4 col-lg-3 mx-auto">
+            {% if user.username == current_user.username %}
+                <button type="button" class="photo-link btn btn-link" data-toggle="modal" data-target="#newProfilePicture" style="position:absolute;bottom:0;">New profile picture</button>
+            {% endif %}
+            <img style="width:100%;" src="{{user.profile_picture_url}}">
+        </div>
+        <div class="col-12 col-sm-8 col-lg-9 text-center text-sm-left d-sm-flex align-items-center">
+            <div class="d-inline-block pr-sm-2 pr-md-5 text-center">
+                <h1 style="white-space: nowrap;">{{user.username}}</h1>
+                <div>
+                    <button type="button" class="user-list btn btn-link p-1 mr-3 mb-1" data-toggle="modal" data-target="#followersModal">
+                        <p class="m-0">{{user.fans | length}}</p>
+                        <p class="m-0">Follower{%if (user.fans | length != 1) %}s{%endif%}</p>
+                    </button>
+                    <button type="button" class="user-list btn btn-link p-1 ml-3 mb-1" data-toggle="modal" data-target="#followingModal">
+                        <p class="m-0">{{user.idols | length}}</p>
+                        <p class="m-0">Following</p>
+                    </button>
+
+                </div>
+            </div>
+            {% if user.username != current_user.username %}
+                {% if current_user.is_following(user.id) %}
+                    <form action="{{ url_for('fan_idol.unfollow', id=user.id) }}" method="POST" class='d-block'>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input class="btn btn-outline-dark" type="submit" name="unfollow" value="unfollow">
+                    </form>
+                {% else %}
+                    <form action="{{ url_for('fan_idol.follow', id=user.id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input class="btn btn-outline-dark" type="submit" name="follow" value="follow">
+                </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if user.private == True %}
+    {% if current_user.id == user.id or approved %}
+    <div class="container">
+        <div class='row'>
+        {% for image in user.images %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 p-1">
+                <a class="w-100 d-block square" style="background-image:url({{image.image_url}})" href="{{ url_for('images.show', id=image.id) }}">
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% elif not current_user.is_following(user.id) %}
+        <p class="text-center my-3">User pictures are private, follow to get access.</p>
+    {% else %}
+        <p class="text-center my-3">Waiting for user approval</p>
+    {% endif %}
+{% else %}
+    <div class="container">
+        <div class='row'>
+        {% for image in user.images %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 p-1">
+                <a class="w-100 d-block square" style="background-image:url({{image.image_url}})" href="{{ url_for('images.show', id=image.id) }}">
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+<div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="followingModalTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="followingModalLongTitle">Following</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  {% for idol in user.idols%}
+                    <a class="user-list" href="{{ url_for('users.show', username=idol.idol.username) }}">
+                        <div class="card mx-auto user-list" style="border-color: transparent">
+                            <div class="card-body p-1 d-flex flex-row">
+                                <div class="d-block" style="width:40px;height:40px;overflow:hidden;background-color:white;">
+                                    <img class="h-100 d-block mx-auto" src="{{idol.idol.profile_picture_url}}" alt="">
+                                </div>
+                                <div class="d-flex align-items-center ml-2">
+                                    {{idol.idol.username}}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="followersModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="followersModalTitle">Followers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              {% for fan in user.fans%}
+              <div class="d-flex flex-row justify-content-between">
+                <a class="user-list w-100" href="{{ url_for('users.show', username=fan.fan.username) }}">
+                    <div class="card mx-auto user-list" style="border-color: transparent">
+                        <div class="card-body p-1 d-flex flex-row">
+                            <div class="d-block" style="width:40px;height:40px;overflow:hidden;background-color:white;">
+                                <img class="h-100 d-block mx-auto" src="{{fan.fan.profile_picture_url}}" alt="">
+                            </div>
+                            <div class="d-flex align-items-center ml-2">
+                                {{fan.fan.username}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% if current_user.id == user.id and not fan.approved %}
+                <form action="{{ url_for('fan_idol.approve', id=fan.fan.id) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="btn btn-link" type="submit">Approve</button>
+                </form>
+                {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="newProfilePicture" tabindex="-1" role="dialog" aria-labelledby="newProfilePictureTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newProfilePictureTitle">Upload profile photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <form class="text-center" action="{{ url_for('users.upload_file', id=user.id)}}" method="POST" enctype="multipart/form-data">
+
+                        <input type="file" name="user_file" id="user_file" class="inputfile" />
+                        <label for="user_file">Choose a file</label>
+                
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <button class="btn btn-outline-secondary" type="submit">Upload</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
