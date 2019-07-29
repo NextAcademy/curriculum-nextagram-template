@@ -1,7 +1,10 @@
+import peewee
 from flask import Blueprint, render_template, request, redirect, url_for, session, escape, flash
 from flask_login import current_user
 from models.user import User
 from models.image import Image
+from models.donation import Donation
+from models.fan_idol import FanIdol
 from instagram_web.util.helpers import allowed_file, upload_file_to_s3
 
 
@@ -38,12 +41,18 @@ def create():
 @images_blueprint.route('/<id>', methods=["GET"])
 def show(id):
     image = Image.get_by_id(id)
-    return render_template('images/show.html', image=image)
+    users = User.select()
+    return render_template('images/show.html', image=image, users=users)
 
 
 @images_blueprint.route('/', methods=["GET"])
 def index():
-    images = Image.select().order_by(Image.created_at.desc())
+
+    images = Image.select().join(FanIdol, on=(Image.user_id == FanIdol.idol_id)).where(
+        (Image.user_id == current_user.id) |
+        ((FanIdol.fan_id == current_user.id) & (FanIdol.approved == True))
+    ).group_by(Image.id).order_by(Image.created_at.desc())
+    
     users = User.select()
     return render_template('images/index.html', images=images, users=users)
 

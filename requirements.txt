@@ -1,13 +1,17 @@
+asn1crypto==0.24.0
 astroid==2.2.5
+Authlib==0.11
 autopep8==1.4.3
 boto==2.49.0
 boto3==1.9.192
 botocore==1.12.192
 braintree==3.55.0
 certifi==2019.6.16
+cffi==1.12.3
 chardet==3.0.4
 Click==7.0
 colorama==0.4.1
+cryptography==2.7
 cssmin==0.2.0
 docutils==0.14
 Flask==1.0.2
@@ -28,6 +32,7 @@ peewee==3.8.2
 peewee-db-evolve==3.7.0
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
+pycparser==2.19
 pylint==2.3.1
 python-dateutil==2.8.0
 python-dotenv==0.10.1

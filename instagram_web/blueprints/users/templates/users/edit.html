@@ -2,18 +2,7 @@
 {% block content %}
 
 <div class="container col-lg-8 col-xl-6">
-    <h2 class="text-center m-3">Add or change your profile picture:</h2>
-    <form class="text-center" action="{{ url_for('users.upload_file', id=user.id)}}" method="POST" enctype="multipart/form-data">
-
-        <input type="file" name="user_file" id="user_file" class="inputfile" />
-        <label for="user_file">Choose a file</label>
-
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button class="btn btn-outline-secondary w-25 mx-auto" type="submit">Upload</button>
-
-    </form>
-
-    <h2 class="text-center m-3">Or edit profile details:</h2>
+    <h2 class="text-center m-3">Edit profile details:</h2>
 
     <form action="{{ url_for('users.update', id=user.id) }}" method="POST">
         <div class="form-row">
@@ -30,17 +19,33 @@
                 <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}"/>
             </div>
         </div>
-        <div class="form-group">
-            <label for="email">
-                Email:
-            </label>
-            <input type="email" class="form-control" name="email" value="{{ user.email }}"/>
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                    <legend class="col-form-label pt-0 pb-3">Account Type:</legend>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="account_type" id="private" value="private" {% if user.private %} checked {% endif %}>
+                        <label class="form-check-label" for="inlineRadio1">Private</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="account_type" id="public" value="public" {% if not user.private %} checked {% endif %}>
+                        <label class="form-check-label" for="inlineRadio2">Public</label>
+                    </div>
+                </div>
+
+            <div class="form-group col-sm-6">
+                <label for="email">
+                    Email:
+                </label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}"/>
+            </div>
         </div>
+
         <div class="form-group">
             <label for="new_password">
                 New password:
             </label>
             <input type="password" class="form-control" name="new_password" />
+            <small id="passHelp" class="form-text text-muted">Password must be longer than 6 characters. <br>Please leave blank if you do not wish to change your password</small>
         </div>
         <div class="form-group">
             <label for="confirm_password">
@@ -48,11 +53,11 @@
             </label>
             <input type="password" class="form-control" name="old_password" />
         </div>
-        <div>
+        <div class="my-3 text-center">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button class="btn btn-outline-secondary w-25 mx-auto d-block" type="submit">Submit</button>
+            <button class="btn btn-outline-secondary w-25" type="submit">Submit</button>
+            <a class="btn btn-outline-danger w-25" href="{{url_for('users.show', username=user.username)}}">Cancel</a>
         </div>
     </form>
-    <a class="btn btn-outline-danger w-25 mx-auto d-block my-3" href="{{url_for('users.show', username=user.username)}}">Cancel</a>
 </div>
 {% endblock %}

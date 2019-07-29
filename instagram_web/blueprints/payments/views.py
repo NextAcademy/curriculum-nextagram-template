@@ -39,7 +39,7 @@ def payment():
     })
     message = Mail(
         from_email='keckkyle@gmail.com',
-        to_emails='keckkyle@gmail.com',
+        to_emails=f'{user.email}',
         subject=f'{current_user.username} has donated to your photo',
         html_content=f'<strong>Congratulations!</strong><br>{current_user.username} has donated ${amount} to your photo. />')
 

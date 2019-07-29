@@ -35,9 +35,10 @@
             </label>
             <input type="password" class='form-control' name="password" />
         </div>
-        <div>
+        <div class='row d-flex justify-content-center'>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <button class="btn btn-outline-secondary w-50 mx-auto d-block" type="submit">Submit</button>
+            <button class="btn btn-outline-secondary mx-2" type="submit">Submit</button>
+            <a class="btn btn-outline-secondary mx-2" href="{{ url_for('sessions.new') }}">Sign in</a>
         </div>
     </form>
 </div>

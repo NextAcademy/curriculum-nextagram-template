@@ -1,8 +1,41 @@
 {% extends "_layout.html" %}
 {% block content %}
-<div class='container'>
+<div class='container pb-5'>
     <img class="col-12 col-md-6 d-block mx-auto my-3" src='{{ image.image_url }}' />
+    {{donations}}
     <a class="btn btn-outline-secondary w-25 d-block mx-auto" href="{{ url_for('payments.new', id=image.id) }}">Donate</a>
+
+{% if current_user.is_authenticated%}
+<form class="my-3" action="{{ url_for('comments.create')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <input type="hidden" name="image" value={{image.id}} />
+    <div class="input-group col-12 col-md-8 mx-auto">
+        <textarea style="resize: none;" class="form-control" name="text" maxlength="200" placeholder="Enter a new comment here."></textarea>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary"
+            id="button-addon2" type="submit">Send</button>
+        </div>
+    </div>
+</form>
+{% endif %}
+
+
+{%for comment in image.comments %}
+    <form action="{{ url_for('comments.delete', id=comment.id) }}" method="POST" class="row pb-1 w-100 d-block">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% for user in users %}
+        {% if comment.user_id == user.id%}
+        <input type="hidden" name="image" value="{{ image.id }}">
+        <strong class="pr-2">{{user.username}}</strong>
+        {{comment.text}}
+            {% if user.username == current_user.username %}
+                <button class="btn btn-link text-danger float-right p-0">delete</button>
+            {% endif %}
+        {% endif %}
+    {% endfor%}
+    </form>
+{% endfor %}
+
 </div>
 
 
