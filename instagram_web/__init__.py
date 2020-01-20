@@ -17,3 +17,7 @@ def internal_server_error(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+
+# @app.route("/about-us") #i.e. the sort of static pages that get initialised on start but aren't part of a model i.e. don't use DB
+# def home():
+#     return render_template('home.html')

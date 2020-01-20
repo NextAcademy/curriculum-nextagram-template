@@ -1,1 +1,33 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+
+{% block title %}
+  Sign up
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <h1>Sign up</h1>
+  <a href="{{ url_for('home') }}">Home</a>
+  <br><br>
+  <form method="POST" action="{{ url_for('users.create') }}">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="text" name="email" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" name="username" class="form-control" />
+    </div>
+    <div class="form-group" hashed>
+      <label for="password">Password:</label>
+      <input type="password" name="password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </form>
+{% endblock %}

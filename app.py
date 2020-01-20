@@ -1,6 +1,6 @@
 import os
 import config
-from flask import Flask, render_template
+from flask import Flask
 from models.base_model import db
 
 web_dir = os.path.join(os.path.dirname(
@@ -25,12 +25,3 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
-
-
-@app.route("/users/new")
-def sign_up():
-    return render_template('sign_up.html')
-
-@app.route("/users/new/post", methods=['POST'])
-def sign_up_post():
-    return render_template('sign_up.html')
