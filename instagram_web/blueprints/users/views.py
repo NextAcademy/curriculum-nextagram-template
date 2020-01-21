@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash
 from models.user import User
 
+
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
