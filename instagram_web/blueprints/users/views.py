@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request # flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash
 from models.user import User
 
@@ -19,18 +19,24 @@ def create():
     # data = request.form.to_dict()
     # new_user = User(data)
 
-    # THE SIMPLE WAY IS SHOWN BELOW
-    # name = request.form.get('name')
-    # username = request.form.get('username')
-    # email = request.form.get('email')
-    # password = generate_password_hash(request.form.get('password'))
-    
-    # AND THIS IS MY CHOSEN METHOD AS IT LOOKS A BIT MORE FANCY :P
-    u = request.form
-    new_user = User(name=u.get('name'), email=u.get('email'), username=u.get('username'), password=generate_password_hash(u['password']))
-    new_user.save()
+    # THIS IS A MORE COMPLEX METHOD AND NOT SUITABLE BECAUSE 
+    # u = request.form
+    # new_user = User(name=u.get('name'), email=u.get('email'), username=u.get('username'), password=generate_password_hash(u['password']))
 
-    return render_template('users/new.html')
+    # THE SIMPLE WAY IS SHOWN BELOW AND IS BEST FOR RE-USE OF THE VARIABLES
+    name = request.form.get('name')
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    new_user = User(name=name, username=username, email=email, password=password)
+    
+    if new_user.save():
+        flash('Successfully saved', 'success')
+        return redirect(url_for('users.new')) # (users.index) in the future - just using users.new for testing
+    else:
+        for error in new_user.errors:
+            flash(error, 'danger')
+        return render_template('users/new.html', name=name, username=username, email=email, password=password)
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
