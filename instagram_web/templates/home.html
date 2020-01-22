@@ -10,4 +10,6 @@
 {% block content %}
   <h1>Homepage</h1>
   <a href="{{ url_for('users.new') }}">Sign up</a>
+  <br><br>
+  <a href="{{ url_for('sessions.login_create') }}">Login</a>
 {% endblock %}

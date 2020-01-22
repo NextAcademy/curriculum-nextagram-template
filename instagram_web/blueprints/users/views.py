@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
 
 
@@ -31,18 +31,13 @@ def create():
     new_user = User(name=name, username=username, email=email, password=password)
     
     if new_user.save():
-        flash('Successfully saved', 'success')
-        return redirect(url_for('users.new')) # (users.index) in the future - just using users.new for testing
+        flash("You've signed up Successfully!", 'success')
+        return redirect(url_for('users.new')) # (users.show) in the future - just using users.new for testing
     else:
         for error in new_user.errors:
             flash(error, 'danger')
         return render_template('users/new.html', name=name, username=username, email=email, password=password)
-
-
-@users_blueprint.route('/<username>', methods=["GET"])
-def show(username):
-    pass
-
+    
 
 @users_blueprint.route('/', methods=["GET"])
 def index():

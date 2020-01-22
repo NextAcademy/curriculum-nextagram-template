@@ -43,4 +43,3 @@ class User(BaseModel):
         if not(valid_email):
             self.errors.append('That email address is invalid')
 
-         
