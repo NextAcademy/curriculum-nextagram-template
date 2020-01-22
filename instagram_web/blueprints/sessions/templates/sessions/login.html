@@ -1,0 +1,26 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <h1>Login</h1>
+  <a href="{{ url_for('home') }}">Home</a>
+  <br><br>
+  <form method="POST" action="{{ url_for('sessions.login_post') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="text" name="email" class="form-control" value="{{email}}" />
+    </div>
+    <div class="form-group" hashed>
+      <label for="password">Password:</label>
+      <input type="password" name="password" class="form-control" value="{{password}}"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Log in</button>
+  </form>
+{% endblock %}
