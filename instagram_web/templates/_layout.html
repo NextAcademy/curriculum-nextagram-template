@@ -17,6 +17,10 @@
     {% block header %}
     {% endblock %}
 
+    {% if current_user.is_authenticated %}
+        Hi {{ current_user.name }}!
+    {% endif %}
+
     <title>
       {% block title %}
       {% endblock %}NEXTAGRAM
@@ -26,8 +30,22 @@
   <body>
     {% block content %}
     {% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+              <span>{{ message }}</span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
     <footer>
       Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
     </footer>
   </body>
 </html>
+
+<!-- flashed message category options from bootstrap: https://getbootstrap.com/docs/4.0/components/alerts/ -->

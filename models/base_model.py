@@ -14,7 +14,7 @@ class BaseModel(pw.Model):
 
         if len(self.errors) == 0:
             self.updated_at = datetime.datetime.now()
-            return super(BaseModel, self).save(*args, **kwargs)
+            return super(BaseModel, self).save(*args, **kwargs) # this statement currently returns a 1 and not the created object!
         else:
             return 0
 
