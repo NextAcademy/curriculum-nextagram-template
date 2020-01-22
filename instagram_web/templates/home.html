@@ -12,4 +12,12 @@
   <a href="{{ url_for('users.new') }}">Sign up</a>
   <br><br>
   <a href="{{ url_for('sessions.login_create') }}">Login</a>
+  <br><br>
+  <form method="POST" action="{{ url_for('sessions.login_destroy') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="form-group">
+        <button type="submit" class="btn btn-secondary">Logout</button>
+      </div>
+  </form>
+
 {% endblock %}

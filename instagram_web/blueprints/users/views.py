@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
+from flask_login import login_user
 
 
 users_blueprint = Blueprint('users',
@@ -29,9 +30,11 @@ def create():
     email = request.form.get('email')
     password = request.form.get('password')
     new_user = User(name=name, username=username, email=email, password=password)
-    
+
     if new_user.save():
-        flash("You've signed up Successfully!", 'success')
+        user_for_auth = User.get_or_none(User.email==new_user.email)
+        login_user(user_for_auth)
+        flash("You've signed up Successfully and are now logged in!", 'success')
         return redirect(url_for('users.new')) # (users.show) in the future - just using users.new for testing
     else:
         for error in new_user.errors:

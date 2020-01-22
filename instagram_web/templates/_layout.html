@@ -17,6 +17,10 @@
     {% block header %}
     {% endblock %}
 
+    {% if current_user.is_authenticated %}
+        Hi {{ current_user.name }}!
+    {% endif %}
+
     <title>
       {% block title %}
       {% endblock %}NEXTAGRAM
@@ -43,3 +47,5 @@
     </footer>
   </body>
 </html>
+
+<!-- flashed message category options from bootstrap: https://getbootstrap.com/docs/4.0/components/alerts/ -->
