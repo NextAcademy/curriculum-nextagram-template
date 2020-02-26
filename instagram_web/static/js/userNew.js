@@ -1,8 +1,13 @@
-// let password = ''
+console.log('shoot')
 
-// handleChange = (e) => {
-//     password.concat(e.target.value)
-//     console.log(e.target.value)
-//     alert('wow')
-// }
-
+$(document).ready(() => {
+    passInput = $('#passInput')
+    passInput.keyup(() => {
+        if (passInput.val().length < 7) {
+            $('#passReply').text('That is too short, boi')
+        }
+        else {
+            $('#passReply').text('That is a gucci length')
+        }
+    })
+})
