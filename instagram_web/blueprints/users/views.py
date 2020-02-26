@@ -22,8 +22,8 @@ def create():
 
     if len(pa) > 6:
         if re.search(r'[A-Z]', pa) and re.search(r'[a-z]', pa) and re.search(r'\W', pa):
-            hashed_pa = generate_password_hash(pa)
 
+            hashed_pa = generate_password_hash(pa)
             new_user = User(email=em, username=us, password=hashed_pa)
 
             if new_user.save():
