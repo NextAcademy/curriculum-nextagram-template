@@ -1,0 +1,9 @@
+createdb after pip install -r requirements.txt ? check the instructions
+
+everytime update user models, run migrate.py so can see in postbird
+
+
+blueprnts > Users > views.py (code here) > templates > users
+views.py (all code here)
+insdie templates folder there is a another users folder. where all html is kept
+
