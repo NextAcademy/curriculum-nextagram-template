@@ -1,33 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% assets "home_css" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
+  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    {% assets "home_js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
+  {% assets "home_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
 
-    {% block header %}
-    {% endblock %}
+  {% assets "home_js" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 
-    <title>
-      {% block title %}
-      {% endblock %}NEXTAGRAM
-    </title>
+  {% block header %}
+  {% endblock %}
 
-  </head>
-  <body>
-    {% block content %}
-    {% endblock %}
-    <footer>
-      Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
-    </footer>
-  </body>
+  <title>
+    {% block title %}
+    {% endblock %}NEXTAGRAM
+  </title>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg" style="background-color:lavenderblush; color:pink">
+    <a class="navbar-brand" href="#" style="color:deeppink">Nextagram</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{{url_for('home')}}" style="color:deeppink">Homepage <span
+              class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="{{url_for('users.new')}}" class="btn btn-link" style="color:deeppink; text-decoration:none;">Sign
+            Up
+            Here</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" style="color:deeppink">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input style="border:deeppink 2px solid" class="form-control mr-sm-2" type="search" placeholder="Search"
+          aria-label="Search">
+        <button style="color:deeppink; border:deeppink 1px solid" class="btn my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class="flashes m-4">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+  {% for error in errors if errors|length > 0 %}
+  <li>{{error}}</li>
+  {% endfor %}
+
+  {% block content %}
+  {% endblock %}
+
+
+
+  <footer>
+    Made with &hearts; at <a target="_blank"
+      href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT
+      Academy</a>
+  </footer>
+</body>
+
+<style>
+  .form-control::placeholder {
+    color: hotpink;
+  }
+
+  .form-control:hover {
+    cursor: url("{{url_for('static', filename="icons8-cursor-64.png")}}"), auto;
+  }
+</style>
+
 </html>

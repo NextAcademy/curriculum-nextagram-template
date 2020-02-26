@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template
-
+from flask import Flask, Blueprint, render_template, request, flash, url_for, redirect
+from models.user import User
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -13,7 +13,15 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
-    pass
+    username = request.form.get("username")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    user = User(username=username, email=email, password=password)
+    if user.save():
+        flash(f"Saved user: {user.username}")
+        return redirect(url_for("users.new"))
+    else:
+        return render_template('users/new.html', errors=user.errors)
 
 
 @users_blueprint.route('/<username>', methods=["GET"])

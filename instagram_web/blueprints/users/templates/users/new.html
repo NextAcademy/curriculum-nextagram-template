@@ -1,1 +1,20 @@
-<h1>Users#new</h1>
+{% extends '_layout.html' %}
+
+{%block content%}
+
+<h1 style="padding:10px">User Sign Up</h1>
+<div style="padding-left: 10px;">
+  <form method="post" action="{{url_for('users.create')}}">
+    <div class="col-6 form-group">
+      <p>Username</p>
+      <input type="text" class="form-control" name="username">
+      <p>Email</p>
+      <input type="email" class="form-control" name="email">
+      <p>Password</p>
+      <input type="password" class="form-control" name="password">
+    </div>
+    <button type="submit" class="btn btn-danger">Submit</button>
+  </form>
+</div>
+
+{%endblock%}
