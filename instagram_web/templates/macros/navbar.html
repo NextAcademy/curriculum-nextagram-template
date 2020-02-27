@@ -13,7 +13,7 @@
                 <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
             </li>
             <!-- CHANGE LINK FROM SIGNIN TO LOGOUT WHEN USER IS LOGGED IN-->
-            {% if session['user']%}
+            {% if current_user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('sessions.logout') }}">Logout</a>
             </li>
@@ -27,10 +27,10 @@
             {% endif %}
         </ul>
 
-        <!------------------DISPLAY NAME OF LOGGED IN USER ------>
-        {% if session["name"]%}
+        <!-- ----------------DISPLAY NAME OF LOGGED IN USER ------>
+        {% if current_user.is_authenticated %}
         <span class="navbar-text">
-            Welcome back {{session["name"]}}
+            Welcome back {{current_user.name}}
         </span>
         {% endif %}
         <!-- <li class="nav-item dropdown">
