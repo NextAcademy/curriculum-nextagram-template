@@ -1,0 +1,21 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block header %}
+<h1>Users index.</h1>
+{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div>
+    Hello, {{current_user.username}}
+</div>
+{% endif %}
+
+<a href="{{url_for('sessions.logout')}}"">
+    Logout
+</a>
+{% endblock %}
