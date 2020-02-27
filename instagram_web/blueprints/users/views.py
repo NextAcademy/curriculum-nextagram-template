@@ -1,7 +1,8 @@
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from models.user import User
 from werkzeug.security import generate_password_hash
+from flask_login import login_user, login_required, current_user
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -35,8 +36,18 @@ def create():
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
+@login_required
 def show(username):
-    pass
+    user = User.get_or_none(User.name == username)
+
+    if current_user:
+        if not user:
+            flash(f"You're in the wrong neighborhood boy")
+            return redirect(url_for("home"))
+        else:
+            return render_template("users/show.html", user=user)
+    else:
+        return abort(401)
 
 
 @users_blueprint.route('/', methods=["GET"])
