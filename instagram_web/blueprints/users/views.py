@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+from flask_login import current_user, login_user
 
 
 users_blueprint = Blueprint('users',
@@ -26,6 +27,7 @@ def create():
             new_user = User(email=em, username=us, password=hashed_pa)
 
             if new_user.save():
+                login_user(new_user)
                 return redirect(url_for('users.index'))
             else:
                 return render_template('users/new.html', errors=new_user.errors)
@@ -52,9 +54,11 @@ def index():
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
-    pass
+    if current_user.id == id:
+        return render_template('users/edit.html')
+    else:
+        return "soz, but no access for u"
 
 
-@users_blueprint.route('/<id>', methods=['POST'])
-def update(id):
-    pass
+# @users_blueprint.route('/<id>', methods=['POST'])
+# def update(id):
