@@ -7,3 +7,30 @@ blueprnts > Users > views.py (code here) > templates > users
 views.py (all code here)
 insdie templates folder there is a another users folder. where all html is kept
 
+SIGN IN--
+
+two ways.first way is sesions
+
+save user id into session, browser cookies. 
+
+Implement sessions form Flask, code given there
+
+request.method > change to authenticate, check if user = userin database
+save session['username'] as user id
+
+AFTER LOG IN REDIRECT TO HOMEPAGE FOR NOW. DOING PROFILE PAGE TMROW
+
+logout.
+
+sessions.pop(userid) will logout user
+
+flask login
+insert code snippers into snippet.py
+since peewee, use user.get_by_id instead of user.id  
+
+
+can use {% blabla.is_authenticated%} to change stuff when user logged in, like logout showing
+{%endif%}
+o
+
+redirect after post, render_template just renders the template within SAME url
