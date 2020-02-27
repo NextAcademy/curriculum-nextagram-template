@@ -9,9 +9,13 @@ Homepage
 {% endblock %}
 
 {% block content %}
-{% if username|length > 0 %}
+{% if current_user.is_authenticated %}
 <div>
-    Hello, {{username}}
+    Hello, {{current_user.username}}
 </div>
 {% endif %}
+
+<a href="{{url_for('sessions.logout')}}"">
+    Logout
+</a>
 {% endblock %}
