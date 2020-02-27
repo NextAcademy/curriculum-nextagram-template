@@ -2,15 +2,13 @@
 
 {%block content%}
 
-<h1 style="padding:10px">User Sign Up</h1>
+<h1 style="padding:10px">User Log In</h1>
 <div style="padding-left: 10px;">
-  <form method="post" action="{{url_for('users.create')}}">
+  <form method="post" action="{{url_for('sessions.create')}}">
     <div class="col-6 form-group">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <p>Username</p>
       <input type="text" class="form-control" name="username">
-      <p>Email</p>
-      <input type="email" class="form-control" name="email">
       <p>Password</p>
       <input type="password" class="form-control" name="password">
     </div>

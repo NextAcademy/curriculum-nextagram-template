@@ -21,6 +21,7 @@ def create():
         flash(f"Saved user: {user.username}")
         return redirect(url_for("users.new"))
     else:
+        flash(f"Some error!")
         return render_template('users/new.html', errors=user.errors)
 
 
