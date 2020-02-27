@@ -5,8 +5,13 @@ Homepage
 {% endblock %}
 
 {% block header %}
+<h1>Users index.</h1>
 {% endblock %}
 
 {% block content %}
-<h1>Users index.</h1>
+{% if username|length > 0 %}
+<div>
+    Hello, {{username}}
+</div>
+{% endif %}
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -7,29 +7,6 @@ import re
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
-
-
-@users_blueprint.route('/sign_in', methods=['GET'])
-def sign_in():
-    return render_template('users/sign_in.html')
-
-
-@users_blueprint.route('/signed_in', methods=['POST'])
-def signed_in():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    if User.get_or_none(User.username == username):
-        user = User.get(User.username == username)
-        hashed_pass = user.password
-        if check_password_hash(hashed_pass, password):
-            flash('ye, you is in')
-            return redirect(url_for('users.index'))
-        else:
-            flash('right name, wrong pass')
-            return render_template('users/sign_in.html')
-    else:
-        flash("bruh, you don't exist")
-        return render_template('users/sign_in.html')
 
 
 @users_blueprint.route('/new', methods=['GET'])
@@ -66,7 +43,11 @@ def show(username):
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return render_template(url_for('users/index.html')
+    if 'user_id' in session:
+        name = User.get(User.id == session['user_id']).username
+        return render_template('users/index.html', username=name)
+    else:
+        return render_template('users/index.html')
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
