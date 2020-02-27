@@ -5,7 +5,7 @@ Homepage
 {% endblock %}
 
 {% block header %}
-<h1>Users index.</h1>
+<!-- <h1>Users index.</h1> -->
 {% endblock %}
 
 {% block content %}
@@ -14,8 +14,8 @@ Homepage
     Hello, {{current_user.username}}
 </div>
 {% endif %}
-
+<!-- 
 <a href="{{url_for('sessions.logout')}}"">
     Logout
-</a>
+</a> -->
 {% endblock %}
