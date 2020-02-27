@@ -1,6 +1,6 @@
 from flask import Flask, session, redirect, url_for, escape, request, Blueprint, render_template, request, flash
 from models.user import User
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 sessions_blueprint = Blueprint('sessions',
                                __name__,
@@ -16,19 +16,24 @@ def new():
 def sign_in():
     login_email = request.form.get("login_email")
     login_password = request.form.get("login_password")
+    # passw = User.get_or_none(User.password == login_password)
 
     user = User.get_or_none(User.email == login_email)
+
+    checked = check_password_hash(user.password, login_password)
+
     if not user:  # CHANGE TO == USERID
         flash(f"Email does not exist")
         return redirect(url_for('sessions.new'))
     else:
-        passw = User.get_or_none(User.password == login_password)
-        if not passw:
+
+        if not checked:
             flash(f"Password does not match our records")
             return redirect(url_for('sessions.new'))
         else:
             # session cannot store a whole python object, just the attritbute, so choose between id, name, email, etc
             session["user"] = user.id
+            session["name"] = user.name
             flash(f"Login sucessful")
             # return redirect(url_for('sessions.new'))
             return redirect(url_for('home'))
