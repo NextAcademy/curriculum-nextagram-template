@@ -56,10 +56,43 @@ def index():
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
-    pass
+    user = User.get_or_none(User.id == id)
+
+    if current_user:
+        if not user:
+            flash(f"You're in the wrong neighborhood boy")
+            return redirect(url_for("home"))
+        else:
+            return render_template("users/edit.html", user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
+@login_required
 def update(id):
-    pass
+    if not str(current_user.id) == id:
+        flash(f"You are not authorized to update this page")
+        return redirect(url_for('users.edit', id=id))
+
+    user = User.get_or_none(User.id == id)
+
+    if current_user:
+        if not user:
+            flash(f"You're in the wrong neighborhood boy")
+            return redirect(url_for("users.edit"))
+        else:
+            new_name = request.form.get("new_name")
+            new_email = request.form.get("new_email")
+
+            user.name = new_name
+            user.email = new_email
+
+            if user.save():
+                flash(f"User edits successfully made")
+                return redirect(url_for("users.edit", id=user.id))
+            else:
+                return render_template('users/edit.html', errors=user.errors)
+            # pass handles the logic?? validation for both edit and update?
+    # else:
+    #     return abort(401)

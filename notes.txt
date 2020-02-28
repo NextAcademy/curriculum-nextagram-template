@@ -34,3 +34,23 @@ can use {% blabla.is_authenticated%} to change stuff when user logged in, like l
 o
 
 redirect after post, render_template just renders the template within SAME url
+
+-----------------DAY 3---------------------
+
+need form in user profile. 
+use @login_required to protect from non user
+
+pass user=user into the edit.htmlso can manipulate the variables for editing
+
+update def has login required, 
+check again if correct user, same metho as def show
+.takes in the logic for the edit.html. keep forms as post so details arent exposed on url
+DONT DO PASSWORD IN EDIT.HTML. leave that later on. very very high risk. just change username,email,pic if u want to
+
+in form value, input the {{user.name or email or whatever}}. if not even change, the same value will still go thru the update, will be reasigned to what it was before. leave name= as usename,no {}
+
+
+in user.py validate for existing username. also existing password as well.
+
+validations only run with .save. update will bypass .update. prefered is .save. .update meant for bulk update on multiple reocrds that arent sensitive
+
