@@ -1,0 +1,17 @@
+{% extends '_layout.html' %}
+
+{%block content%}
+
+<h1 style="padding:10px">{{current_user.username}}'s Profile Page</h1>
+<div style="padding-left: 10px;">
+  <form method="post" action="{{url_for('users.profile',id=current_user.id)}}">
+    <div class="col-6 form-group">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <p>Upload image</p>
+      <input type="text" class="form-control" name="username">
+    </div>
+    <button type="submit" class="btn btn-danger">Upload now</button>
+  </form>
+</div>
+
+{%endblock%}

@@ -23,3 +23,13 @@ footer a {
   color: hotpink ;
 
 }
+
+.nav-item:hover {
+  transform: scale(1.2);
+  color: black;
+  z-index: 99;
+}
+
+.usernav {
+  margin: 10px;
+}

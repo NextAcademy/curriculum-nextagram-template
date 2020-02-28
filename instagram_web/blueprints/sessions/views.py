@@ -27,10 +27,10 @@ def create():
 
     if not check_password_hash(password_to_check, password):
         flash("Something wrong with your password. Please double check again.")
-        render_template(url_for("home"))
+        return redirect(url_for("home"))
 
     login_user(user_exist)
-    flash("You are now logged in!")
+    flash(f"You are now logged in! Hi {username}!")
     return redirect(url_for("home"))
 
 
