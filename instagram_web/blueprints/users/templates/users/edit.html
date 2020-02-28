@@ -9,9 +9,10 @@ Edit Profile
 
 {% block content %}
 <div>
-    Only change fields which you want to update.
+    <b>Only change fields which you want to update.</b>
 </div>
-<form action='{{url_for("users.update")}}' method='POST'>
+<hr>
+<form action='{{url_for("users.update", id = current_user.id)}}' method='POST'>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <div class="form-group">
         <label for="exampleInputEmail1">New Email Address:</label>
@@ -34,4 +35,7 @@ Edit Profile
     </div> -->
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+{% for error in errors %}
+{{error}}
+{% endfor %}
 {% endblock %}

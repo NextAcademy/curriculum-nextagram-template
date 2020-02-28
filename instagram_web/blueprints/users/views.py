@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+import datetime
 from flask_login import current_user, login_user
 
 
@@ -54,11 +55,35 @@ def index():
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
-    if current_user.id == id:
+    if id == str(current_user.id):
         return render_template('users/edit.html')
     else:
         return "soz, but no access for u"
 
 
-# @users_blueprint.route('/<id>', methods=['POST'])
-# def update(id):
+@users_blueprint.route('/<id>', methods=['POST'])
+def update(id):
+    email = request.form.get('email')
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user = User.get_by_id(id)
+    user.email = email
+    user.username = username
+    if len(password) > 0:
+        if len(password) > 6:
+            if re.search(r'[A-Z]', password) and re.search(r'[a-z]', password) and re.search(r'\W', password):
+                hashed_pass = generate_password_hash(password)
+                user.password = hashed_pass
+        else:
+            return render_template('users/edit.html', errors='The password requires uppercase, lowercase and at least one special character')
+    else:
+        return render_template('users/edit.html', errors='That password is too short!')
+
+    if user.save():
+        flash('Updated successfully!')
+        return redirect(url_for('users.edit', id=current_user.id))
+
+    else:
+        flash('failwhale')
+        return render_template('users/edit.html')
