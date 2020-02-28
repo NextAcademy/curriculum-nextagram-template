@@ -5,9 +5,8 @@ Sign Up
 {% endblock %}
 
 {% block header %}
-{% if errors|length > 0%}
-{{errors}}
-{% endif %}
+
+
 {% endblock %}
 
 {% block content %}
@@ -29,4 +28,7 @@ Sign Up
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+{% for error in errors %}
+{{error}}
+{% endfor %}
 {% endblock %}

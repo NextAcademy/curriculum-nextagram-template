@@ -8,6 +8,18 @@ Edit Profile
 {% endblock %}
 
 {% block content %}
+
+<img src="https://nextagram-shen.s3.amazonaws.com/{{current_user.image}}" alt="user profile">
+{{error}}
+<form action="{{url_for('users.upload', id = current_user.id)}}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label for="user_file">Upload Your File</label>
+    <br></br>
+    <input type="file" name="user_file">
+    <br></br>
+    <button type="submit">Upload</button>
+
+</form>
 <div>
     <b>Only change fields which you want to update.</b>
 </div>

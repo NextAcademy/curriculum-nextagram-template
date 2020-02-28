@@ -4,6 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
 from flask_login import current_user, login_user
+from werkzeug.utils import secure_filename
+from helpers import upload_file_to_s3
+from config import S3_BUCKET
 
 
 users_blueprint = Blueprint('users',
@@ -41,7 +44,7 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    pass
+    return render_template("users/profile.html")
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -61,7 +64,7 @@ def edit(id):
         return "soz, but no access for u"
 
 
-@users_blueprint.route('/<id>', methods=['POST'])
+@users_blueprint.route('/<id>/update', methods=['POST'])
 def update(id):
     email = request.form.get('email')
     username = request.form.get('username')
@@ -75,10 +78,10 @@ def update(id):
             if re.search(r'[A-Z]', password) and re.search(r'[a-z]', password) and re.search(r'\W', password):
                 hashed_pass = generate_password_hash(password)
                 user.password = hashed_pass
+            else:
+                return render_template('users/edit.html', errors='The password requires uppercase, lowercase and at least one special character')
         else:
-            return render_template('users/edit.html', errors='The password requires uppercase, lowercase and at least one special character')
-    else:
-        return render_template('users/edit.html', errors='That password is too short!')
+            return render_template('users/edit.html', errors='That password is too short!')
 
     if user.save():
         flash('Updated successfully!')
@@ -87,3 +90,18 @@ def update(id):
     else:
         flash('failwhale')
         return render_template('users/edit.html')
+
+
+@users_blueprint.route('/<id>/upload', methods=['POST'])
+def upload(id):
+    file = request.files.get('user_file')
+    file_name = secure_filename(file.filename)
+    user = User.get_by_id(current_user.id)
+    user.image = file_name
+
+    error = str(upload_file_to_s3(file, S3_BUCKET))
+
+    if user.save():
+        return redirect(url_for('users.edit', id=id))
+    else:
+        return render_template('users/index.html', error=error)
