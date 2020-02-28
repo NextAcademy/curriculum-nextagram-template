@@ -1,0 +1,13 @@
+{%extends "_layout.html" %} {%block content%}
+
+<h2>
+  Hello
+</h2>
+
+<form action="{{url_for('sessions.logout')}}" method="post">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+  <button type="button, submit">
+    Log Out
+  </button>
+</form>
+{%endblock%}

@@ -1,0 +1,141 @@
+{% macro signup() %}
+
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">
+          Log In
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('sessions.sign_in')}}">
+            <div class="form-group">
+                <label for="username" class="col-form-label">Username</label>
+                <input  type="hidden" name="csrf_token"  value="{{csrf_token()}}"/>
+            <input name="logUser" type="text" class="form-control" id="user-name" />
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-form-label">Password</label>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="logPass" type="text" class="form-control" id="pass-word" />
+          </div>
+        </div>
+        <div class="form-group">
+            <button
+            type="button"
+            class="btn btn-primary ml-3"
+            data-toggle="modal"
+            data-target="#signUpModal"
+            >
+            Sign Up
+        </button>
+    </div>
+    
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+        </button>
+        <button type="button, submit" class="btn btn-primary">Log In</button>
+    </div>
+</form>
+</div>
+</div>
+</div>
+<div
+  class="modal fade"
+  id="signUpModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New User</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('users.create')}}">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Username</label>
+            <input
+              name="username"
+              type="text"
+              class="form-control"
+              id="recipient-name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Email</label>
+            <input
+              name="email"
+              type="text"
+              class="form-control"
+              id="recipient-name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Password</label>
+            <input
+              name="password"
+              type="text"
+              class="form-control"
+              id="recipient-name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label"
+              >Confirm Password</label
+            >
+            <input type="text" class="form-control" id="recipient-name" />
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+            </button>
+            <button type="button, submit" class="btn btn-primary">
+                Sign Up
+            </button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+{% endmacro %}
+
+<!-- u_name = request.form.get("username")
+p_word = request.form.get("password")
+e_mail = request.form.get("email")
+c_user = User(name=u_name, password=p_word, email=e_mail)
+pass
+
+c_user.save()
+
+return redirect(url_for('users.new')) -->
