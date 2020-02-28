@@ -3,6 +3,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from models.user import User
 from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, current_user
+from werkzeug.utils import secure_filename
+from instagram_web.util.s3_uploader import upload_files_to_s3
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -97,3 +99,29 @@ def update(id):
             # pass handles the logic?? validation for both edit and update?
     # else:
     #     return abort(401)
+
+
+@users_blueprint.route('/upload', methods=['POST'])
+@login_required
+def upload():
+    if not 'profile_image' in request.files:
+        flash('No image has been provided')
+        return redirect(url_for('users.edit', id=current_user.id))
+
+    file = request.files.get('profile_image')
+
+    file.filename = secure_filename(file.filename)
+
+# how is the S3 triggering?
+    if not upload_files_to_s3(file):
+        flash("Oops something went wrong when uploading")
+        return redirect(url_for('users.edit', id=current_user.id))
+
+    user = User.get_or_none(User.id == current_user.id)
+
+    user.profile_image = file.filename
+
+    user.save()
+
+    flash("Image upload Sucess!")
+    return redirect(url_for('users.edit', id=user.id))

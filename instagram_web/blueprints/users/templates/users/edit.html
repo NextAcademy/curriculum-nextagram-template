@@ -10,6 +10,20 @@ Sign Up
 {% block content %}
 <h1>Edit User Page</h1>
 
+<!-- DISPLAY PREVIEW OF IMAGE TO BE UPLOADED HERE? OR JUST DISPLAY PLACEHOLDER IF NONE
+-->
+{% if user.profile_image %}
+<img src="{{user.profile_image_url}}" alt="profile placeholder">
+{% else %}
+<img src="{{url_for('static', filename='images/placeholder.png')}}" alt=" profile placeholder">
+{% endif %}
+<form id="image-form" action="{{url_for('users.upload')}}" method="post" enctype="multipart/form-data">
+    <input type="file" class="form-control" name="profile_image" id="image-file">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <button id="change-profile">Change Profile Image</button>
+    <button id="upload-button">Upload Profile Image</button>
+</form>
+
 
 <form method="post" action="{{url_for('users.update', id=user.id)}}">
     <div class="form-group">

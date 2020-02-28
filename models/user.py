@@ -1,6 +1,7 @@
 from models.base_model import BaseModel
 import peewee as pw
 from werkzeug.security import generate_password_hash
+from playhouse.hybrid import hybrid_property
 import re
 
 
@@ -8,9 +9,16 @@ class User(BaseModel):
     name = pw.CharField(unique=False)
     email = pw.CharField(unique=True)
     password = pw.CharField(null=False)
+    profile_image = pw.CharField(null=True)
 # add in signup aand password.
 
 # -----------------FIGURE OUT VALIDATION AFTER ---
+
+    @hybrid_property
+    def profile_image_url(self):
+        # if changed provider, just need to change the url
+        if self.profile_image:
+            return f"https://nextacademyhf.s3-ap-southeast-1.amazonaws.com/{self.profile_image}"
 
     def is_authenticated(self):
         return True
@@ -50,12 +58,13 @@ class User(BaseModel):
             else:
                 self.password = generate_password_hash(self.password)
 
+    # BELOW IS OUTDATED DUE TO ABOVE EMAIL VALIDATION #
         # implement the validation from yesterday
-        duplicate_email = User.get_or_none(User.email == self.email)
-        # pass_check = User.get_or_none(User.password == self.password)
-        if duplicate_email:
-            self.errors.append('Email already taken')
-        else:
-            print('Validation is now being implemented')
+        # duplicate_email = User.get_or_none(User.email == self.email)
+        # # pass_check = User.get_or_none(User.password == self.password)
+        # if duplicate_email:
+        #     self.errors.append('Email already taken')
+        # else:
+        #     print('Validation is now being implemented')
 
         return True
