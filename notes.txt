@@ -54,3 +54,62 @@ in user.py validate for existing username. also existing password as well.
 
 validations only run with .save. update will bypass .update. prefered is .save. .update meant for bulk update on multiple reocrds that arent sensitive
 
+AMAZON picture
+
+edit html has the profile image
+
+in users/views.py
+    users.upload 
+    if not profile imagein request.files:
+    error
+    return redirect
+
+    get files as request.files.get('profile_image')
+
+    file.filename = secure_filename(file.filename) < instance of a file class? when dealing with files have nospacesin names. secure_filename is a method in werkzeug.replaces whitespacein filename with underscore
+
+    if not  upload_file_to_s3(file):
+
+
+inside util has s3_uploader.py
+import boto3, botocore
+from config import S3_KEY, S3_SECRET, S3_BUCKET
+
+s3 = boto3.client(
+   "s3",
+   aws_access_key_id=Config.AWS_ACCESS_KEY,
+   aws_secret_access_key=Config.AWS_ACCESS_KEY
+)
+
+def upload_file_to_s3(file):
+    try:
+        s3.upload_fileobj(
+            file,
+            Config.AWS_BUCKET_NAME,
+            file.filename,
+            ExtraArgs={
+                "ACL":"public-read",
+                "ContentType": file.content_type
+            }
+        )
+
+    return True
+
+
+
+
+in config.py under config
+AWS_ACCESS_KEY=os.getenv('AWS_ACCESS_KEY)
+AWS_SECRET_KEY=
+AWS_BUCKET_KEY=
+
+
+in views import 
+
+in users.py
+
+new profile_image =pw.Charfield(null=True)
+
+@hybrid_property
+def profile_image_url(self):
+    return f"_____{self.profile image}"

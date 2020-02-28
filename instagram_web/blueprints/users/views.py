@@ -58,6 +58,10 @@ def index():
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 @login_required
 def edit(id):
+    if not str(current_user.id) == id:
+        flash(f"You are not authorized to update this page")
+        return redirect(url_for('users.edit', id=current_user.id))
+
     user = User.get_or_none(User.id == id)
 
     if current_user:
@@ -71,9 +75,6 @@ def edit(id):
 @users_blueprint.route('/<id>', methods=['POST'])
 @login_required
 def update(id):
-    if not str(current_user.id) == id:
-        flash(f"You are not authorized to update this page")
-        return redirect(url_for('users.edit', id=id))
 
     user = User.get_or_none(User.id == id)
 

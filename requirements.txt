@@ -1,9 +1,12 @@
 astroid==2.3.3
 autopep8==1.4.3
+boto3==1.12.9
+botocore==1.15.9
 certifi==2018.11.29
 Click==7.0
 colorama==0.4.1
 cssmin==0.2.0
+docutils==0.15.2
 Flask==1.0.2
 Flask-Assets==0.12
 Flask-Cors==3.0.7
@@ -12,6 +15,7 @@ Flask-WTF==0.14.3
 isort==4.3.21
 itsdangerous==1.1.0
 Jinja2==2.10
+jmespath==0.9.5
 jsmin==2.2.2
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.0
@@ -21,9 +25,12 @@ peewee-db-evolve==3.7.0
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
 pylint==2.4.4
+python-dateutil==2.8.1
 python-dotenv==0.10.1
+s3transfer==0.3.3
 six==1.12.0
 typed-ast==1.4.1
+urllib3==1.25.8
 webassets==0.12.1
 Werkzeug==0.14.1
 wincertstore==0.2
