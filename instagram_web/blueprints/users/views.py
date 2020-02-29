@@ -96,13 +96,14 @@ def update(id):
 def upload(id):
     file = request.files.get('user_file')
     file_name = secure_filename(file.filename)
-    if file_name != '' and allowed_file(file)
-    user = User.get_by_id(current_user.id)
-    user.image = file_name
+    if file_name != '' and allowed_file(file):
+        user = User.get_by_id(current_user.id)
+        user.image = file_name
+        error = str(upload_file_to_s3(file, S3_BUCKET))
 
-    error = str(upload_file_to_s3(file, S3_BUCKET))
-
-    if user.save():
-        return redirect(url_for('users.edit', id=id))
+        if user.save():
+            return redirect(url_for('users.edit', id=id))
+        else:
+            return render_template('users/index.html', error=error)
     else:
-        return render_template('users/index.html', error=error)
+        return redirect(url_for('users.edit'))
