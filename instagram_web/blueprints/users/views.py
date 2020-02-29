@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, allowed_file
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -96,6 +96,7 @@ def update(id):
 def upload(id):
     file = request.files.get('user_file')
     file_name = secure_filename(file.filename)
+    if file_name != '' and allowed_file(file)
     user = User.get_by_id(current_user.id)
     user.image = file_name
 
