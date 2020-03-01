@@ -40,7 +40,8 @@ class User(BaseModel, UserMixin):
             if user_exist:
                 self.password = self.password
             else:
-                self.password = generate_password_hash(self.password)
+                if not self.id:
+                    self.password = generate_password_hash(self.password)
 
         # @hybrid_property
         # def profile_image_url(self):
