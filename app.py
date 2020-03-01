@@ -2,6 +2,7 @@ import os
 import config
 from flask import Flask
 from models.base_model import db
+from config import Config
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')

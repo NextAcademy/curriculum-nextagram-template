@@ -1,17 +1,77 @@
 {% extends '_layout.html' %}
 
 {%block content%}
-
-<h1 style="padding:10px">{{current_user.username}}'s Profile Page</h1>
-<div style="padding-left: 10px;">
-  <form method="post" action="{{url_for('users.profile',id=current_user.id)}}">
-    <div class="col-6 form-group">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-      <p>Upload image</p>
-      <input type="text" class="form-control" name="username">
+{% if request.url != "https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" %}
+<div style="display:flex;flex-direction:row; padding-top: 50px; padding-left:150px;">
+  <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+    <div style="display:flex;">
+      <div class="rounded-circle"
+        style=" background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;padding:3px;">
+        <div style="border-radius:50%; border: 1px solid pink; width: 200px; height: 200px; background-color: white;">
+          <img class="rounded-circle" style="width: 198px; height: 198px; object-fit: cover;"
+            src="https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
+        </div>
+      </div>
+      <div
+        style="width:30px; height:30px; display:flex; justify-content: center;
+    background: linear-gradient(to right, red, orange,red); border-radius: 50%; border: 1px white solid; margin-top: 170px; margin-left: -50px;">
+        <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+          <input type="file" name="user_file" id="file" class="inputfile" />
+          <label for="file">+</label>
+          <br>
+          <!-- <button type="submit">Upload</button> -->
+        </form>
+      </div>
     </div>
-    <button type="submit" class="btn btn-danger">Upload now</button>
-  </form>
+    <div style="display:flex;flex-direction:row;">
+      <div style="margin-left: 3em; margin-top: 2em">
+        <h1 style="font-weight: bold">{{current_user.username}}</h1>
+        <p> {{current_user.username}}</p>
+        <Button class="btn btn-primary" style="width:100px">Follow</Button>
+      </div>
+      <div style="margin-top: 1.5cm; margin-left: 3cm;">
+        <div style="margin-left: 0.5em;">
+          <h1>{{current_user.id}}</h1>
+        </div>
+        <div style="display: flex; justify-content:center;">
+          <h6>Posts</h6>
+        </div>
+      </div>
+      <div style="margin-top: 1.5cm; margin-left: 2cm;">
+        <div style="margin-left: 0.5em;">
+          <h1>500</h1>
+        </div>
+        <div style="display: flex; justify-content: center;">
+          <h6>Followers</h6>
+        </div>
+      </div>
+      <div style="margin-top: 1.5cm; margin-left: 2cm;">
+        <div style="margin-left: 0.5em;">
+          <h1>12</h1>
+        </div>
+        <div style="display: flex; justify-content: center;">
+          <h6>Following</h6>
+        </div>
+      </div>
+    </div>
 </div>
-
+<div style="display: flex; justify-content: center; margin-top: 30px; margin-right: 80px">
+  <a href="{{url_for('users.show',username=current_user.username)}}" class="btn btn-link"
+    style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 860px; display: flex; justify-content: center;">Edit
+    Details</a>
+</div>
+{% else %}
+<div>
+  <img style="width: 200px;"
+    src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
+</div>
+</form>
+<form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+  <div>
+    <button type="submit">Upload</button>
+  </div>
+</form>
+{% endif %}
 {%endblock%}

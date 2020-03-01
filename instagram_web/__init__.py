@@ -1,5 +1,6 @@
+from s3_uploader import *
 from app import app
-from flask import render_template, abort, flash
+from flask import render_template, abort, flash, request, redirect, url_for
 from instagram_web.blueprints.users.views import users_blueprint
 from instagram_web.blueprints.sessions.views import sessions_blueprint
 from flask_assets import Environment, Bundle
@@ -7,6 +8,7 @@ from .util.assets import bundles
 from models.user import User
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
+from werkzeug.utils import secure_filename
 
 assets = Environment(app)
 assets.register(bundles)

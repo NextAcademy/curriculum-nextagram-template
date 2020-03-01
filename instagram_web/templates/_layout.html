@@ -22,7 +22,7 @@
 
   {% block header %}
   {% endblock %}
-<script src="https://kit.fontawesome.com/1e5c2620c9.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/1e5c2620c9.js" crossorigin="anonymous"></script>
   <title>
     {% block title %}
     {% endblock %}NEXTAGRAM
@@ -32,7 +32,7 @@
 
 <body>
 
-{{ navbar(current_user) }}
+  {{ navbar(current_user) }}
 
 
   {% with messages = get_flashed_messages() %}
@@ -55,9 +55,7 @@
 
 
   <footer>
-    Made with &hearts; at <a target="_blank"
-      href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT
-      Academy</a>
+    Made with &hearts; by <a target="_blank" href="https://www.instagram.com/jynmun/">Jyn-Mun</a>
   </footer>
 </body>
 
@@ -67,7 +65,8 @@
   }
 
   .form-control:hover {
-    cursor: url("{{url_for('static', filename="icons8-cursor-64.png")}}"), auto;
+    cursor: url("{{url_for('static', filename="icons8-cursor-64.png")}}"),
+    auto;
   }
 </style>
 

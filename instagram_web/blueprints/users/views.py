@@ -1,6 +1,9 @@
 from flask import Flask, Blueprint, render_template, request, flash, url_for, redirect
 from models.user import User
 from flask_login import current_user
+from werkzeug.utils import secure_filename
+from s3_uploader import upload_file_to_s3
+from config import Config
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -59,3 +62,30 @@ def update(id):
         return redirect(url_for("home"))
     else:
         return "error"
+
+
+@users_blueprint.route('/upload', methods=['POST'])
+def upload():
+    # if not 'profile_image' in request.files:
+    #     flash('No image has been provided', 'warning')
+    #     return redirect(url_for('profile', id=current_user.id))
+
+    file = request.files.get('user_file')
+
+    if file:
+        if not upload_file_to_s3(file):
+            file.filename = secure_filename(file.filename)
+            flash('Something wrong', 'warning')
+            return redirect(url_for('users.profile', id=current_user.id))
+
+        user = User.get_or_none(User.id == current_user.id)
+
+        user.profile_image = file.filename
+
+        user.save()
+    else:
+        flash("file can't be uploaded", 'warning')
+        return redirect(url_for('users.profile', id=current_user.id))
+
+    flash('Successfully updated')
+    return redirect(url_for('home'))

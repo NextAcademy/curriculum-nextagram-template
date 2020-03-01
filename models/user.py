@@ -1,6 +1,7 @@
 import peewee as pw
 from models.base_model import BaseModel
 from werkzeug.security import generate_password_hash
+from playhouse.hybrid import hybrid_property
 import re
 from flask_login import UserMixin
 from flask import Flask, request, flash
@@ -10,6 +11,7 @@ class User(BaseModel, UserMixin):
     username = pw.CharField(null=False)
     email = pw.CharField(null=False)
     password = pw.CharField()
+    profile_image = pw.CharField(null=True)
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
@@ -39,3 +41,10 @@ class User(BaseModel, UserMixin):
                 self.password = self.password
             else:
                 self.password = generate_password_hash(self.password)
+
+        # @hybrid_property
+        # def profile_image_url(self):
+        #     if self.profile_image:
+        #         return f"https://blahblahurl/(self.profile_image)"
+        #     else:
+        #         return f"https://blahblahblahblah/placeholder.png"
