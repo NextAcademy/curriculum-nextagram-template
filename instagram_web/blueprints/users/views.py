@@ -112,24 +112,3 @@ def upload(id):
     else:
         flash('File has no name!')
         return redirect(url_for('users.edit'))
-
-
-@users_blueprint.route('/<username>/uploads', methods=['POST'])
-def uploads(username):
-    if "user_file" not in request.files:
-        flash("No file was chosen! :O")
-        return redirect(url_for('users.show', username=username))
-    file = request.files.get('user_file')
-    file_name = secure_filename(file.filename)
-    if file_name != '':
-        error = str(upload_file_to_s3(file, S3_BUCKET))
-        new_image = Image(
-            source=S3_LOCATION + file_name, user_id=current_user.id)
-
-        if new_image.save():
-            return redirect(url_for('users.show', username=username))
-        else:
-            return render_template('users/profile.html', error=error)
-    else:
-        flash('File has no name!')
-        return redirect(url_for('users.show', username=username))
