@@ -4,6 +4,8 @@ from flask_login import current_user
 from werkzeug.utils import secure_filename
 from s3_uploader import upload_file_to_s3
 from config import Config
+from models.images import Image
+from config import Config
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -45,7 +47,9 @@ def index():
 
 @users_blueprint.route('/<id>/profile', methods=['GET'])
 def profile(id):
-    return render_template('users/profilepage.html')
+    user = User.get(User.id == id)
+    image_list = Image.select().where(Image.user_id == user.id)
+    return render_template('users/profilepage.html',  image_list=image_list)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])

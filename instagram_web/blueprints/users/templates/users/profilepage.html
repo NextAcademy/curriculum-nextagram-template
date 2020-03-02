@@ -1,27 +1,57 @@
 {% extends '_layout.html' %}
 
 {%block content%}
-{% if request.url != "https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" %}
-<div style="display:flex;flex-direction:row; padding-top: 50px; padding-left:150px;">
-  <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
-    <div style="display:flex;">
-      <div class="rounded-circle"
-        style=" background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;padding:3px;">
-        <div style="border-radius:50%; border: 1px solid pink; width: 200px; height: 200px; background-color: white;">
-          <img class="rounded-circle" style="width: 198px; height: 198px; object-fit: cover;"
-            src="https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
-        </div>
+{% if current_user %}
+<div style="box-sizing: border-box;">
+  <div class="row px-5" style="display:flex;flex-direction:row; padding-top: 50px">
+    <div class="col-lg-4">
+      <!-- <div action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data"> -->
+      <!-- <div style="display:flex;"> -->
+
+      <!-- <div class="rounded-circle" -->
+      <!-- style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;padding:3px; height:200px; width:200px"> -->
+      <div style="border-radius:50%; width: 200px; height: 200px; margin-left:220px">
+        <img class="img-thumbnail rounded-circle"
+          style="width: 190px; height:190px; object-fit: cover; border-radius: 50%; margin-top: 20px"
+          src="https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
       </div>
-      <div
-        style="width:30px; height:30px; display:flex; justify-content: center;
-    background: linear-gradient(to right, red, orange,red); border-radius: 50%; border: 1px white solid; margin-top: 170px; margin-left: -50px;">
-        <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-          <input type="file" name="user_file" id="file" class="inputfile" />
-          <label for="file">+</label>
-          <br>
-          <!-- <button type="submit">Upload</button> -->
-        </form>
+      <div>
+        <button style="position: absolute; top:-0%; left: 100%; width:30px; height:30px; display:flex; justify-content: center;
+        border-radius: 50%;  margin-top: 170px; margin-left: -60px;" type="button" class="rounded-circle"
+          id="plus-modal" data-toggle="modal" data-target="#plusModal">
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="plusModalLongTitle"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Select a profile image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="display: flex; justify-content: center;">
+            <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+              <input type="file" name="user_file" class="profileinput" id="profileinput" />
+              <label style="width:200px; height:10px" class="profilelabel" for="profileinput">Choose Image</label>
+              <br>
+              <button class="upload-profile" type="submit">Upload</button>
+            </form>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <h6 style="display: flex; justify-content: center;">Current Image:</h6>
+            <div style="display: flex; justify-content: center; padding-bottom:20px;">
+              <img style="max-width: 400px; max-height:400px;"
+                src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div style="display:flex;flex-direction:row;">
@@ -55,18 +85,81 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; margin-top: 30px;">
+    <a href="{{url_for('users.show',username=current_user.username)}}" id="edit-details" class="btn btn-link"
+      style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 860px; display: flex; justify-content: center;">Edit
+      Details</a>
+  </div>
+
+  <div class="row d-flex flex-column" style="margin-top: 50px; margin-left: 165px">
+    <div class="col-lg-5">
+      <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+        <div class="rounded-circle"
+          style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;width: 100px; height: 100px ">
+          <div class="rounded-circle" id="plus-highlight"
+            style="border-radius:50%; border: 1px solid pink; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+            <input type="file" name="user_file" id="plusfile" class="plusfile" />
+            <label style="font-weight:300;" for="plusfile">+</label>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-5">
+      <h6 style="font-weight:100; margin-left:132px; margin-top: 10px">New</h6>
+    </div>
+
+    <div
+      style="display: flex;padding-left: 160px; flex-wrap:wrap; justify-content:start; flex-direction:row; margin-left:-100px">
+      {% for image in image_list %}
+      <div
+        style="background-color:white;width:300px; height:300px; display: flex; object-fit: cover; justify-content:center; margin-right:1cm; margin-top:1cm">
+        <img style="max-height:300px; max-width: 300px;" src={{image.user_image}} />
+      </div>
+      {% endfor %}
+      <div class="add-image-div"
+        style=" width:300px; height:300px; margin-top:1cm; display:flex; justify-content:center; align-items: center;">
+        <button type="button" class="btn btn-link" id="add-image" data-toggle="modal" data-target="#exampleModal">
+          +
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="{{url_for('images.upload_image')}}" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+                  <input type="file" name="user_image" />
+                  <br>
+                  <button type="submit">Upload</button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div style="display: flex; justify-content: center; margin-top: 30px; margin-right: 80px">
-  <a href="{{url_for('users.show',username=current_user.username)}}" class="btn btn-link"
-    style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 860px; display: flex; justify-content: center;">Edit
-    Details</a>
 </div>
+
 {% else %}
 <div>
   <img style="width: 200px;"
     src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
 </div>
-</form>
 <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
   <div>
