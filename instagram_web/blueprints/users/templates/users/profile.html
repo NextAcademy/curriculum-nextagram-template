@@ -6,15 +6,23 @@ Profile Page
 
 
 {% block content %}
-<header>
-    <h2>
-        {{username}}'s Profile Page
-    </h2>
-</header>
-<img width='200px' src={{user.image}}>
-<div>
-    {{current_user.id}}
+<div class="container">
+    <div class='row'>
+        <div class='col-lg-6'>
+            <div class="d-flex flex-column align-items-center">
+                <h2>
+                    {{username}}'s Profile Page
+                </h2>
+                <img width='200px' src={{user.image}}>
+            </div>
+        </div>
+        <div class="col-lg-6 justify-content-center d-flex align-items-center">
+            edit shit here
+        </div>
+    </div>
+
 </div>
+
 
 {% if current_user.username==username %}
 <form action="{{url_for('images.create', username= current_user.username)}}" method="POST"
