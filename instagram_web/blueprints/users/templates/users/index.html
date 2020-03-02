@@ -4,14 +4,12 @@
 Homepage
 {% endblock %}
 
-{% block header %}
-<!-- <h1>Users index.</h1> -->
-{% endblock %}
-
 {% block content %}
 {% for user in users %}
 <div>
-    {{user.username}}
+    <a href="{{url_for('users.show', username = user.username)}}">
+        {{user.username}}
+    </a>
     <img width='200px' src="{{user.image}}" alt="profilepic">
 </div>
 {% endfor %}

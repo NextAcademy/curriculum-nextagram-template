@@ -45,15 +45,15 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
+    user = User.get(User.username == username)
     image_list = Image.select().where(
-        Image.user_id == current_user.id)
-    return render_template("users/profile.html", username=username, image_list=image_list)
+        Image.user_id == user.id)
+    return render_template("users/profile.html", username=username, user=user, image_list=image_list)
 
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
     users = User.select().where(id != current_user.id)
-
     return render_template('users/index.html', users=users)
 
 

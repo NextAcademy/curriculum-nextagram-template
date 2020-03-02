@@ -9,7 +9,7 @@ Edit Profile
 
 {% block content %}
 
-<img src="{{current_user.image}}" alt="user profile">
+<img width='400px' src="{{current_user.image}}" alt="user profile">
 {{error}}
 <form action="{{url_for('users.upload', id = current_user.id)}}" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />

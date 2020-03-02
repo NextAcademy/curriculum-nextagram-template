@@ -8,10 +8,10 @@ Profile Page
 {% block content %}
 <header>
     <h2>
-        {{current_user.username}}'s Profile Page
+        {{username}}'s Profile Page
     </h2>
 </header>
-<img width='200px' src={{current_user.image}}>
+<img width='200px' src={{user.image}}>
 <div>
     {{current_user.id}}
 </div>
@@ -27,8 +27,11 @@ Profile Page
     <button type="submit">Upload</button>
 </form>
 {% endif %}
+<br>
+<section>
+    Gallery
+</section>
 {% for image in image_list%}
 <img src={{image.source}} width='200px'>
-{{source}}
 {% endfor %}
 {% endblock %}
