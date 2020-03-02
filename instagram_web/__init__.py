@@ -15,6 +15,7 @@ app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "home"
 
 csrf = CSRFProtect(app)
 

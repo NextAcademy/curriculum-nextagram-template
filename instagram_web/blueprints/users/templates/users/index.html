@@ -8,16 +8,17 @@ Homepage
 {% endblock %}
 
 {% block content %}
-<h1>Index</h1>
-<h6>*Below should be other peeps' pics</h6>
+<!-- <h1>Index</h1>
+<h6>*Below should be other peeps' pics</h6> -->
 
 
 <div class="container h-100">
+    <h3 class="text-center">Your News Feed</h3>
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-6">
             {% for image in images %}
             {% if not image.user_id == current_user.id %}
-            <div class="card mx-auto" style="width: 20rem; margin: 20px;">
+            <div class="card mx-auto shadow p-1 mb-5 bg-white rounded" style="width: 27rem; margin: 20px;">
                 <div class="card-header bg-white">
                     {% if image.user.profile_image %}
                     <img src="{{image.user.profile_image_url}}" class="rounded-circle mr-50" witdth="40" height="40"

@@ -54,8 +54,15 @@ def show(username):
 
 
 @users_blueprint.route('/', methods=["GET"])
+@login_required
 def index():
     # TEMPLATE TO SHOW ALL USERS. USER home.html
+    # user = User.get_or_none(User.name == current_user.name)
+    # if not current_user:
+    #     return redirect(url_for("home"))
+    # else:
+    #     images = UserImage.select()
+    #     return render_template('users/index.html', images=images)
     images = UserImage.select()
     return render_template('users/index.html', images=images)
 
@@ -141,13 +148,15 @@ def upload_userimage(username):
         flash('No image has been provided')
         return redirect(url_for('users.show', username=current_user.name))
 
+    new_caption = request.form.get("new_caption")
+
     file = request.files.get('user_image')
 
     file.filename = secure_filename(file.filename)
 
-    # ----- CAN USE BELOW TO CONNNECT INSTANCE TO FOREIGN KEY -----
+    # ----- CAN USE BELOW CURRENT_USER.id TO CONNNECT INSTANCE TO FOREIGN KEY -----
     new_user_image = UserImage(
-        user_image=file.filename, user_id=current_user.id)
+        user_image=file.filename, user_id=current_user.id, caption=new_caption)
 
     if upload_files_to_s3(file):
         new_user_image.save()
