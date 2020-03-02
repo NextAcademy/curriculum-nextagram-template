@@ -1,12 +1,13 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, allowed_file
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
+from models.user_images import Image
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
 from flask_login import current_user, login_user
 from werkzeug.utils import secure_filename
 from helpers import upload_file_to_s3
-from config import S3_BUCKET
+from config import S3_BUCKET, S3_LOCATION
 
 
 users_blueprint = Blueprint('users',
@@ -44,16 +45,16 @@ def create():
 
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
-    return render_template("users/profile.html")
+    image_list = Image.select().where(
+        Image.user_id == current_user.id)
+    return render_template("users/profile.html", username=username, image_list=image_list)
 
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    if 'user_id' in session:
-        name = User.get(User.id == session['user_id']).username
-        return render_template('users/index.html', username=name)
-    else:
-        return render_template('users/index.html')
+    users = User.select().where(id != current_user.id)
+
+    return render_template('users/index.html', users=users)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
@@ -94,16 +95,41 @@ def update(id):
 
 @users_blueprint.route('/<id>/upload', methods=['POST'])
 def upload(id):
+    if "user_file" not in request.files:
+        flash("No file was chosen! :O")
+        return redirect(url_for('users.edit', id=id))
     file = request.files.get('user_file')
     file_name = secure_filename(file.filename)
-    if file_name != '' and allowed_file(file):
+    if file_name != '':
         user = User.get_by_id(current_user.id)
-        user.image = file_name
         error = str(upload_file_to_s3(file, S3_BUCKET))
 
+        user.image = S3_LOCATION + file_name
         if user.save():
             return redirect(url_for('users.edit', id=id))
         else:
             return render_template('users/index.html', error=error)
     else:
+        flash('File has no name!')
         return redirect(url_for('users.edit'))
+
+
+@users_blueprint.route('/<username>/uploads', methods=['POST'])
+def uploads(username):
+    if "user_file" not in request.files:
+        flash("No file was chosen! :O")
+        return redirect(url_for('users.show', username=username))
+    file = request.files.get('user_file')
+    file_name = secure_filename(file.filename)
+    if file_name != '':
+        error = str(upload_file_to_s3(file, S3_BUCKET))
+        new_image = Image(
+            source=S3_LOCATION + file_name, user_id=current_user.id)
+
+        if new_image.save():
+            return redirect(url_for('users.show', username=username))
+        else:
+            return render_template('users/profile.html', error=error)
+    else:
+        flash('File has no name!')
+        return redirect(url_for('users.show', username=username))

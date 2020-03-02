@@ -9,13 +9,10 @@ Homepage
 {% endblock %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
+{% for user in users %}
 <div>
-    Hello, {{current_user.username}}
+    {{user.username}}
+    <img width='200px' src="{{user.image}}" alt="profilepic">
 </div>
-{% endif %}
-<!-- 
-<a href="{{url_for('sessions.logout')}}"">
-    Logout
-</a> -->
+{% endfor %}
 {% endblock %}

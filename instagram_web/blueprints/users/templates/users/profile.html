@@ -8,7 +8,27 @@ Profile Page
 {% block content %}
 <header>
     <h2>
-        {{current_user.username}}
+        {{current_user.username}}'s Profile Page
     </h2>
 </header>
+<img width='200px' src={{current_user.image}}>
+<div>
+    {{current_user.id}}
+</div>
+
+{% if current_user.username==username %}
+<form action="{{url_for('users.uploads', username= current_user.username)}}" method="POST"
+    enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label for="user_file">Upload Your File</label>
+    <br></br>
+    <input type="file" name="user_file">
+    <br></br>
+    <button type="submit">Upload</button>
+</form>
+{% endif %}
+{% for image in image_list%}
+<img src={{image.source}} width='200px'>
+{{source}}
+{% endfor %}
 {% endblock %}

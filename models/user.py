@@ -1,6 +1,7 @@
 from models.base_model import BaseModel
 import peewee as pw
 from flask_login import current_user
+from config import S3_LOCATION
 
 
 class User(BaseModel):
@@ -8,7 +9,7 @@ class User(BaseModel):
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(unique=False, null=False)
     image = pw.CharField(unique=False, null=True,
-                         default='default-profile-image-png')
+                         default=S3_LOCATION + 'default-profile-image-png')
 
     def is_authenticated(self):
         return True
