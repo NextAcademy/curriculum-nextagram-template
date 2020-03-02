@@ -42,7 +42,7 @@ class User(BaseModel):
         if existing_username and not existing_username.id == self.id:
             self.errors.append('Username already taken')
 
-        # ------ CHECK FOR EXISTING NAME ----
+        # ------ CHECK FOR EXISTING EMAIL ----
         existing_email = User.get_or_none(User.email == self.email)
         if existing_email and not existing_email.id == self.id:
             self.errors.append('Account with this email already exists')

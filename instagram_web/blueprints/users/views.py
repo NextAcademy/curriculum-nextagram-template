@@ -1,6 +1,7 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from models.user import User
+from models.userimages import UserImage
 from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, current_user
 from werkzeug.utils import secure_filename
@@ -54,7 +55,9 @@ def show(username):
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return "USERS"
+    # TEMPLATE TO SHOW ALL USERS. USER home.html
+    images = UserImage.select()
+    return render_template('users/index.html', images=images)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
@@ -125,3 +128,32 @@ def upload():
 
     flash("Image upload Sucess!")
     return redirect(url_for('users.edit', id=user.id))
+
+
+# ----------------- USER IMAGES UPLOAD HERE --------------
+
+
+@users_blueprint.route('/<username>/upload', methods=['POST'])
+@login_required
+def upload_userimage(username):
+
+    if not 'user_image' in request.files:
+        flash('No image has been provided')
+        return redirect(url_for('users.show', username=current_user.name))
+
+    file = request.files.get('user_image')
+
+    file.filename = secure_filename(file.filename)
+
+    # ----- CAN USE BELOW TO CONNNECT INSTANCE TO FOREIGN KEY -----
+    new_user_image = UserImage(
+        user_image=file.filename, user_id=current_user.id)
+
+    if upload_files_to_s3(file):
+        new_user_image.save()
+        flash("Image upload Sucess!")
+        return redirect(url_for('users.show', username=current_user.name))
+
+    else:
+        flash("Oops something went wrong when uploading")
+        return redirect(url_for('users.show', id=current_user.id))

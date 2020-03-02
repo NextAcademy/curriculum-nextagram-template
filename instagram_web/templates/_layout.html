@@ -8,7 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+  <!-- MAIN STYLESHEET -->
+  {% block head %}
 
+  {% endblock %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/986b526152.js" crossorigin="anonymous"></script>
   {% assets "home_css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}">
   {% endassets %}
@@ -19,9 +25,19 @@
 
   {% block header %}
   {% endblock %}
+
   <!-- Bootstrap 4.1.3 -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <!-- LINKS TO MAIN STYLESHEET -->
+
+
+  <!-- LINKS TO STYLESHEET BASED ON PAGE -->
+  <!-- {% if request.endpoint == 'users.home' %}
+  <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" type="text/css">
+  {% elif request.endpoint == 'users.edit' %}
+  <link href="{{ url_for('static', filename='edit.css') }}" rel="stylesheet" type="text/css">
+  {% endif %} -->
+
+
   <title>
     {% block title %}
     {% endblock %}NEXTAGRAM

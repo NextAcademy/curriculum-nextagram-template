@@ -1,0 +1,56 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h1>Index</h1>
+<h6>*Below should be other peeps' pics</h6>
+
+
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-6">
+            {% for image in images %}
+            {% if not image.user_id == current_user.id %}
+            <div class="card mx-auto" style="width: 20rem; margin: 20px;">
+                <div class="card-header bg-white">
+                    {% if image.user.profile_image %}
+                    <img src="{{image.user.profile_image_url}}" class="rounded-circle mr-50" witdth="40" height="40"
+                        alt="other people's pics">
+                    {% else %}
+                    <img class="editpic" src="{{url_for('static', filename='images/placeholder.png')}}"
+                        alt=" profile placeholder">
+                    {% endif %}
+                    {{image.user.name}}
+                </div>
+                <img src="{{image.user_image_url}}" class="card-img-top" alt="other people's pics">
+                <div class="card-body">
+                    <!-- {{image.created_at}} -->
+                    <span class=" d-flex justify-content-end">
+                        <h5>
+                            <i class="fas fa-fire-alt mr-3"></i>
+                            <i class="fas fa-hand-holding-usd mr-3"></i>
+                            <i class="fas fa-share"></i>
+                        </h5>
+                    </span>
+                    {% if image.caption %}
+                    <p class="card-text">{{image.caption}}</p>
+                    {%else%}
+                    <p class="card-text">Caption goes here</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
