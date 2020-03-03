@@ -13,6 +13,10 @@ class User(BaseModel, UserMixin):
     password = pw.CharField()
     profile_image = pw.CharField(null=True)
 
+    @hybrid_property
+    def profile_image_url(self):
+        return f"https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{self.profile_image}"
+
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
         if duplicate_username and duplicate_username.id != self.id:
@@ -42,10 +46,3 @@ class User(BaseModel, UserMixin):
             else:
                 if not self.id:
                     self.password = generate_password_hash(self.password)
-
-        # @hybrid_property
-        # def profile_image_url(self):
-        #     if self.profile_image:
-        #         return f"https://blahblahurl/(self.profile_image)"
-        #     else:
-        #         return f"https://blahblahblahblah/placeholder.png"

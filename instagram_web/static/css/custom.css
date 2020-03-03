@@ -101,12 +101,13 @@ footer a {
   }
 
   #plus-modal {
-    background: pink;
+    background: linear-gradient(to right, red, orange,red, purple);
+    color: white;
+    border: none;
   }
 
   #plus-modal:hover {
-    background-color: rgb(52, 50, 50);
-    color: pink;
+    color: black;
   }
 
   .profileinput {
@@ -174,5 +175,24 @@ footer a {
   }
 
   .modal-content {
-    background-color:lavenderblush
+    background-color:white;
+  }
+
+  #main-signup {
+    color:black; 
+    text-decoration:none;
+    margin: 20px;
+  }
+
+  #main-signup:hover {
+    color: grey;
+  }
+
+  #main-login {
+    color:black; 
+    text-decoration:none;
+  }
+
+  #main-login:hover {
+    color: grey;
   }

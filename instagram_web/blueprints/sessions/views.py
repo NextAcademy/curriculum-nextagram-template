@@ -38,7 +38,7 @@ def create():
 def logout():
     logout_user()
     flash("You are now logged out!")
-    return redirect(url_for('home'))
+    return redirect(url_for('main'))
 
     # if user_exist:
     #     login_user = User.get(User.username == username)

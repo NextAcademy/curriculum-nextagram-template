@@ -1,6 +1,6 @@
 {% macro navbar(current_user) %}
 
-<nav class="navbar navbar-expand-lg" style="background-color:rgb(52, 50, 50); color:pink">
+<nav class="navbar navbar-expand-lg" style="background-color:rgb(52, 50, 50); color:pink; font-family: Kalam;">
 
   <a class="navbar-brand" href="#" style="color:lightpink; font-weight:bold"> <i class="fab fa-instagram"></i></span>
     <span></span>Nextagram</a></span>
@@ -11,11 +11,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      {% if current_user.is_authenticated %}
       <li class="nav-item active">
         <a class="nav-link" href="{{url_for('home')}}" style="color:lightpink">Homepage <span
             class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
+      {% endif %}
+      <!-- <li class="nav-item">
         <a href="{{url_for('users.new')}}" class="btn btn-link" style="color:lightpink; text-decoration:none;">Sign
           Up
           Here</a>
@@ -32,7 +34,7 @@
           In</a>
         {% endif %}
 
-      </li>
+      </li> -->
       <!-- <li class="nav-item">
         {% if current_user.is_authenticated %}
         <a href="{{url_for('users.show',username=current_user.username)}}" class="btn btn-link"
@@ -47,26 +49,66 @@
           Profile</a>
         {% endif %}
       </li>
-      <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" style="color:lightpink">
-          Dropdown
+          New User/Login
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#"><a href="{{url_for('users.new')}}" class="btn btn-link"
+              style="color:lightpink; text-decoration:none;">Sign
+              Up
+              Here</a></a>
+          <a class="dropdown-item" href="#">{% if current_user.is_authenticated %}
+            <a href="{{url_for('sessions.logout')}}" class="btn btn-link"
+              style="color:rgb(236, 126, 159); text-decoration:none; font-weight: bold;">Log
+              Out</a>
+            {% endif %}
+            {% if not current_user.is_authenticated%}
+            <a href="{{url_for('sessions.new')}}" class="btn btn-link"
+              style="color:lightpink; text-decoration:none;">Log
+              In</a>
+            {% endif %}</a>
+
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
-      </li>
+      </li> -->
     </ul>
     <form class="form-inline my-2 my-lg-0">
+      {% if current_user.is_authenticated %}
       <img style="width:25px; height:25px; border-radius:50%; object-fit: cover;"
         src="https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
       <h6 class="usernav">{{ current_user.username }}</h6>
+      {% endif %}
       <input style="border:lightpink 2px solid" class="form-control mr-sm-2" type="search" placeholder="Search"
         aria-label="Search">
       <button style="color:lightpink; border:lighpink 1px solid" class="btn my-2 my-sm-0" type="submit">Search</button>
+      <div style="margin-right:20px;" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="color:lightpink">
+          New User/Login
+        </a>
+        <div style=" width:50px" class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#"><a href="{{url_for('users.new')}}" class="btn btn-link"
+              style="color:lightpink; text-decoration:none;">Sign
+              Up
+              Here</a></a>
+          <a class="dropdown-item" href="#">{% if current_user.is_authenticated %}
+            <a href="{{url_for('sessions.logout')}}" class="btn btn-link"
+              style="color:rgb(236, 126, 159); text-decoration:none; font-weight: bold;">Log
+              Out</a>
+            {% endif %}
+            {% if not current_user.is_authenticated%}
+            <a href="{{url_for('sessions.new')}}" class="btn btn-link"
+              style="color:lightpink; text-decoration:none;">Log
+              In</a>
+            {% endif %}</a>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Nextagram</a>
+        </div>
+      </div style="margin-right:30px;">
     </form>
   </div>
 </nav>

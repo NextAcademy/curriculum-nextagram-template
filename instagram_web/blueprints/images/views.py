@@ -37,4 +37,4 @@ def upload_image():
         return redirect(url_for('users.profile', id=current_user.id))
 
     flash('Successfully updated')
-    return redirect(url_for('home'))
+    return redirect(url_for('users.profile', id=current_user.id))

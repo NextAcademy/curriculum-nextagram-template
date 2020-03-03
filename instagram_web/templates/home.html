@@ -9,4 +9,18 @@ Homepage
 
 {% block content %}
 <h1>Homepage</h1>
+{% for user in users %}
+{% for image in user.images %}
+<div class="card" style="width: 18rem; margin:20px;">
+  <img class="card-img-top" src="{{user.profile_image_url}}">
+  <div class="card-body">
+    <h5 class="card-title">{{user.username}}</h5>
+    <p></p>
+    <img src="{{image.user_image}}" alt="" style="height: 100px;width: 100px;">
+    <p class="card-text">Profile Page</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+{% endfor %}
+{% endfor %}
 {% endblock %}

@@ -41,8 +41,8 @@ def show(username):
 
 
 @users_blueprint.route('/', methods=["GET"])
-def index():
-    return render_template('users/userpage.html')
+def index(username):
+    return render_template('users/index.html')
 
 
 @users_blueprint.route('/<id>/profile', methods=['GET'])
