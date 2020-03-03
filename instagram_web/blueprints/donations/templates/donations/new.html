@@ -1,0 +1,49 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+Payment Page
+{% endblock %}
+
+{% block header %}
+<script src="https://js.braintreegateway.com/web/dropin/1.22.1/js/dropin.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mb-3">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <img class="w-50 mx-auto d-block mb-4" src="{{image.user_image_url}}" alt="">
+            <!-- FORM FOR PASSING CLIENT TOKEN  -->
+            <form id="donation-form" method="post" action="{{url_for('donations.create', image_id=image.id)}}">
+                <input type="hidden" name="payment_method_nonce" id="pmn-field">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="text" name="amount" class="form-control">
+                </div>
+            </form>
+            <div id="dropin-container"></div>
+            <button class="btn btn-primary mx-auto d-block" id="submit-button">Request payment method</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var button = document.querySelector('#submit-button');
+
+    braintree.dropin.create({
+        authorization: '{{client_token}}',
+        container: '#dropin-container'
+    }, function (createErr, instance) {
+        button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (err, payload) {
+                // Submit payload.nonce to your server
+                // console.log(payload)
+                $('#pmn-field').val(payload.nonce)
+                $('#donation-form').submit()
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -8,24 +8,19 @@ Sign Up
 {% endblock %}
 
 {% block content %}
-<h1>Users#new</h1>
+<h1>Signin</h1>
 
 
-<form method="post" action="{{url_for('users.create')}}">
-    <div class="form-group">
-        <label for="exampleInputUsername">Username</label>
-        <input type="username" class="form-control" name="new_name">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    </div>
+<!-- ----------------- CREATE SIGNIN FORM ---------------->
+<form method="post" action="{{url_for('sessions.sign_in')}}">
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" name="new_email">
+        <input type="email" class="form-control" name="login_email">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" name="new_password">
+        <input type="password" class="form-control" name="login_password">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

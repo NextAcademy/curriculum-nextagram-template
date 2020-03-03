@@ -1,0 +1,76 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<!-- <h1>Index</h1>
+<h6>*Below should be other peeps' pics</h6> -->
+
+
+<div class="container h-100">
+    <h3 class="text-center">Your News Feed</h3>
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-6">
+            {% for image in images %}
+            {% if not image.user_id == current_user.id %}
+            <div class="card mx-auto shadow p-1 mb-5 bg-white rounded" style="width: 27rem; margin: 20px;">
+                <div class="card-header bg-white">
+                    {% if image.user.profile_image %}
+                    <img src="{{image.user.profile_image_url}}" class="rounded-circle mr-50" witdth="40" height="40"
+                        alt="other people's pics">
+                    {% else %}
+                    <img class="editpic" src="{{url_for('static', filename='images/placeholder.png')}}"
+                        alt=" profile placeholder">
+                    {% endif %}
+                    {{image.user.name}}
+                </div>
+                <img src="{{image.user_image_url}}" class="card-img-top" alt="other people's pics">
+                <div class="card-body">
+                    <!--------- DONATION AND ICONS -------->
+                    <div class="row panel">
+                        <div class="col-8">
+                            <span>
+                                {% if image.total_donations %}
+                                <small class="card-text">Donations : RM{{image.total_donations}}</small>
+                                {% else%}
+                                <p class="card-text"></p>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <h5>
+                                    <i class=" fas fa-fire-alt mr-3"></i>
+                                    <!-- LINK TO DONATE PAGE FOR THAT PARTICULAR IMAGE, OTHER USERS CAN ACCESS -->
+                                    <a href="{{url_for('donations.new', image_id=image.id)}}">
+                                        <i class="fas fa-hand-holding-usd mr-3"></i>
+                                    </a>
+                                    <i class="fas fa-share"></i>
+                                </h5>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- ------ DISPLAY CAPTIONS HERE ----- -->
+                    {% if image.caption %}
+                    <p class="card-text">{{image.caption}}</p>
+                    {%else%}
+                    <p class="card-text">Caption goes here</p>
+                    {% endif %}
+                    <!-- ------ DISPLAY TOTAL DONATIONS HERE ----- -->
+
+                </div>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

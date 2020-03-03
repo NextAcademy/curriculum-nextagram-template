@@ -1,0 +1,27 @@
+
+#editpage {
+  margin: 10px;
+  /* width: 50%; */
+  /* left: 50%; */
+  text-align: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items:center;
+
+}
+
+#editpage .editpic {
+  width:400px;
+  height:400px;
+  border-radius: 50%;
+}
+
+#editpage #image-form {
+  margin: 10px;
+}
+
+#editpage #image-form {
+  margin: 10px;
+}

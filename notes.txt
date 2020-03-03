@@ -1,0 +1,322 @@
+createdb after pip install -r requirements.txt ? check the instructions
+
+everytime update user models, run migrate.py so can see in postbird
+
+
+blueprnts > Users > views.py (code here) > templates > users
+views.py (all code here)
+insdie templates folder there is a another users folder. where all html is kept
+
+SIGN IN--
+
+two ways.first way is sesions
+
+save user id into session, browser cookies. 
+
+Implement sessions form Flask, code given there
+
+request.method > change to authenticate, check if user = userin database
+save session['username'] as user id
+
+AFTER LOG IN REDIRECT TO HOMEPAGE FOR NOW. DOING PROFILE PAGE TMROW
+
+logout.
+
+sessions.pop(userid) will logout user
+
+flask login
+insert code snippers into snippet.py
+since peewee, use user.get_by_id instead of user.id  
+
+
+can use {% blabla.is_authenticated%} to change stuff when user logged in, like logout showing
+{%endif%}
+o
+
+redirect after post, render_template just renders the template within SAME url
+
+-----------------DAY 3---------------------
+
+need form in user profile. 
+use @login_required to protect from non user
+
+pass user=user into the edit.htmlso can manipulate the variables for editing
+
+update def has login required, 
+check again if correct user, same metho as def show
+.takes in the logic for the edit.html. keep forms as post so details arent exposed on url
+DONT DO PASSWORD IN EDIT.HTML. leave that later on. very very high risk. just change username,email,pic if u want to
+
+in form value, input the {{user.name or email or whatever}}. if not even change, the same value will still go thru the update, will be reasigned to what it was before. leave name= as usename,no {}
+
+
+in user.py validate for existing username. also existing password as well.
+
+validations only run with .save. update will bypass .update. prefered is .save. .update meant for bulk update on multiple reocrds that arent sensitive
+
+AMAZON picture
+
+edit html has the profile image
+
+in users/views.py
+    users.upload 
+    if not profile imagein request.files:
+    error
+    return redirect
+
+    get files as request.files.get('profile_image')
+
+    file.filename = secure_filename(file.filename) < instance of a file class? when dealing with files have nospacesin names. secure_filename is a method in werkzeug.replaces whitespacein filename with underscore
+
+    if not  upload_file_to_s3(file):
+
+
+inside util has s3_uploader.py
+import boto3, botocore
+from config import S3_KEY, S3_SECRET, S3_BUCKET
+
+s3 = boto3.client(
+   "s3",
+   aws_access_key_id=Config.AWS_ACCESS_KEY,
+   aws_secret_access_key=Config.AWS_ACCESS_KEY
+)
+
+def upload_file_to_s3(file):
+    try:
+        s3.upload_fileobj(
+            file,
+            Config.AWS_BUCKET_NAME,
+            file.filename,
+            ExtraArgs={
+                "ACL":"public-read",
+                "ContentType": file.content_type
+            }
+        )
+
+    return True
+
+
+
+
+in config.py under config
+AWS_ACCESS_KEY=os.getenv('AWS_ACCESS_KEY)
+AWS_SECRET_KEY=
+AWS_BUCKET_KEY=
+
+
+in views import 
+
+in users.py
+
+new profile_image =pw.Charfield(null=True)
+
+@hybrid_property
+def profile_image_url(self):
+    return f"_____{self.profile image}"
+
+
+
+    BRAINTREE INTEGRATION
+
+    merchant id, api key. UI handles everything for the form
+
+    1) set up gateway in server,like amazon. 2) braintree authorizes and returns a client token. 3) flask server then passes token to front end (pass the token into javascript, fromthere can use dropin UI)
+
+    4) after filled out detials, form goes to braintree. flask servers SEES NO DETAILS. Braintree will validate details. 5) braintree will return payment method nonce (means valid details) back to javascript 6) then goes back to flask server.
+
+DOnations folder inside blueprints
+inside has views.py
+
+import blueprint.
+donations_blueprint= Blueprint('donations',__name__, template_folder-"templates")
+
+in init 
+import and register donations
+
+in models create donation.py
+
+import peewee, basemodel
+
+classDOnation(basemodel)
+    amount = pw.DecimalField()
+    image = pw.ForeignkeyField(Image, backref="donations") #get all donations associated to the image
+    user = pw.Foreignkeyfield(User, backref="donations") #get all donations that user has made
+
+python migrate.py
+
+back to donations blueprint views.py
+from models.imageimport Image
+import flash, redirect,render template
+
+first route is for display donations form
+need to know wich img to donate to
+@donaitons_blueprint.route('/<image_id>/new,method=get)
+@login_required << importfirst
+def new(image_id)
+    image =Image.getornone(Image.id==image_id)
+    if not image:
+        flash(some message, noimg found with id etc)
+        return redirect url_for('users.index' for now)
+
+    return render_template('donations/new.html, image=image)
+
+
+in blueprints donaitons, create templates folder and new.html inside
+inside
+extends layout, block content etc etc
+    div class container
+        class row justifycenter
+            class col-6
+                 class img.w-50.mx-auto.d-block.mb-4, img src {{image.image_url << the one from hybrid property}}
+                   <div id="dropin-container"></div> << THIS IS TARGETED
+                   <button class=mx-auto d-block id="submit-button">Request payment method</button>
+
+.....
+div
+(copy script after last div)
+  <script>
+    var button = document.querySelector('#submit-button');
+
+    braintree.dropin.create({
+      authorization: 'CLIENT_TOKEN_FROM_SERVER',
+      container: '#dropin-container' << TARGETS THE DROPIN COTNAINER ABOVE
+    }, function (createErr, instance) {
+      button.addEventListener('click', function () {
+        instance.requestPaymentMethod(function (err, payload) {
+          // Submit payload.nonce to your server
+        });
+      });
+    });
+  </script> 
+
+  *BELOW AND ABOVE ARE IN SAME FILE
+
+
+
+turn money icon into link to donation form
+wrap i tag inside <a>. inside has href url_for dontiaons.new, image_id=image.id (pass in the image id here thats being looped through)
+
+still in new.html
+
+block header
+ <script src="https://js.braintreegateway.com/web/dropin/1.22.1/js/dropin.min.js"></script> << js from braintree page
+endblock
+
+Go to simple server in braintree site. Click python sdk. pip install braintree
+
+Now setup gateway.proivide all 3 keys. put in env
+
+create helper file in utils, braintree.py,paste from simpel server
+in braintree.py
+import braintree
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox, <<< sandbox, using fake money
+        merchant_id="use_your_merchant_id", << os.getenv('BT_MERCHANT_ID')
+        public_key="use_your_public_key", samesame bt public key
+        private_key="use_your_private_key" same same bt private key
+    )
+)
+
+
+now need client token. 
+inside donations views, passclient token out to server
+inside donations views
+from instagram_web.util.braintree import gateway
+
+under if not image
+ client_token = gateway.client_token.gnerate()
+
+ if not client_token:
+    flash unable to obtain token
+    redirect to 'users.index'
+
+reutrn render tempalte donations.new html, client_token=client_token.
+
+in new.html can now pass the client token as authoriation: {{client_token}}
+
+still in new.html, now need to create form
+
+form id donation-form, action=url for donations.create, image_id=image.id,method = post
+include csrf client_token
+include also input name="payment_method_nonce" id="pmn-field" < using js to replace value in this field 
+another form for amount
+
+in new.html, under requestPaymentMethod,
+console.log(payload) < will return object payload that has nonce inside, a bunch of weird numbers but can assign to nonce field
+replace console log with
+$('#pmn-field').val(payload.nonce)
+$('#donation-form').submit()
+
+
+in views.py
+import request
+.route(<image_id>), methods post
+def create(image_id)
+    nonce= reuqest.form.get(paymenth_method_nonce)
+    
+    if not nonce
+        flash error
+        return redirect url for users.index
+
+    #query db again
+
+    image= Image.getornone(Image.id==image_id)
+
+    if not image
+        flash no img found with provided id << people could delete the pic in the time it takes to donate, so double check it exists before going further
+        return redicret url for users.index
+
+
+    amount = reuqest.form.get('amount')
+
+    if not amount
+        flash error no donation provided
+        return redirect url for users.index
+
+    #before save in db wanna make sure sale actuall went thru
+
+    create a transaction --- no need device database
+    copy from bt site
+
+    result = gateway.transaction.sale({
+    "amount": amount
+    "payment_method_nonce": nonce
+    "options": {
+      "submit_for_settlement": True
+    }
+})
+
+
+will need result.is_success from what the above returns. can determine if it works,is a boolean
+
+conitnue views.py
+
+    if not result.is_success
+        flash(sometinh)
+        return redirect(request.referrer) < redirect where the came from
+
+    now can create a new instance of a  donation in db, import from models first
+
+    donation = Donation(amout=amount,image_id=image.id, user_id=current_user.id)
+
+    if not donation.save()
+        flash donation sucess but error creating record, warning
+        return redirect url_for users.index
+    
+    flash successfully donated ${amount}, 'sucess'
+    return redirect url_for users.index
+
+
+inside image model can create hybrid property
+    def total_donations(self)
+        from models.donation import Donation
+        total = 0
+        for donation in DOnation.select().where(Donation.image_id ==self.id)
+            total = total+donation.amount
+        return round(total)
+
+in index.html can add donated amount
+
+<small> Donations: {{image.total_donations}} </small>
