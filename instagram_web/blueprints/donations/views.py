@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from instagram_web.util.s3_uploader import upload_file_to_s3
 from instagram_web.util.braintree import gateway
+from instagram_web.util.mailgun import send_simple_message
+
 
 donations_blueprint = Blueprint('donations',
                                 __name__,
@@ -74,5 +76,9 @@ def create(photo_id):
         flash('Dono successful but error recording', 'warning')
         return redirect(url_for('users.show'))
 
-    flash('Successfully donation')
+    other_name = User.get_or_none(Photos.id == photo_id).name
+    name = User.get_or_none(User.id == current_user.id).name
+    flash(f'{name} successfully donated ${amount} to {other_name} ')
+
+    send_simple_message(amount=amount, other_name=other_name)
     return redirect(url_for('users.show'))
