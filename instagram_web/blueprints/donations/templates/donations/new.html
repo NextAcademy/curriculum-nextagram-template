@@ -6,25 +6,37 @@
 
 {% block content%}
 <main>
-    <form action="{{url_for('donations.create', image_id=image_id)}}" method="post"></form>
-    <input type="hidden" name='csrf' value="{{csrf_token()}}">
-    <input type='hidden' id='payment_nonce' value=''>
-    <div id="dropin-container"></div>
-    <label for="amount">Amount:</label>
-    <input type="number" name='amount'>
+    <form action="{{url_for('donations.create', image_id=image_id)}}" method="POST" id='payment_form'>
+        <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
+        <input type='hidden' id='payment_nonce' name='payment_nonce'>
+        <div id="dropin-container"></div>
+        <label for="amount">Amount:</label>
+        <div id='amount-warning'></div>
+        <input type="number" name='amount'>
+    </form>
     <button id="dono-button">Request payment method</button>
 </main>
+<div>
+    <!-- {{payment_nonce}} -->
+    {{result}}
+</div>
 
 <script>
     const button = document.querySelector('#dono-button');
 
     braintree.dropin.create({
-        authorization: 'CLIENT_TOKEN_FROM_SERVER',
+        authorization: '{{client_token}}',
         container: '#dropin-container'
     }, function (createErr, instance) {
         button.addEventListener('click', function () {
             instance.requestPaymentMethod(function (err, payload) {
-                // Submit payload.nonce to your server
+                if (payload) {
+                    //implement amount checking please.
+                    $('#payment_nonce').val(payload.nonce)
+                    $('#payment_form').submit()
+                }
+                console.log(err)
+                console.log(payload)
             });
         });
     });
