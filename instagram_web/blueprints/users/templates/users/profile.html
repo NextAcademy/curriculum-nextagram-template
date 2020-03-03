@@ -17,10 +17,9 @@ Profile Page
             </div>
         </div>
         <div class="col-lg-6 justify-content-center d-flex align-items-center">
-            edit shit here
+            stuff here
         </div>
     </div>
-
 </div>
 
 
@@ -30,7 +29,9 @@ Profile Page
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <label for="user_file">Upload Your File</label>
     <br></br>
-    <input type="file" name="user_file">
+    <input type="file" id='imageUpload' name="user_file">
+    Caption:
+    <input type="text" name='caption'>
     <br></br>
     <button type="submit">Upload</button>
 </form>
@@ -41,5 +42,6 @@ Profile Page
 </section>
 {% for image in image_list%}
 <img src={{image.source}} width='200px'>
+{{image.caption}}
 {% endfor %}
 {% endblock %}

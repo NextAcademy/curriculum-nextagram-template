@@ -9,7 +9,7 @@ class User(BaseModel):
     email = pw.CharField(unique=True, null=False)
     password = pw.CharField(unique=False, null=False)
     image = pw.CharField(unique=False, null=True,
-                         default=S3_LOCATION + 'default-profile-image-png')
+                         default=S3_LOCATION + 'default-profile-image.png')
 
     def is_authenticated(self):
         return True

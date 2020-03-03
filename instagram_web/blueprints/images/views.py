@@ -17,9 +17,10 @@ def create():
     file = request.files.get('user_file')
     file_name = secure_filename(file.filename)
     if file_name != '':
+        caption = request.form.get('caption')
         error = str(upload_file_to_s3(file, S3_BUCKET))
         new_image = Image(
-            source=S3_LOCATION + file_name, user_id=current_user.id)
+            source=S3_LOCATION + file_name, user_id=current_user.id, caption=caption)
 
         if new_image.save():
             return redirect(url_for('users.show', username=current_user.username))

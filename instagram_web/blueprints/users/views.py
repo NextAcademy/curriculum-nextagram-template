@@ -53,8 +53,12 @@ def show(username):
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    users = User.select().where(id != current_user.id)
-    return render_template('users/index.html', users=users)
+    # users = User.select().where(User.id != current_user.id)
+    # return render_template('users/index.html', users=users)
+
+    images = Image.select(Image, User).join(
+        User).where(Image.user_id != current_user.id)
+    return render_template('users/index.html', images=images)
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])

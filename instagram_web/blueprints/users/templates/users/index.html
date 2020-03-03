@@ -5,12 +5,29 @@ Homepage
 {% endblock %}
 
 {% block content %}
-{% for user in users %}
+
+{% for image in images %}
+<div>
+    <div>
+        <h3>
+            {{image.user.username}}
+        </h3>
+        <img width="300px" src="{{image.source}}" alt="">
+        <div>
+            {{image.caption}}
+        </div>
+    </div>
+    <a href="{{url_for('donations.new, image_id=image.id')}}">dono</a>
+</div>
+<hr>
+{% endfor %}
+
+<!-- {% for user in users %}
 <div>
     <a href="{{url_for('users.show', username = user.username)}}">
         {{user.username}}
     </a>
     <img width='200px' src="{{user.image}}" alt="profilepic">
 </div>
-{% endfor %}
+{% endfor %} -->
 {% endblock %}
