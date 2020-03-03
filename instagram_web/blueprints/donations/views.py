@@ -1,8 +1,12 @@
 from flask import Flask, redirect, url_for, escape, request, Blueprint, render_template, request, flash
 from models.userimages import UserImage
+from models.user import User
 from flask_login import login_required, current_user
 from instagram_web.util.bthelper import gateway
+from instagram_web.util.mailhelper import send_simple_message
 from models.donation import Donation
+import requests
+import os
 
 donations_blueprint = Blueprint('donations',
                                 __name__,
@@ -65,10 +69,13 @@ def create(image_id):
 
     donation = Donation(amount=amount, image_id=image.id,
                         user_id=current_user.id)
+    #    ---- GET DONATOR NAME AND PASS TO EMAIL------
+    donator = User.get_or_none(User.id == current_user.id)
 
     if not donation.save():
         flash(f"Donated succesfully but error creating a record in database", 'warning')
         return redirect(url_for('users.index'))
 
     flash(f"Donated: ${amount}", 'sucess')
+    send_simple_message(amount=amount, name=donator.name)
     return redirect(url_for('users.index'))
