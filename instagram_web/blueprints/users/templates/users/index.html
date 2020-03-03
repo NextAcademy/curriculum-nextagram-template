@@ -17,7 +17,7 @@ Homepage
             {{image.caption}}
         </div>
     </div>
-    <a href="{{url_for('donations.new, image_id=image.id')}}">dono</a>
+    <a href="{{url_for('donations.new', image_id=image.id)}}">dono</a>
 </div>
 <hr>
 {% endfor %}
