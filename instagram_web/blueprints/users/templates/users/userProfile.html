@@ -1,0 +1,126 @@
+{% extends "_layout.html" %} {%block content%}
+
+<h2 class="d-flex justify-content-center mx-auto" >
+  User Profile
+</h2>
+
+<h3 class="d-flex justify-content-center mx-auto">{{user_id.name}}</h3>
+<div class="justify-content-center mx-auto">
+  {% if user_id.profile_image %}
+
+  <img class="d-flex w-25 overflow-hidden justify-content-center mx-auto rounded-circle" src="{{user_id.profile_image_url}}" alt="">
+
+  {%else%}
+
+  <img class="d-flex justify-content-center mx-auto rounded-circle" src="{{url_for('static',filename='images/placeholder.png')}}" alt="placeholder">
+
+  {% endif %}
+
+
+
+
+<button type="button" class="btn btn-primary d-flex justify-content-center mx-auto my-2" data-toggle="modal"
+  data-target="#uploadImage">
+  Upload picture
+</button>
+<div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">
+          Upload Image
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('users.upload', id=current_user.id)}}" enctype="multipart/form-data">
+          <div class="form-group">
+            
+        
+            <input id="image-form" type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="profile_image" type="file" id="prof-img"
+              >
+
+          
+
+          </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      <button class="btn btn-primary" type="submit, button">
+        Upload Image
+      </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<button type="button" class="btn btn-primary d-flex justify-content-center mx-auto"  data-toggle="modal" data-target="#editProfile">
+  Edit Profile
+</button>
+<div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">
+          Update Profile Details
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('users.user_profile_update', id=user_id)}}">
+          <div class="form-group">
+            <label for="username" class="col-form-label">New Username</label>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="NewUser" type="text" class="form-control" id="user-name" />
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-form-label">New Email</label>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="NewEmail" type="text" class="form-control" id="pass-word" />
+          </div>
+      </div>
+      
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button, submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<h3>Photo Album</h3>
+</div>
+<div class=" col-lg-10 d-flex flex-wrap justify-content-center container">
+{% for i in user_id.images %}
+<img class="rounded d-block justify-content-center w-25 mx-3 my-3"  id="current_user.id" src="{{i.image_url}}">
+
+{%endfor%}
+
+</div>
+
+
+
+
+
+
+{% endblock %}

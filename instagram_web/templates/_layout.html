@@ -1,7 +1,7 @@
-{% from 'macros/navbar.html' import navbar %}
+{% from 'macros/navbar.html' import navbar with context %} {% from
+'macros/signup.html' import signup with context %} {% from 'macros/post.html'
+import post with context %}
 
-<!-- {% from 'macros/signup.html'
-import signup %} -->
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -43,7 +43,7 @@ import signup %} -->
     </title>
   </head>
   <body>
-    {{ navbar() }} {{signup()}}
+    {{ navbar() }} {{signup()}} {{post()}}
     <div class="container">
       {% with messages = get_flashed_messages() %} {% if messages %}
       <ul class="flashes">

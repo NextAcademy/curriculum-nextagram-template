@@ -21,12 +21,14 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#"
+        <a
+          class="nav-link"
+          href="{{url_for('users.user_profile' ,id=current_user.id )}}"
           >Home <span class="sr-only">(current)</span></a
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="{{url_for('users.show')}}">News Feed</a>
       </li>
       <li class="nav-item dropdown">
         <a
@@ -47,12 +49,16 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
-          >Disabled</a
-        >
-      </li>
+      <li class="nav-item"></li>
     </ul>
+    <button
+      type="button"
+      class="btn btn-outline-light d-flex flex-row-reverse justify-content-center mr-2"
+      data-toggle="modal"
+      data-target="#uploadPost"
+    >
+      Post
+    </button>
     <form class="form-inline my-2 my-lg-0">
       <input
         class="form-control mr-sm-2"
@@ -64,6 +70,15 @@
         Search
       </button>
     </form>
+    {%if current_user.is_authenticated %}
+    <form action="{{url_for('sessions.logout')}}" method="post">
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+      <button class="btn btn-danger" type="button, submit">
+        Log Out
+      </button>
+    </form>
+
+    {%else%}
 
     <button
       type="button"
@@ -73,6 +88,8 @@
     >
       Log In
     </button>
+
+    {%endif%}
   </div>
 </nav>
 
