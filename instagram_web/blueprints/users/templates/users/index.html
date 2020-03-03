@@ -31,22 +31,38 @@ Homepage
                 </div>
                 <img src="{{image.user_image_url}}" class="card-img-top" alt="other people's pics">
                 <div class="card-body">
-                    <!-- {{image.created_at}} -->
-                    <span class=" d-flex justify-content-end">
-                        <h5>
-                            <i class="fas fa-fire-alt mr-3"></i>
-                            <!-- LINK TO DONATE PAGE FOR THAT PARTICULAR IMAGE, OTHER USERS CAN ACCESS -->
-                            <a href="{{url_for('donations.new', image_id=image.id)}}">
-                                <i class="fas fa-hand-holding-usd mr-3"></i>
-                            </a>
-                            <i class="fas fa-share"></i>
-                        </h5>
-                    </span>
+                    <!--------- DONATION AND ICONS -------->
+                    <div class="row panel">
+                        <div class="col-8">
+                            <span>
+                                {% if image.total_donations %}
+                                <small class="card-text">Donations : RM{{image.total_donations}}</small>
+                                {% else%}
+                                <p class="card-text"></p>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                <h5>
+                                    <i class=" fas fa-fire-alt mr-3"></i>
+                                    <!-- LINK TO DONATE PAGE FOR THAT PARTICULAR IMAGE, OTHER USERS CAN ACCESS -->
+                                    <a href="{{url_for('donations.new', image_id=image.id)}}">
+                                        <i class="fas fa-hand-holding-usd mr-3"></i>
+                                    </a>
+                                    <i class="fas fa-share"></i>
+                                </h5>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- ------ DISPLAY CAPTIONS HERE ----- -->
                     {% if image.caption %}
                     <p class="card-text">{{image.caption}}</p>
                     {%else%}
                     <p class="card-text">Caption goes here</p>
                     {% endif %}
+                    <!-- ------ DISPLAY TOTAL DONATIONS HERE ----- -->
+
                 </div>
             </div>
 
