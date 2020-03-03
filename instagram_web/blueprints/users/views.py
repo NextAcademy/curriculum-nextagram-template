@@ -44,11 +44,12 @@ def show(username):
     user = User.get_or_none(User.name == username)
 
     if current_user:
-        if not user:
-            flash(f"You're in the wrong neighborhood boy")
-            return redirect(url_for("home"))
-        else:
-            return render_template("users/show.html", user=user)
+        # T--------------HE BELOW IS COMMENTED OUT SO OTHER USERS CAN GO TO ANOTHER PERSONS IMAGE AND DONATE------------
+        # if not user:
+        #     flash(f"You're in the wrong neighborhood boy")
+        #     return redirect(url_for("home"))
+        # else:
+        return render_template("users/show.html", user=user)
     else:
         return abort(401)
 
