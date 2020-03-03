@@ -1,1 +1,25 @@
-<h1>Users#new</h1>
+{%extends "_layout.html" %} {%block content%} {% for i in images %} {% if not
+i.user_id == current_user.id %}
+<div class="mx-auto my-3 card" style="width: 18rem;">
+  <div class="px-0 ml-1 my-1 col-12 d-flex align-items-center flex-row">
+    <div class=" px-0 mr-3 col-2">
+      <img
+        class="img-fluid rounded-circle"
+        src="{{i.user.profile_image_url}}"
+      />
+    </div>
+    <h5 class="mb-0 card-title">{{i.user.name}}</h5>
+  </div>
+  <img src="{{i.image_url}}" class="card-img-top" alt="..." />
+  <div class="card-body">
+    <p class="card-text">{{i.caption}}</p>
+    <a
+      href="{{url_for('donations.new', photo_id=i.id)}}"
+      type="button, submit"
+      class="btn btn-outline-primary"
+      >Donate</a
+    >
+    <p class="mr-3 mt-3 card-text">Total donation is: {{i.total_donations}}</p>
+  </div>
+</div>
+{%endif%} {%endfor%} {%endblock%}
