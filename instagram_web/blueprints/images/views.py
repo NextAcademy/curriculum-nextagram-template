@@ -5,7 +5,6 @@ from werkzeug.utils import secure_filename
 from s3_uploader import upload_file_to_s3
 from config import Config
 from models.images import Image
-from config import Config
 
 
 images_blueprint = Blueprint('images',

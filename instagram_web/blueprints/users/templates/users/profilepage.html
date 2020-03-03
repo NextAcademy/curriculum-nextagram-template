@@ -1,7 +1,6 @@
 {% extends '_layout.html' %}
 
 {%block content%}
-{% if current_user %}
 <div style="box-sizing: border-box;">
   <div class="row px-5" style="display:flex;flex-direction:row; padding-top: 50px">
     <div class="col-lg-4">
@@ -117,7 +116,7 @@
       {% for image in image_list %}
       <div
         style="background-color:white;width:300px; height:300px; display: flex; object-fit: cover; justify-content:center; margin-right:1cm; margin-top:1cm">
-        <img style="max-height:300px; max-width: 300px;" src={{image.user_image}} />
+        <img style="max-height:300px; max-width: 300px; object-fit: cover;" src={{image.user_image}} />
       </div>
       {% endfor %}
       <div class="add-image-div"
@@ -154,17 +153,4 @@
   </div>
 </div>
 </div>
-
-{% else %}
-<div>
-  <img style="width: 200px;"
-    src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
-</div>
-<form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-  <div>
-    <button type="submit">Upload</button>
-  </div>
-</form>
-{% endif %}
 {%endblock%}

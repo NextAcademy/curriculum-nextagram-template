@@ -35,14 +35,19 @@ def create():
 def show(username):
     current_user.username = username
     if current_user.is_authenticated:
-        return redirect(url_for('users.index'))
+        return redirect(url_for('users.edit'))
     if not current_user.is_authenticated:
         return render_template('401.html'), 401
 
 
 @users_blueprint.route('/', methods=["GET"])
-def index(username):
-    return render_template('users/index.html')
+def index():
+    return redirect(url_for('home'))
+
+
+@users_blueprint.route('/edit', methods=["GET"])
+def edit():
+    return render_template('users/userpage.html')
 
 
 @users_blueprint.route('/<id>/profile', methods=['GET'])

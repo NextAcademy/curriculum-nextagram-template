@@ -179,7 +179,8 @@ footer a {
   }
 
   #main-signup {
-    color:black; 
+    color:blue; 
+    font-weight: 600;
     text-decoration:none;
     margin: 20px;
   }
@@ -189,7 +190,8 @@ footer a {
   }
 
   #main-login {
-    color:black; 
+    color:blue; 
+    font-weight: 600;
     text-decoration:none;
   }
 

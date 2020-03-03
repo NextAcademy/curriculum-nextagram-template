@@ -8,17 +8,23 @@ Homepage
 {% endblock %}
 
 {% block content %}
-<h1>Homepage</h1>
 {% for user in users %}
 {% for image in user.images %}
-<div class="card" style="width: 18rem; margin:20px;">
-  <img class="card-img-top" src="{{user.profile_image_url}}">
-  <div class="card-body">
-    <h5 class="card-title">{{user.username}}</h5>
-    <p></p>
-    <img src="{{image.user_image}}" alt="" style="height: 100px;width: 100px;">
-    <p class="card-text">Profile Page</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+<div style="display:flex; justify-content:center;">
+  <div class="card" style="width: 800px; margin:20px;">
+    <div style="display:flex; flex-direction: row; margin-top: 20px; align-items:center;margin:20px;">
+      <img class="rounded-circle" style="width:40px;height:40px; object-fit: cover; margin-left: 20px;"
+        src="{{user.profile_image_url}}">
+      <h5 class="card-title" style="display: flex; margin-left:20px">{{user.username}}</h5>
+    </div>
+    <div class="card-body" style="display:flex; flex-direction:column; margin:-20px">
+      <div style="display:flex; justify-content: center;">
+        <img src="{{image.user_image}}" alt="" style="height:800px; width:800px;">
+      </div>
+      <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
+        style="margin-top:20px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
+          style="margin-right:20px;"></i><span></span>Donate</a>
+    </div>
   </div>
 </div>
 {% endfor %}

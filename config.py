@@ -15,6 +15,9 @@ class Config(object):
     S3_KEY = os.environ.get("ACCESS_KEY")
     S3_SECRET = os.environ.get("SECRET_ACCESS_KEY")
     S3_LOCATION = f'http://{S3_BUCKET}.s3.amazonaws.com/'
+    MAILGUN_DOMAIN_NAME = os.environ.get("MAILGUN_DOMAIN_NAME")
+    MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
+    MAILGUN_BASE_URL = os.environ.get("MAILGUN_BASE_URL")
 
 
 class ProductionConfig(Config):
