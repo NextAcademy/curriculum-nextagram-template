@@ -52,5 +52,5 @@ def create(image_id):
     if dono.save():
         user = User.select().join(Image).where(Image.id == image_id)
         send_simple_message(user[0].email)
-        flash(f'successfully donated {amount}', 'success')
+        flash(f'successfully donated {amount}', 'notice')
         return redirect(url_for('users.index'))

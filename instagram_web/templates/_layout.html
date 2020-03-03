@@ -50,6 +50,9 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% if current_user.is_authenticated %}
             <a class="dropdown-item" href="{{url_for('sessions.logout')}}">Logout</a>
+            <a class="dropdown-item" href='{{url_for("users.edit", id = current_user.id)}}''>
+              Edit Profile Info
+            </a>
             {% else %}
             <a class="dropdown-item" href="{{url_for('sessions.new')}}">Sign in</a>
             <a class="dropdown-item" href="{{url_for('users.new')}}">Sign up</a>
@@ -68,11 +71,11 @@
       </form>
     </div>
   </nav>
-  {% with messages = get_flashed_messages() %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   <ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
+    {% for category, message in messages %}
+    <li class="{{category}}">{{ message }}</li>
     {% endfor %}
   </ul>
   {% endif %}

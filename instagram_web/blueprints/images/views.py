@@ -12,7 +12,7 @@ images_blueprint = Blueprint('images', __name__, template_folder='templates')
 @images_blueprint.route('/create', methods=['POST'])
 def create():
     if "user_file" not in request.files:
-        flash("No file was chosen! :O")
+        flash("No file was chosen! :O", 'warning')
         return redirect(url_for('users.show', username=current_user.username))
     file = request.files.get('user_file')
     file_name = secure_filename(file.filename)
@@ -27,5 +27,5 @@ def create():
         else:
             return render_template('users/profile.html', error=error)
     else:
-        flash('File has no name!')
+        flash('File has no name!', 'warning')
         return redirect(url_for('users.show', username=current_user.username))

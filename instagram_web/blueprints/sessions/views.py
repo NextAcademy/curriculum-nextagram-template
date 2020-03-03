@@ -32,13 +32,13 @@ def sign_in():
         if check_password_hash(hashed_pass, password):
             load_user(user.id)
             login_user(user)
-            flash('ye, you is in')
+            flash('ye, you is in', 'notice')
             return redirect(url_for('users.index'))
         else:
-            flash('right name, wrong pass')
+            flash('right name, wrong pass', 'error')
             return render_template('sessions/new.html')
     else:
-        flash("bruh, you don't exist")
+        flash("bruh, you don't exist", 'warning')
         return render_template('sessions/new.html')
 
 

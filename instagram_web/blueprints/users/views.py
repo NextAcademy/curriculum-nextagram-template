@@ -4,7 +4,7 @@ from models.user_images import Image
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
 from werkzeug.utils import secure_filename
 from helpers import upload_file_to_s3
 from config import S3_BUCKET, S3_LOCATION
@@ -62,6 +62,7 @@ def index():
 
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
+@login_required
 def edit(id):
     if id == str(current_user.id):
         return render_template('users/edit.html')
