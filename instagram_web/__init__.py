@@ -12,6 +12,9 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from models.user import User
+import os
+import config
+from app import oauth
 
 assets = Environment(app)
 assets.register(bundles)
@@ -26,6 +29,8 @@ csrf.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+oauth.init_app(app)
 
 
 @app.errorhandler(500)

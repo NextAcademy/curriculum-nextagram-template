@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, session, render_template, request, flash, ur
 from models.user import User
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user
+from app import oauth
 
 
 sessions_blueprint = Blueprint(
@@ -39,6 +40,26 @@ def logout():
     logout_user()
     flash("You are now logged out!")
     return redirect(url_for('main'))
+
+
+@sessions_blueprint.route("/google_login")
+def google_login():
+    redirect_uri = url_for('sessions.authorize', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+@sessions_blueprint.route("/authorize_google")
+def authorize():
+    token = oauth.google.authorize_access_token()
+    if token:
+        email = oauth.google.get(
+            'https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+        user = User.get_or_none(User.email == email)
+    if user:
+        login_user(user)
+        return redirect(url_for('home'))
+    else:
+        return render_template('401.html'), 401
 
     # if user_exist:
     #     login_user = User.get(User.username == username)

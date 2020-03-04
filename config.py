@@ -18,6 +18,8 @@ class Config(object):
     MAILGUN_DOMAIN_NAME = os.environ.get("MAILGUN_DOMAIN_NAME")
     MAILGUN_API_KEY = os.environ.get("MAILGUN_API_KEY")
     MAILGUN_BASE_URL = os.environ.get("MAILGUN_BASE_URL")
+    OAUTH_CLIENT_ID = os.environ.get("OAUTH_CLIENT_ID")
+    OAUTH_CLIENT_SECRET = os.environ.get("OAUTH_CLIENT_SECRET")
 
 
 class ProductionConfig(Config):

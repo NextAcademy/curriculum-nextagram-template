@@ -21,6 +21,9 @@ Main page
         <a href="https://www.facebook.com/dialog/oauth?client_id=124024574287414&redirect_uri=https%3A%2F%2Fwww.instagram.com%2Faccounts%2Fsignup%2F&state=%7B%22fbLoginKey%22%3A%22swzhyaznznzu14fjvcn8rxzbjsrh7n61rhex2guj77v61v8oz12%22%2C%22fbLoginReturnURL%22%3A%22%2F%22%7D&scope=email&response_type=code%2Cgranted_scopes&locale=en_US"
           class="btn btn-primary" style="width:300px"><i class="fab fa-facebook-square"></i><span
             style="margin-left:10px;"></span>Login with Facebook</a>
+        <a href="{{url_for('sessions.google_login')}}" class="btn btn-primary" style="margin-top:10px; width: 300px;"><i
+            class="fab fa-google"></i><span style="margin-left:10px"></span>Login with
+          Google</a>
         <div style="display: flex; flex-direction: column;">
           <a href="{{url_for('users.new')}}" class="btn btn-link" id="main-signup">Sign Up Here</a>
           <h6 style="text-align:center;">By signing up, you agree to our Terms , Data Policy and Cookies Policy .</h6>
