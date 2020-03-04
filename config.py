@@ -34,6 +34,8 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     ASSETS_DEBUG = False
+    GOOGLE_CLIENT_ID = os.getenv('GC_ID')
+    GOOGLE_CLIENT_SECRET = os.getenv('GC_SECRET')
 
 
 class TestingConfig(Config):

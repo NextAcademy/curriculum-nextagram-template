@@ -56,9 +56,10 @@
             {% else %}
             <a class="dropdown-item" href="{{url_for('sessions.new')}}">Sign in</a>
             <a class="dropdown-item" href="{{url_for('users.new')}}">Sign up</a>
-            {% endif %}
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="{{url_for('sessions.google_login')}}">Log In with GoogleyBear</a>
+            {% endif %}
+
           </div>
         </li>
       </ul>

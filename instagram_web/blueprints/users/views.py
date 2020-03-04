@@ -55,10 +55,10 @@ def show(username):
 def index():
     if current_user.is_authenticated:
         images = Image.select(Image, User).join(
-            User).where(Image.user_id != current_user.id)
+            User).where(Image.user_id != current_user.id).order_by(Image.created_at.desc())
         return render_template('users/index.html', images=images)
     else:
-        images = Image.select()
+        images = Image.select().order_by(Image.created_at.desc())
         return render_template('users/index.html', images=images)
 
 
