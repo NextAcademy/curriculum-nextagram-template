@@ -75,10 +75,12 @@ def create(photo_id):
     if not donation.save():
         flash('Dono successful but error recording', 'warning')
         return redirect(url_for('users.show'))
+    # breakpoint()
 
-    other_name = User.get_or_none(Photos.id == photo_id).name
+    receiving_name = donation.photo.user.name
     name = User.get_or_none(User.id == current_user.id).name
-    flash(f'{name} successfully donated ${amount} to {other_name} ')
+    flash(f'{name} successfully donated ${amount} to {receiving_name} ')
 
-    send_simple_message(amount=amount, other_name=other_name)
+    send_simple_message(
+        amount=amount, receiving_name=receiving_name, name=name)
     return redirect(url_for('users.show'))

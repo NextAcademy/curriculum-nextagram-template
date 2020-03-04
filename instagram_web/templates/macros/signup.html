@@ -51,9 +51,13 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
         </button>
-        <button type="button, submit" class="btn btn-primary">Log In</button>
+        <button type="button, submit" class="btn btn-success">Log In</button>
+      </form>
+      <form action="{{url_for('sessions.google_login')}}" method="get" >
+
+        <button type="button, submit" class="btn btn-outline-primary">Log In With Google</button>
+      </form>
     </div>
-</form>
 </div>
 </div>
 </div>

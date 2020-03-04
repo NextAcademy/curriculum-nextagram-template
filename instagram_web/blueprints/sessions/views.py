@@ -2,10 +2,42 @@ import peeweedbevolve
 from flask import Blueprint, flash, Flask, render_template, request, flash, redirect, url_for, session
 from models.user import User
 from werkzeug.security import check_password_hash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
+from instagram_web.util.google_oauth import oauth
+
+
 sessions_blueprint = Blueprint('sessions',
                                __name__,
                                template_folder='templates')
+
+
+@sessions_blueprint.route("/google_login")
+def google_login():
+    redirect_uri = url_for('sessions.authorize', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)
+
+
+@sessions_blueprint.route("/authorize/google")
+def authorize():
+    token = oauth.google.authorize_access_token()
+    if token:
+        email = oauth.google.get(
+            'https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+        user = User.get_or_none(User.email == email)
+
+        if not user:
+            flash('No user registered with this account')
+            return redirect(url_for(app.home))
+
+        else:
+            login_user(user)
+            flash(f"Welcome Back {user.name}")
+            return redirect(url_for("users.user_profile", id=current_user.id))
+
+    #     login_user(user)
+    #     return redirect('/somewhere')
+    # else:
+    #     return redirect('/somewhere')
 
 
 @sessions_blueprint.route("/", methods=["GET"])

@@ -4,3 +4,4 @@
 *.env
 instagram_web/static/.webassets-cache
 instagram_web/static/gen
+node_modules
