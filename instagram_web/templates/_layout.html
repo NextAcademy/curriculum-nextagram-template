@@ -10,15 +10,15 @@
   {% assets "home_css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}">
   {% endassets %}
-
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   {% assets "home_js" %}
   <script type="text/javascript" src="{{ ASSET_URL }}"></script>
   {% endassets %}
 
   {% block header %}
   {% endblock %}
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
   <title>
     {% block title %}
     {% endblock %}NEXTAGRAM

@@ -4,8 +4,8 @@ bundles = {
 
     'home_js': Bundle(
         'js/vendor/jquery-3.3.1.js',
-        'js/vendor/popper.js',
         'js/vendor/bootstrap-4.1.3.js',
+        'js/vendor/popper.js',
         'js/custom.js',
         'js/userNew.js',
         filters='jsmin',
