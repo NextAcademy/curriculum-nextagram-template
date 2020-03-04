@@ -26,8 +26,18 @@ donations_blueprint = Blueprint(
 
 
 @donations_blueprint.route('/<image_id>/new', methods=['GET'])
-@login_required
 def new(image_id):
+    if not current_user.is_authenticated:
+        flash('Need to be logged in to donate.', 'warning')
+        return redirect(request.referrer)
+    current_user_images = Image.select(Image.id).where(
+        Image.user_id == current_user.id)
+    for cui_id in current_user_images:
+        if image_id == str(cui_id):
+            flash(
+                'Sorry you cannot donate to yourself. You already own that money :)', 'danger')
+            return redirect(url_for('users.index'))
+
     client_token = gateway.client_token.generate({
     })
     return render_template('donations/new.html', image_id=image_id, client_token=client_token)
