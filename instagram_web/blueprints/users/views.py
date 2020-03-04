@@ -42,7 +42,10 @@ def show(username):
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return redirect(url_for('home'))
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if not current_user.is_authenticated:
+        return render_template('401.html'), 401
 
 
 @users_blueprint.route('/edit', methods=["GET"])

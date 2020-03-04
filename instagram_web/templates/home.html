@@ -8,6 +8,7 @@ Homepage
 {% endblock %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
 {% for user in users %}
 {% for image in user.images %}
 <div style="display:flex; justify-content:center;">
@@ -19,7 +20,7 @@ Homepage
     </div>
     <div class="card-body" style="display:flex; flex-direction:column; margin:-20px">
       <div style="display:flex; justify-content: center;">
-        <img src="{{image.user_image}}" alt="" style="height:800px; width:800px;">
+        <img src="{{image.user_image}}" alt="" style="height:800px; width:800px; object-fit:cover;">
       </div>
       <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
         style="margin-top:20px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
@@ -29,4 +30,8 @@ Homepage
 </div>
 {% endfor %}
 {% endfor %}
+{% else %}
+<h1 style="font-family: Georgia, 'Times New Roman', Times, serif; margin-top:20px;">You are not authorized to view this
+  page</h1>
+{% endif %}
 {% endblock %}

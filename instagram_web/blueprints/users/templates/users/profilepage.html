@@ -27,32 +27,45 @@
     <div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="plusModalLongTitle"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Select a profile image</h5>
+        <div class="modal-content" style="background-color:rgb(52, 50, 50); color:lightpink">
+          <div class=" modal-header" style="background-color:rgb(52, 50, 50);">
+            <h5 class=" modal-title" id="exampleModalLabel">Select a profile image</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body" style="display: flex; justify-content: center;">
+
             <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-              <input type="file" name="user_file" class="profileinput" id="profileinput" />
-              <label style="width:200px; height:10px" class="profilelabel" for="profileinput">Choose Image</label>
+
+              <input type="file" name="user_file" class="profileinput" id="profileinput" accept="image/*"
+                onchange=previewImage(event) />
+
+              <div class="profilelabel-div">
+                <label style="width:200px; height:10px" class="profilelabel" for="profileinput">Choose Image</label>
+              </div>
               <br>
               <button class="upload-profile" type="submit">Upload</button>
             </form>
           </div>
           <div style="display:flex;flex-direction:column">
-            <h6 style="display: flex; justify-content: center;">Current Image:</h6>
+            <h6 style="display: flex; justify-content: center;">Preview:</h6>
+            <div
+              style="border:darkgrey solid 2px; width:200px; height:200px; margin:0 auto; display: flex; justify-content:center; align-items: center; border-radius:50%;">
+              <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;display:none;"
+                id="your-image" />
+            </div>
+            <h6 style="display: flex; justify-content: center; padding-top:20px;">Current Image:</h6>
             <div style="display: flex; justify-content: center; padding-bottom:20px;">
-              <img style="max-width: 400px; max-height:400px;"
+              <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;;"
                 src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{current_user.profile_image}}" />
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <div style="display:flex;flex-direction:row;">
       <div style="margin-left: 3em; margin-top: 2em">
         <h1 style="font-weight: bold">{{current_user.username}}</h1>
@@ -88,7 +101,7 @@
 
   <div style="display: flex; justify-content: center; margin-top: 30px;">
     <a href="{{url_for('users.show',username=current_user.username)}}" id="edit-details" class="btn btn-link"
-      style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 860px; display: flex; justify-content: center;">Edit
+      style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 950px; display: flex; justify-content: center;">Edit
       Details</a>
   </div>
 
@@ -129,9 +142,9 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <div class="modal-content" style="background-color:rgb(52, 50, 50); color:lightpink">
+              <div class="modal-header" style="background-color:rgb(52, 50, 50); color:lightpink">
+                <h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -139,18 +152,48 @@
               <div class="modal-body">
                 <form action="{{url_for('images.upload_image')}}" method="POST" enctype="multipart/form-data">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-                  <input type="file" name="user_image" />
+
+
+                  <div
+                    style="border:darkgrey solid 2px; width:400px; height:400px; margin:0 auto; display: flex; justify-content:center; align-items: center;">
+                    <img style="height:300px; width:300px;display:none; object-fit: cover;" id="second-image" />
+                  </div>
+
                   <br>
-                  <button type="submit">Upload</button>
+
+                  <input type="file" name="user_image" class="addinput" id="addinput" accept="image/*"
+                    onchange="previewImage2(event)" />
+
+                  <div class="profilelabel-div">
+                    <label style="width:200px; height:10px" class="profilelabel" for="addinput">Choose Image</label>
+                  </div>
+                  <br>
+                  <button class="upload-profile" type="submit">Upload</button>
                 </form>
               </div>
 
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 </div>
+
+<script>
+  const previewImage = function (event) {
+    const preview = document.getElementById('your-image');
+    preview.src = URL.createObjectURL(event.target.files[0]);
+    preview.style.display = "block"
+  }
+
+  const previewImage2 = function (event) {
+    const preview = document.getElementById('second-image');
+    preview.src = URL.createObjectURL(event.target.files[0]);
+    preview.style.display = "block"
+  }
+</script>
+
 {%endblock%}
