@@ -26,9 +26,13 @@ footer a {
 
 }
 
+.nav-item {
+  color:lightpink;
+}
+
 .nav-item:hover {
   transform: scale(1.2);
-  color: black;
+  color: rgb(255, 211, 218);
   z-index: 99;
 }
 
@@ -284,4 +288,22 @@ footer a {
 
 #home-username:hover {
   color: deeppink;
+}
+
+#nav-username {
+  color:lightpink; 
+  text-decoration:none;
+}
+
+#nav-username:hover {
+  color: rgb(255, 211, 218);
+}
+
+.navbar-brand {
+  color:lightpink; 
+  font-weight: bold;
+}
+
+.navbar-brand:hover {
+  color:rgb(255, 211, 218);
 }

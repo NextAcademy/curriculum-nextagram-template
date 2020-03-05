@@ -2,13 +2,62 @@
 
 {%block content%}
 <div style="box-sizing: border-box;">
-  <div class="row px-5" style="display:flex;flex-direction:row; padding-top: 50px">
-    <div class="col-lg-4">
-      <!-- <div action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data"> -->
-      <!-- <div style="display:flex;"> -->
+  <!-- <div class="row px-5" style="display:flex;flex-direction:row; padding-top: 50px"> -->
 
-      <!-- <div class="rounded-circle" -->
-      <!-- style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;padding:3px; height:200px; width:200px"> -->
+  <!-- <div action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data"> -->
+  <!-- <div style="display:flex;"> -->
+
+  <!-- <div class="rounded-circle" -->
+  <!-- style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;padding:3px; height:200px; width:200px"> -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="plusModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color:rgb(52, 50, 50); color:lightpink">
+        <div class=" modal-header" style="background-color:rgb(52, 50, 50);">
+          <h5 class=" modal-title" id="exampleModalLabel">Select a profile image</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:lightpink">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="display: flex; justify-content: center;">
+
+          <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+
+            <input type="file" name="user_file" class="profileinput" id="profileinput" accept="image/*"
+              onchange=previewImage(event) />
+
+            <div class="profilelabel-div">
+              <label style="width:200px; height:12px; border-radius:9%" class="profilelabel" for="profileinput">Choose
+                Image</label>
+            </div>
+            <br>
+            <button class="upload-profile" type="submit">Upload</button>
+          </form>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <h6 style="display: flex; justify-content: center;">Preview:</h6>
+          <div
+            style="border:lightpink solid 2px; width:200px; height:200px; margin:0 auto; display: flex; justify-content:center; align-items: center; border-radius:50%;">
+            <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;display:none;"
+              id="your-image" />
+          </div>
+          <h6 style="display: flex; justify-content: center; padding-top:20px;">Current Image:</h6>
+          <div style="padding-bottom:20px;">
+            <div
+              style="display: flex; justify-content: center; align-items:center; border: 2px solid lightpink; width:200px; height:200px; border-radius:50%; margin: 0 auto;">
+              <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;;"
+                src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{user.profile_image}}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: row; margin-top: 50px;">
+    <div class="col-lg-4">
       <div style="border-radius:50%; width: 190px; height: 190px; margin-left:220px; position: relative;">
         <img class="img-thumbnail rounded-circle"
           style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;border: 2px solid white;"
@@ -18,179 +67,173 @@
           +
         </button>
       </div>
-      <div>
-      </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="plusModal" tabindex="-1" role="dialog" aria-labelledby="plusModalLongTitle"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content" style="background-color:rgb(52, 50, 50); color:lightpink">
-          <div class=" modal-header" style="background-color:rgb(52, 50, 50);">
-            <h5 class=" modal-title" id="exampleModalLabel">Select a profile image</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:lightpink">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" style="display: flex; justify-content: center;">
-
-            <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-
-              <input type="file" name="user_file" class="profileinput" id="profileinput" accept="image/*"
-                onchange=previewImage(event) />
-
-              <div class="profilelabel-div">
-                <label style="width:200px; height:12px; border-radius:9%" class="profilelabel" for="profileinput">Choose
-                  Image</label>
-              </div>
-              <br>
-              <button class="upload-profile" type="submit">Upload</button>
-            </form>
-          </div>
-          <div style="display:flex;flex-direction:column">
-            <h6 style="display: flex; justify-content: center;">Preview:</h6>
-            <div
-              style="border:lightpink solid 2px; width:200px; height:200px; margin:0 auto; display: flex; justify-content:center; align-items: center; border-radius:50%;">
-              <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;display:none;"
-                id="your-image" />
-            </div>
-            <h6 style="display: flex; justify-content: center; padding-top:20px;">Current Image:</h6>
-            <div style="padding-bottom:20px;">
-              <div
-                style="display: flex; justify-content: center; align-items:center; border: 2px solid lightpink; width:200px; height:200px; border-radius:50%; margin: 0 auto;">
-                <img style="width: 190px; height:190px; object-fit: cover; border-radius: 50%;;"
-                  src=" https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{{user.profile_image}}" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div style="display:flex;flex-direction:row;">
+      {% if not user.id==current_user.id %}
       <div style="margin-left: 3em; margin-top: 2em">
         <h1 style="font-weight: bold">{{user.username}}</h1>
         <p> {{user.username}}</p>
-        <Button class="btn btn-primary" style="width:100px">Follow</Button>
-      </div>
-      <div style="margin-top: 1.5cm; margin-left: 3cm;">
-        <div style="margin-left: 0.5em;">
-          <h1>{{user.id}}</h1>
-        </div>
-        <div style="display: flex; justify-content:center;">
-          <h6>Posts</h6>
-        </div>
-      </div>
-      <div style="margin-top: 1.5cm; margin-left: 2cm;">
-        <div style="margin-left: 0.5em;">
-          <h1>500</h1>
-        </div>
-        <div style="display: flex; justify-content: center;">
-          <h6>Followers</h6>
-        </div>
-      </div>
-      <div style="margin-top: 1.5cm; margin-left: 2cm;">
-        <div style="margin-left: 0.5em;">
-          <h1>12</h1>
-        </div>
-        <div style="display: flex; justify-content: center;">
-          <h6>Following</h6>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="display: flex; justify-content: center; margin-top: 30px;">
-    <a href="{{url_for('users.show',username=user.username)}}" id="edit-details" class="btn btn-link"
-      style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 950px; display: flex; justify-content: center;">Edit
-      Details</a>
-  </div>
-
-  <div class="row d-flex flex-column" style="margin-top: 50px; margin-left: 165px">
-    <div class="col-lg-5">
-      <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
-        <div class="rounded-circle"
-          style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;width: 100px; height: 100px ">
-          <div class="rounded-circle" id="plus-highlight"
-            style="border-radius:50%; border: 1px solid pink; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center;">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-            <input type="file" name="user_file" id="plusfile" class="plusfile" />
-            <label style="font-weight:300;" for="plusfile">+</label>
+        {% if not current_user.is_following(user) %}
+        <a href="{{url_for('follower_following.create', idol_id=user.id)}}" class="btn btn-primary" style="width:100px"
+          action="POST">Follow</a>
+        {% else %}
+        <a href="{{url_for('follower_following.delete', idol_id=user.id)}}" class="btn btn-primary" style="width:100px"
+          action="POST">Unfollow</a>
+        {% endif %}
+        <div
+          style="display: flex; align-items: center; margin-top:-110px;margin-left: 250px; width:300px; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+            <div>
+              <h1>{{user.id}}</h1>
+            </div>
+            <div>
+              <h6>Posts</h6>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="col-lg-5">
-      <h6 style="font-weight:100; margin-left:132px; margin-top: 10px">New</h6>
-    </div>
-
-    <div
-      style="display: flex;padding-left: 160px; flex-wrap:wrap; justify-content:start; flex-direction:row; margin-left:-100px">
-      {% for image in image_list %}
-      <div
-        style="background-color:white;width:300px; height:300px; display: flex; object-fit: cover; justify-content:center; margin-right:1cm; margin-top:1cm">
-        <img style="max-height:300px; max-width: 300px; object-fit: cover;" src={{image.user_image}} />
-      </div>
-      {% endfor %}
-      <div class="add-image-div"
-        style=" width:300px; height:300px; margin-top:1cm; display:flex; justify-content:center; align-items: center;">
-        <button type="button" class="btn btn-link" id="add-image" data-toggle="modal" data-target="#exampleModal">
-          +
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content"
-              style="background-color:rgb(52, 50, 50); color:lightpink; margin-left:30px; margin-right:30px">
-              <div class="modal-header" style="background-color:rgb(52, 50, 50); color:lightpink">
-                <h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                  style="color:rgb(252, 117, 137)">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form action="{{url_for('images.upload_image')}}" method="POST" enctype="multipart/form-data">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-
-
-                  <div
-                    style="border:lightpink solid 2px; width:400px; height:400px; margin:0 auto; display: flex; justify-content:center; align-items: center;">
-                    <img style="height:300px; width:300px;display:none; object-fit: cover;" id="second-image" />
-                  </div>
-
-                  <br>
-
-                  <input type="file" name="user_image" class="addinput" id="addinput" accept="image/*"
-                    onchange="previewImage2(event)" />
-
-                  <div class="profilelabel-div"
-                    style="width:405px; margin:0 auto; display:flex; justify-content:center;">
-                    <label style="width:200px; height:10px" class="profilelabel" for="addinput">Choose Image</label>
-                  </div>
-                  <br>
-                  <div style="margin-left:30px; display: flex; flex-direction: row;">
-                    <div style="display: flex; justify-content: start;">
-                      <textarea name="caption" class="form-control" id="caption" row="2" placeholder="caption"
-                        style="width:330px; margin:0 auto; background-color: transparent; border: 2px solid lightpink;"></textarea>
-                    </div>
-                    <button class="upload-profile" type="submit" style="margin:0 auto;margin-left:10px">Upload</button>
-                  </div>
-                </form>
-              </div>
-
+          <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+            <div>
+              <h1>{{user.following | length}}</h1>
+            </div>
+            <div>
+              <h6>Followers</h6>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+            <div>
+              <h1>{{user.followers | length}}</h1>
+            </div>
+            <div>
+              <h6>Following</h6>
             </div>
           </div>
         </div>
-
+      </div>
+      {% else %}
+      <div style="margin-left: 3em; display: flex; flex-direction: column; justify-content:center; align-items: center">
+        <h1 style="font-weight: bold">{{user.username}}</h1>
+        <p> {{user.username}}</p>
+      </div>
+      <div style="display: flex; align-items: center; width:300px; justify-content: space-between; margin-left: 100px;">
+        <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+          <div>
+            <h1>{{user.id}}</h1>
+          </div>
+          <div>
+            <h6>Posts</h6>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+          <div>
+            <h1>{{user.following | length}}</h1>
+          </div>
+          <div>
+            <h6>Followers</h6>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content:center; align-items: center;">
+          <div>
+            <h1>{{user.followers | length}}</h1>
+          </div>
+          <div>
+            <h6>Following</h6>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  {% endif %}
+</div>
+</div>
+
+
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+  <a href="{{url_for('users.show',username=user.username)}}" id="edit-details" class="btn btn-link"
+    style="color:rgb(245, 150, 180); text-decoration:none;border: 2px solid rgb(245, 116, 180); width: 950px; display: flex; justify-content: center;">Edit
+    Details</a>
+</div>
+
+<div class="row d-flex flex-column" style="margin-top: 50px; margin-left: 165px">
+  <div class="col-lg-5">
+    <form action="{{url_for('users.upload')}}" method="POST" enctype="multipart/form-data">
+      <div class="rounded-circle"
+        style="background: linear-gradient(to right, red, orange,red, purple); margin-left:100px;width: 100px; height: 100px ">
+        <div class="rounded-circle" id="plus-highlight"
+          style="border-radius:50%; border: 1px solid pink; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+          <input type="file" name="user_file" id="plusfile" class="plusfile" />
+          <label style="font-weight:300;" for="plusfile">+</label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-5">
+    <h6 style="font-weight:100; margin-left:132px; margin-top: 10px">New</h6>
+  </div>
+
+  <div
+    style="display: flex;padding-left: 160px; flex-wrap:wrap; justify-content:start; flex-direction:row; margin-left:-100px">
+    {% for image in image_list %}
+    <div
+      style="background-color:white;width:300px; height:300px; display: flex; object-fit: cover; justify-content:center; margin-right:1cm; margin-top:1cm">
+      <img style="max-height:300px; max-width: 300px; object-fit: cover;" src={{image.user_image}} />
+    </div>
+    {% endfor %}
+    <div class="add-image-div"
+      style=" width:300px; height:300px; margin-top:1cm; display:flex; justify-content:center; align-items: center;">
+      <button type="button" class="btn btn-link" id="add-image" data-toggle="modal" data-target="#exampleModal">
+        +
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"
+            style="background-color:rgb(52, 50, 50); color:lightpink; margin-left:30px; margin-right:30px">
+            <div class="modal-header" style="background-color:rgb(52, 50, 50); color:lightpink">
+              <h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                style="color:rgb(252, 117, 137)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="{{url_for('images.upload_image')}}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+
+
+                <div
+                  style="border:lightpink solid 2px; width:400px; height:400px; margin:0 auto; display: flex; justify-content:center; align-items: center;">
+                  <img style="height:300px; width:300px;display:none; object-fit: cover;" id="second-image" />
+                </div>
+
+                <br>
+
+                <input type="file" name="user_image" class="addinput" id="addinput" accept="image/*"
+                  onchange="previewImage2(event)" />
+
+                <div class="profilelabel-div" style="width:405px; margin:0 auto; display:flex; justify-content:center;">
+                  <label style="width:200px; height:10px" class="profilelabel" for="addinput">Choose Image</label>
+                </div>
+                <br>
+                <div style="margin-left:30px; display: flex; flex-direction: row;">
+                  <div style="display: flex; justify-content: start;">
+                    <textarea name="caption" class="form-control" id="caption" row="2" placeholder="caption"
+                      style="width:330px; margin:0 auto; background-color: transparent; border: 2px solid lightpink;"></textarea>
+                  </div>
+                  <button class="upload-profile" type="submit" style="margin:0 auto;margin-left:10px">Upload</button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 </div>
 </div>
 

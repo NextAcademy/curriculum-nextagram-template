@@ -1,7 +1,7 @@
 import peewee as pw
 from models.base_model import BaseModel
 from werkzeug.security import generate_password_hash
-from playhouse.hybrid import hybrid_property
+from playhouse.hybrid import hybrid_property, hybrid_method
 import re
 from flask_login import UserMixin
 from flask import Flask, request, flash
@@ -16,6 +16,26 @@ class User(BaseModel, UserMixin):
     @hybrid_property
     def profile_image_url(self):
         return f"https://jynmunbucket.s3-ap-southeast-1.amazonaws.com/{self.profile_image}"
+
+    @hybrid_property
+    def followers(self):
+        from models.follower_following import FollowerFollowing
+        return [user.idol for user in FollowerFollowing.select().where(FollowerFollowing.fan_id == self.id)]
+
+    @hybrid_property
+    def following(self):
+        from models.follower_following import FollowerFollowing
+        return [user.fan for user in FollowerFollowing.select().where(FollowerFollowing.idol_id == self.id)]
+
+    @hybrid_method
+    def is_following(self, user):
+        from models.follower_following import FollowerFollowing
+        return True if FollowerFollowing.get_or_none((FollowerFollowing.idol_id == user.id) & (FollowerFollowing.fan_id == self.id)) else False
+
+    @hybrid_method
+    def is_followed_by(self, user):
+        from models.follower_following import FollowerFollowing
+        return True if FollowerFollowing.get_or_none((FollowerFollowing.fan_id == user.id) & (FollowerFollowing.idol_id == self.id)) else False
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)

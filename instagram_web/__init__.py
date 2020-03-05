@@ -5,6 +5,7 @@ from instagram_web.blueprints.users.views import users_blueprint
 from instagram_web.blueprints.sessions.views import sessions_blueprint
 from instagram_web.blueprints.images.views import images_blueprint
 from instagram_web.blueprints.donations.views import donations_blueprint
+from instagram_web.blueprints.follower_following.views import follower_following_blueprint
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
 from models.user import User
@@ -12,6 +13,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from models.user import User
+from models.images import Image
 import os
 import config
 from app import oauth
@@ -23,6 +25,8 @@ app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 app.register_blueprint(images_blueprint, url_prefix="/images")
 app.register_blueprint(donations_blueprint, url_prefix="/donations")
+app.register_blueprint(follower_following_blueprint,
+                       url_prefix="/follower_following")
 
 csrf = CSRFProtect()
 csrf.init_app(app)
@@ -45,8 +49,8 @@ def page_not_found(e):
 
 @app.route("/home")
 def home():
-    users = User.select()
-    return render_template('home.html', users=users)
+    images = Image.select().order_by(Image.created_at.desc())
+    return render_template('home.html', images=images)
 
 
 @app.route("/")
