@@ -4,6 +4,7 @@
 <h3>
     Your followers:
 </h3>
+{% if fans|length > 0%}
 {% for user in fans %}
 <div>
     {{user.username}}
@@ -11,4 +12,9 @@
     <a href="{{url_for('users.show', username = user.username)}}"> visit profile</a>
 </div>
 {% endfor %}
+{% else %}
+<div>
+    awwh... you don't have any followers. but that's okay, i still like you.
+</div>
+{% endif %}
 {% endblock %}

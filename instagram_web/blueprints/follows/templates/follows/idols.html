@@ -4,6 +4,7 @@
 <h3>
     People you follow.
 </h3>
+{% if idols|length > 0 %}
 {% for user in idols %}
 <div>
     {{user.username}}
@@ -11,4 +12,9 @@
     <a href="{{url_for('users.show', username = user.username)}}"> visit profile</a>
 </div>
 {% endfor %}
+{% else %}
+<div>
+    you do not follow anyone.
+</div>
+{% endif %}
 {% endblock %}
