@@ -16,12 +16,38 @@
 
   {% endif %}
 
+<div class="d-flex justify-content-center mt-3 mx-auto">
+  {% if not current_user.is_following(user) %}
+  <form action="{{url_for('follows.create', idol_id=user.id)}}" method="post">
+
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <button class="mx-auto btn btn-primary"> Follow </button>
+    
+  </form>
+{%else%}
+  <form action="{{url_for('follows.delete', idol_id=user.id)}}" method="post">
+  
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <button class="mx-auto btn btn-primary"> Unfollow </button>
+  
+  </form>
+{%endif%}
+</div>
+
+<div class="d-flex flex-row text-center justify-content-center px-0 mx-auto d-flex">
+  <div class="d-flex justify-content-center text-center col-2 ">  Followers: {{users.fans | length }} </div>
+
+  <div class=" d-flex justify-content-center text-center col-2 ">  
+    Following: {{users.idols | length }}
+  </div>
+</div>
 
 
 
-<button type="button" class="btn btn-primary d-flex justify-content-center mx-auto my-2" data-toggle="modal"
+
+<button type="button" class="border-0 font-weight-bold btn btn-outline-dark d-flex justify-content-center mx-auto my-2" data-toggle="modal"
   data-target="#uploadImage">
-  Upload picture
+  Change Profile Picture
 </button>
 <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
   aria-hidden="true">
@@ -29,7 +55,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">
-          Upload Image
+          Upload Profile Image
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -66,7 +92,7 @@
 
 
 
-<button type="button" class="btn btn-primary d-flex justify-content-center mx-auto"  data-toggle="modal" data-target="#editProfile">
+<button type="button" class="border-0 font-weight-bold btn btn-outline-dark d-flex justify-content-center mx-auto"  data-toggle="modal" data-target="#editProfile">
   Edit Profile
 </button>
 <div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -107,12 +133,14 @@
   </div>
 </div>
 
-<div class="container">
+<hr>
+
+<div class="overflow-hidden container">
 <h3>Photo Album</h3>
 </div>
-<div class=" col-lg-10 d-flex flex-wrap justify-content-center container">
+<div class="overflow-hidden col-lg-10 d-flex flex-wrap justify-content-center container">
 {% for i in user_id.images %}
-<img class="rounded d-block justify-content-center w-25 mx-3 my-3"  id="current_user.id" src="{{i.image_url}}">
+<img class="col-3 overflow-hidden rounded d-block justify-content-center w-25 mx-3 my-3"  id="current_user.id" src="{{i.image_url}}">
 
 {%endfor%}
 

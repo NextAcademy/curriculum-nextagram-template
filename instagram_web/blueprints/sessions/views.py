@@ -60,14 +60,14 @@ def sign_in():
         return render_template("sessions/new.html")
     login_user(user)
     flash(f"Welcome back {user.name}! You are now logged in")
-    return redirect(url_for("sessions.new"))
+    return redirect(url_for("home"))
 
 
 @sessions_blueprint.route("/logout", methods=['POST'])
 def logout():
     logout_user()
     flash("Successfully logged out. Goodbye!")
-    return redirect(url_for("sessions.new"))
+    return redirect(url_for("home"))
 
 
 # @sessions_blueprint.route('/index')

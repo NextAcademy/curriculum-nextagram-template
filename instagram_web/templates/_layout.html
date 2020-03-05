@@ -44,11 +44,13 @@ import post with context %}
   </head>
   <body>
     {{ navbar() }} {{signup()}} {{post()}}
-    <div class="container">
+    <div class="container mx-0 col-12 px-0">
       {% with messages = get_flashed_messages() %} {% if messages %}
-      <ul class="flashes">
+      <ul class="flashes mx-auto px-0 col-12">
         {% for message in messages %}
-        <li>{{ message }}</li>
+        <p class="justify-content-center d-flex alert alert-success mx-auto">
+          {{ message }}
+        </p>
         {% endfor %}
       </ul>
       {% endif %} {% endwith %}

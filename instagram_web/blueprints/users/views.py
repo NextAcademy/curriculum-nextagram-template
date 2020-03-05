@@ -2,10 +2,12 @@ import peeweedbevolve
 from flask import Blueprint, flash, Flask, render_template, request, flash, redirect, url_for, session
 from models.user import User
 from models.photos import Photos
+from models.donation import Donation
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from instagram_web.util.s3_uploader import upload_file_to_s3
+from operator import attrgetter
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -14,7 +16,9 @@ users_blueprint = Blueprint('users',
 
 @users_blueprint.route('/new', methods=['GET'])
 def new():
-    return render_template('users/new.html')
+    user = User.get_or_none(User.id == id)
+    users = User.get_or_none(User.id == id)
+    return render_template('users/new.html', user=user, users=users)
 
 
 @users_blueprint.route('/new/create', methods=['POST'])
@@ -67,11 +71,12 @@ def index():
 @login_required
 def user_profile(id):
     user_id = User.get_or_none(User.id == id)
-
+    user = User.get_or_none(User.id == id)
+    users = User.get_or_none(User.id == id)
     if not user_id:
         return redirect(url_for('home'))
 
-    return render_template('users/userProfile.html', user_id=user_id)
+    return render_template('users/userProfile.html', user_id=user_id, user=user, users=users)
 
 
 @users_blueprint.route('/profile/<id>/update', methods=['POST'])
@@ -127,7 +132,36 @@ def edit(id):
 
 @users_blueprint.route("/newsfeed", methods=["GET"])
 def show():
-    images = Photos.select()
-    # breakpoint()
+
+    images = []
+    users = User.select()
+    for user in users:
+        last_image = Photos.select().where(Photos.user_id == user.id).order_by(
+            Photos.created_at.desc()).limit(1)
+        if len(last_image) > 0:
+            images.append(last_image[0])
+
+    images.sort(key=lambda image: image.created_at)
+    images.reverse()
+
+    # # breakpoint()
+    # # User.select().order_by(User.id.desc()).get_by_id(Photos.user_id)
+    # images = Photos.select().join(
+    #     User).order_by(User.id)
+
+    # # images = Photos.select().order_by(Photos.created_at.desc()).limit(1)
+    # users = User.select()
+    # last_record = Photos.select().order_by(Photos.created_at.desc())
 
     return render_template('users/new.html', images=images)
+
+
+@users_blueprint.route("/search", methods=["POST"])
+def search_user():
+    search_user = request.form.get("search_user")
+    target_user = User.get_or_none(User.name == search_user)
+
+    if not target_user:
+        return redirect(url_for('users.show'))
+
+    return redirect(url_for('users.user_profile', id=target_user.id))

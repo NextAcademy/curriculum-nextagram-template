@@ -2,7 +2,7 @@ from models.base_model import BaseModel
 import peewee as pw
 import re
 from werkzeug.security import generate_password_hash
-from playhouse.hybrid import hybrid_property
+from playhouse.hybrid import hybrid_property, hybrid_method
 
 
 class User(BaseModel):
@@ -10,6 +10,16 @@ class User(BaseModel):
     password = pw.CharField(unique=False)
     email = pw.CharField(unique=True)
     profile_image = pw.CharField(null=True)
+
+    @hybrid_method
+    def is_following(self, user):
+        from models.FF import FF
+        return True if FF.get_or_none((FF.idol_id == user.id) & (FF.fan_id == self.id)) else False
+
+    @hybrid_method
+    def is_followed_by(self, user):
+        from models.FF import FF
+        return True if FF.get_or_none((FF.fan_id == user.id) & (FF.idol_id == self.id)) else False
 
     @hybrid_property
     def profile_image_url(self):

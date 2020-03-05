@@ -59,14 +59,23 @@
     >
       Post
     </button>
-    <form class="form-inline my-2 my-lg-0">
+    <form
+      method="post"
+      action="{{url_for('users.search_user')}}"
+      class="form-inline my-2 my-lg-0"
+    >
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
       <input
+        name="search_user"
         class="form-control mr-sm-2"
-        type="search"
+        type="Search text"
         placeholder="Search"
         aria-label="Search"
       />
-      <button class="mr-2 btn btn-outline-success my-2 my-sm-0" type="submit">
+      <button
+        class="mr-2 btn btn-outline-success my-2 my-sm-0"
+        type="button submit"
+      >
         Search
       </button>
     </form>
