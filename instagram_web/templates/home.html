@@ -16,7 +16,7 @@ Homepage
     <div style="display:flex; flex-direction: row; margin-top: 20px; align-items:center;margin:20px;">
       <img class="rounded-circle" style="width:40px;height:40px; object-fit: cover; margin-left: 20px;"
         src="{{user.profile_image_url}}">
-      <h5 class="card-title" style="display: flex; margin-left:20px">{{user.username}}</h5>
+      <a href="{{url_for('users.profile', id=user.id)}}" class="card-title" id="home-username">{{user.username}}</a>
     </div>
     <div class="card-body" style="display:flex; flex-direction:column; margin:-20px">
       <div style="display:flex; justify-content: center;">

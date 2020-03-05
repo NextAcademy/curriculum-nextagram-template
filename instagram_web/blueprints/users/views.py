@@ -57,7 +57,7 @@ def edit():
 def profile(id):
     user = User.get(User.id == id)
     image_list = Image.select().where(Image.user_id == user.id)
-    return render_template('users/profilepage.html',  image_list=image_list)
+    return render_template('users/profilepage.html',  image_list=image_list, user=user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])

@@ -1,21 +1,25 @@
 {% extends '_layout.html' %}
 
 {%block content%}
-
-<h1 style="padding:10px">User Sign Up</h1>
-<div style="padding-left: 10px;">
-  <form method="post" action="{{url_for('users.create')}}">
-    <div class="col-6 form-group">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-      <p>Username</p>
-      <input type="text" class="form-control" name="username">
-      <p>Email</p>
-      <input type="email" class="form-control" name="email">
-      <p>Password</p>
-      <input type="password" class="form-control" name="password">
-    </div>
-    <button type="submit" class="btn btn-danger">Submit</button>
-  </form>
+<div style="display:flex; flex-direction: column;">
+  <div style="display: flex; justify-content: center; padding-top: 20px;">
+    <h1 style="font-family: Dancing Script;">User Sign Up</h1>
+  </div>
+  <div style="display: flex; justify-content: center; margin-top: 20px; font-family: Kalam;">
+    <form method="post" action="{{url_for('users.create')}}">
+      <div class="col-6 form-group" style="width:800px; margin:0 auto;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <h6>Username</h6>
+        <input type="text" class="form-control" name="username">
+        <h6 style="padding-top:20px;">Email</h6>
+        <input type="email" class="form-control" name="email">
+        <h6 style="padding-top:20px;">Password</h6>
+        <input type=" password" class="form-control" name="password">
+        <br>
+        <button type="submit" class="new-signup" style="margin-left:0px">Submit</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 {%endblock%}

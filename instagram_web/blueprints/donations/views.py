@@ -81,6 +81,7 @@ def create(image_id):
         return redirect(url_for('users.index'))
 
     flash(f'Donation successful. ${amount} donated', 'success')
-    user = User.select().join(Image).where(Image.id == image_id)
+    user = User.select().join(Image).where(
+        Image.id == image_id)
     send_simple_message(user[0].email)
     return redirect(url_for('users.index'))

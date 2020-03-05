@@ -17,6 +17,7 @@ def upload_image():
 
     file = request.files.get('user_image')
     file.filename = secure_filename(file.filename)
+    caption = request.form.get('caption')
 
     if file:
         if not upload_file_to_s3(file):
@@ -25,7 +26,7 @@ def upload_image():
 
         user = User.get_or_none(User.id == current_user.id)
         image = Image(user_image=f'http://jynmunbucket.s3.amazonaws.com/' + file.filename,
-                      user_id=user.id)
+                      user_id=user.id, user_caption=caption)
 
         # image.user_image = file.filename
 

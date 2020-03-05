@@ -68,7 +68,7 @@ def authorize():
     #     result = check_password_hash(hashed_password, password)
     #     if result:
     #         session['username'] = login_user.email
-    #         return redirect(url_for('sessions.new'))
+    #         return redisrect(url_for('sessions.new'))
     #     else:
     #         flash("Incorrect Email or Password")
     #         return redirect(url_for("sessions.new"))

@@ -9,6 +9,7 @@ from playhouse.hybrid import hybrid_property
 class Image(BaseModel):
     user = pw.ForeignKeyField(User, backref='images')
     user_image = pw.CharField()
+    user_caption = pw.CharField()
 
     @hybrid_property
     def full_image_url(self):
