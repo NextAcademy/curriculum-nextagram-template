@@ -17,7 +17,14 @@ Profile Page
             </div>
         </div>
         <div class="col-lg-6 justify-content-center d-flex align-items-center">
-            {% if not username != current_user.username%}
+            <div>
+                Followers: {{ user.fans|length }}
+                <br>
+                Following: {{ user.idols|length }}
+            </div>
+            {% if username != current_user.username and not user.is_followed %}
+            <a href="{{url_for('follows.create', id=user.id)}}">Follow!</a>
+            {% endif %}
         </div>
     </div>
 </div>

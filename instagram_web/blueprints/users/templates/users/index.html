@@ -5,22 +5,7 @@ Homepage
 {% endblock %}
 
 {% block content %}
-<!-- 
-{% for image in images %}
-<div>
-    <div>
-        <h3>
-            {{image.user.username}}
-        </h3>
-        <img width="300px" src="{{image.source}}" alt="">
-        <div>
-            {{image.caption}}
-        </div>
-    </div>
-    <a href="{{url_for('donations.new', image_id=image.id)}}">dono</a>
-</div>
-<hr>
-{% endfor %} -->
+
 {% for image in images%}
 <h3>
     {{image.user.username}}
@@ -30,8 +15,9 @@ Homepage
     aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">{{image.user.username}}</h5>
+            <div class="modal-header"><a href="{{url_for('users.show', username = image.user.username)}}">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">{{image.user.username}}</h5>
+                </a>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -2,6 +2,7 @@ from models.base_model import BaseModel
 import peewee as pw
 from flask_login import current_user
 from config import S3_LOCATION
+from playhouse.hybrid import hybrid_property
 
 
 class User(BaseModel):
@@ -10,6 +11,17 @@ class User(BaseModel):
     password = pw.CharField(unique=False, null=False)
     image = pw.CharField(unique=False, null=True,
                          default=S3_LOCATION + 'default-profile-image.png')
+
+    @hybrid_property
+    def is_followed(self):
+        from models.follow import Follow
+        followed = Follow.get_or_none(
+            Follow.fan_id == current_user and Follow.idol_id == self.id)
+
+        if not followed:
+            return False
+
+        return True
 
     def is_authenticated(self):
         return True
