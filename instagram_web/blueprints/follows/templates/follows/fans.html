@@ -1,0 +1,14 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+<h3>
+    Your followers:
+</h3>
+{% for user in fans %}
+<div>
+    {{user.username}}
+    <img src="{{user.image}}" alt="">
+    <a href="{{url_for('users.show', username = user.username)}}"> visit profile</a>
+</div>
+{% endfor %}
+{% endblock %}

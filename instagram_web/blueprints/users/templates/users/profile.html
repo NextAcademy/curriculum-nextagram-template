@@ -18,13 +18,26 @@ Profile Page
         </div>
         <div class="col-lg-6 justify-content-center d-flex align-items-center">
             <div>
+                {% if username == current_user.username %}
+                <a href="{{url_for('follows.show_fans', id = current_user.id)}}">Followers:</a> {{ user.fans|length }}
+                <br>
+                <a href="{{url_for('follows.show_idols', id = current_user.id)}}">Following:</a> {{ user.idols|length }}
+                {% else %}
                 Followers: {{ user.fans|length }}
                 <br>
                 Following: {{ user.idols|length }}
+                {% endif %}
+
             </div>
-            {% if username != current_user.username and not user.is_followed %}
+            {% if username != current_user.username %}
+            {% if user.is_followed %}
+            <a href="{{url_for('follows.delete', id=user.id)}}">Unfollow!</a>
+            {% else %}
             <a href="{{url_for('follows.create', id=user.id)}}">Follow!</a>
             {% endif %}
+            {% endif %}
+
+
         </div>
     </div>
 </div>
