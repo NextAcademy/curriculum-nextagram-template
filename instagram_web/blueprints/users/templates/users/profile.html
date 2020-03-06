@@ -36,12 +36,9 @@ Profile Page
             <a href="{{url_for('follows.create', id=user.id)}}">Follow!</a>
             {% endif %}
             {% endif %}
-
-
         </div>
     </div>
 </div>
-
 
 {% if current_user.username==username %}
 <form action="{{url_for('images.create', username= current_user.username)}}" method="POST"
