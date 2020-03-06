@@ -22,6 +22,8 @@ PORT = 5000
 class ProductionConfig(Config):
     DEBUG = False
     ASSETS_DEBUG = False
+    GOOGLE_CLIENT_ID = os.getenv('GC_ID')
+    GOOGLE_CLIENT_SECRET = os.getenv('GC_SECRET')
 
 
 class StagingConfig(Config):
