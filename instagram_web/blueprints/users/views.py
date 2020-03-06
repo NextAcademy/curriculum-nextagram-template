@@ -8,10 +8,44 @@ from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from instagram_web.util.s3_uploader import upload_file_to_s3
 from operator import attrgetter
+from PIL import Image, ImageOps
+import tempfile
 
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
+
+
+@users_blueprint.route('/private', methods=['POST'])
+def private():
+    user = User.get_or_none(User.id == current_user.id)
+
+    if not user:
+        flash('No user id found')
+        return redirect(url_for('users.show'))
+
+    private = User.update(private_profile=True).where(
+        User.id == current_user.id)
+
+    private.execute()
+    flash("successfully privated")
+    return redirect(url_for('users.user_profile', id=current_user.id))
+
+
+@users_blueprint.route('/unprivate', methods=['POST'])
+def unprivate():
+    user = User.get_or_none(User.id == current_user.id)
+
+    if not user:
+        flash('No user id found')
+        return redirect(url_for('users.show'))
+
+    unprivate = User.update(private_profile=False).where(
+        User.id == current_user.id)
+    unprivate.execute()
+
+    flash("successfully UNprivated")
+    return redirect(url_for('users.user_profile', id=current_user.id))
 
 
 @users_blueprint.route('/new', methods=['GET'])
@@ -49,14 +83,26 @@ def upload():
         return redirect(url_for('users.user_profile', id=current_user.id))
 
     file = request.files.get('profile_image')
+
+    # new_img = Image.open(file)
+
+    # new_img = ImageOps.fit(new_img, (500, 500), method=3,
+    #                       bleed=0.0, centering=(0.5, 0.5))
+
     file.filename = secure_filename(file.filename)
 
     if not upload_file_to_s3(file):
         flash('Ops x loading!')
-        return redirect(url_for('users.user_profile/', id=current_user.id))
+        return redirect(url_for('users.user_profile', id=current_user.id))
     user = User.get_or_none(User.id == current_user.id)
     user.profile_image = file.filename
     user.save()
+    # newImage = User.get(User.id == current_user.id).profile_image
+    # newImage = ImageOps.fit(file, (500, 500), method=3,
+    #                         bleed=0.0, centering=(0.5, 0.5))
+    # user.profile_image = newImage
+    # user.save()
+
     flash('Upload success!', 'success')
     return redirect(url_for('users.user_profile', id=current_user.id))
 
@@ -144,14 +190,7 @@ def show():
     images.sort(key=lambda image: image.created_at)
     images.reverse()
 
-    # # breakpoint()
-    # # User.select().order_by(User.id.desc()).get_by_id(Photos.user_id)
-    # images = Photos.select().join(
-    #     User).order_by(User.id)
-
-    # # images = Photos.select().order_by(Photos.created_at.desc()).limit(1)
-    # users = User.select()
-    # last_record = Photos.select().order_by(Photos.created_at.desc())
+    # uz = User.get_or_none(User.id == id)
 
     return render_template('users/new.html', images=images)
 

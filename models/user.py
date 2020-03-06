@@ -10,6 +10,7 @@ class User(BaseModel):
     password = pw.CharField(unique=False)
     email = pw.CharField(unique=True)
     profile_image = pw.CharField(null=True)
+    private_profile = pw.BooleanField(default=False)
 
     @hybrid_method
     def is_following(self, user):

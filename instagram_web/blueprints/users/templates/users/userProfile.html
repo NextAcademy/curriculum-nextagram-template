@@ -16,19 +16,50 @@
 
   {% endif %}
 
+{%if current_user.id == user.id %}
+<div class="d-flex justify-content-center mt-3">
+  {%if not user.private_profile == True %}
+  <form method="post" action="{{url_for('users.private')}}">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    
+    <button class="btn btn-outline-primary border-0 font-weight-bold" type="button submit">
+      Private?
+    </button>
+    
+  </form>
+</div>
+{% else %}
+
+<form method="post" action="{{url_for('users.unprivate')}}">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+
+  <button type="button submit">
+    UnPrivate?
+  </button>
+
+</form>
+</div>
+
+{%endif%}
+
+{%else%}
+<div></div>
+{%endif%}
+
+
 <div class="d-flex justify-content-center mt-3 mx-auto">
   {% if not current_user.is_following(user) %}
   <form action="{{url_for('follows.create', idol_id=user.id)}}" method="post">
 
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-    <button class="mx-auto btn btn-primary"> Follow </button>
+    <button class="mx-auto btn border-0 font-weight-bold btn-outline-primary"> Follow </button>
     
   </form>
 {%else%}
   <form action="{{url_for('follows.delete', idol_id=user.id)}}" method="post">
   
     <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-    <button class="mx-auto btn btn-primary"> Unfollow </button>
+    <button class="mx-auto btn border-0 font-weight-bold btn-outline-primary"> Unfollow </button>
   
   </form>
 {%endif%}

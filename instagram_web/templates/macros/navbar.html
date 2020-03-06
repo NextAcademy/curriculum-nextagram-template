@@ -53,7 +53,7 @@
     </ul>
     <button
       type="button"
-      class="btn btn-outline-light d-flex flex-row-reverse justify-content-center mr-2"
+      class="border-0 btn btn-outline-light d-flex flex-row-reverse justify-content-center mr-2"
       data-toggle="modal"
       data-target="#uploadPost"
     >
@@ -73,7 +73,7 @@
         aria-label="Search"
       />
       <button
-        class="mr-2 btn btn-outline-success my-2 my-sm-0"
+        class="mr-2 border-0 btn btn-outline-success my-2 my-sm-0"
         type="button submit"
       >
         Search
@@ -82,7 +82,7 @@
     {%if current_user.is_authenticated %}
     <form action="{{url_for('sessions.logout')}}" method="post">
       <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-      <button class="btn btn-danger" type="button, submit">
+      <button class="btn border-0 btn-outline-danger" type="button, submit">
         Log Out
       </button>
     </form>

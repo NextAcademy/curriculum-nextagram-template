@@ -34,15 +34,17 @@ def create(idol_id):
 
     else:
         flash(f'You are now following {idol.name}')
-        return redirect(url_for('users.user_profile', id=idol_id))
+        return redirect(request.referrer)
 
 
 @follows_blueprint.route("/<idol_id>/delete", methods=["POST"])
 def delete(idol_id):
 
     follow = FF.get_or_none((FF.idol_id == idol_id)
-                            and (FF.fan_id == current_user.id))
+                            & (FF.fan_id == current_user.id))
+
+    # follow.delete_instance(User.id == idol_id)
 
     if follow.delete_instance():
         flash(f'You have unfollowed {follow.idol.name}')
-        return redirect(url_for('users.user_profile', id=idol_id))
+        return redirect(url_for('users.show'))
