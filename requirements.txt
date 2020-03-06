@@ -28,7 +28,6 @@ MarkupSafe==1.1.0
 mccabe==0.6.1
 oauthlib==3.1.0
 peewee==3.8.2
-peewee-db-evolve==3.7.0
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
 pycparser==2.19
