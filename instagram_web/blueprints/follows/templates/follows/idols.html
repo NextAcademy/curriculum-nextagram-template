@@ -2,7 +2,7 @@
 
 {% block content %}
 <h3>
-    People you follow.
+    People you follow:
 </h3>
 {% if idols|length > 0 %}
 {% for user in idols %}
@@ -14,7 +14,7 @@
 {% endfor %}
 {% else %}
 <div>
-    you do not follow anyone.
+    You do not follow anyone.
 </div>
 {% endif %}
 {% endblock %}
