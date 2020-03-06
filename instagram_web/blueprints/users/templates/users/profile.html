@@ -57,6 +57,7 @@ Profile Page
 <section>
     Gallery
 </section>
+<hr>
 {% for image in image_list%}
 <img id='{{image.id}}' class='pictures' src={{image.source}} width='200px'>
 <div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
