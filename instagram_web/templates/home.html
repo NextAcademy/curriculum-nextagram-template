@@ -22,6 +22,7 @@ Homepage
       <div style="display:flex; justify-content: center;">
         <img src="{{image.user_image}}" alt="" style="height:800px; width:800px; object-fit:cover;">
       </div>
+      {% if not image.user_caption == None %}
       <div style="display: flex; flex-direction: row; align-items:center; margin-top:15px; margin-left:20px;">
         <h6 style="font-size: 15px; font-weight: bold">{{image.user.username}}</h6>
         <h6 style="font-size: 14px; margin-left:5px">{{image.user_caption}}</h6>
@@ -29,6 +30,11 @@ Homepage
       <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
         style="margin-top:5px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
           style="margin-right:20px;"></i><span></span>Donate</a>
+      {% else %}
+      <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
+        style="margin-top:20px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
+          style="margin-right:20px;"></i><span></span>Donate</a>
+      {% endif %}
     </div>
   </div>
 </div>

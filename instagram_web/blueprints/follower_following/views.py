@@ -41,3 +41,17 @@ def delete(idol_id):
     else:
         flash("Unfollow unsuccessful, guess you're forced to be a good person")
         return redirect(url_for('users.profile', id=idol.id))
+
+
+@follower_following_blueprint.route('/<fan_id>/accept', methods=["GET", "POST"])
+@login_required
+def accept(fan_id):
+    fan = User.get_or_none(User.id == fan_id)
+    follow = FollowerFollowing(idol_id=current_user.id, fan_id=fan.id)
+    if follow.save():
+        flash(f"Accepted {fan.username}. They can now see all your posts.")
+        return redirect(url_for('users.profile', id=fan.id))
+
+    else:
+        flash("Unsuccessful, guess they're too creepy to accept.")
+        return redirect(url_for('home'))
