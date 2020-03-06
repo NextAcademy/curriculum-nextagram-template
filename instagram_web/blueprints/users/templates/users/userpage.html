@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+<div style="margin:10px">
+  <h1>Hi {{current_user.username}}</h1>
+  <h1>Your login details are:</h1>
+  <form method="POST" action="{{url_for('users.update', id=current_user.id)}}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div style="margin:10px">
+      <h6>Username</h6>
+      <input style="border:deeppink 2px solid" class="form-control mr-sm-2" type="text"
+        value="{{current_user.username}}" name="username">
+      <button style="margin-top:5px" type="submit" class="btn btn-danger">Update</button>
+    </div>
+    <div style="margin:10px">
+      <h6>Email</h6>
+      <input style="border:deeppink 2px solid" class="form-control mr-sm-2" type="text" value={{current_user.email}}
+        name="email">
+      <button style="margin-top:5px" type="submit" class="btn btn-danger">Update</button>
+    </div>
+    <div style="margin:10px">
+      <h6>Password</h6>
+      <input style="border:deeppink 2px solid" class="form-control mr-sm-2" type="password" placeholder="password"
+        name="password">
+      <button style="margin-top:5px" type="submit" class="btn btn-danger">Update</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

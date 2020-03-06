@@ -1,33 +1,80 @@
+{% from "macros/navbar.html" import navbar %}
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% assets "home_css" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
+  <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
+  <script src="../dist/choreographer.min.js"></script>
 
-    {% assets "home_js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
 
-    {% block header %}
-    {% endblock %}
+  {% assets "home_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
 
-    <title>
-      {% block title %}
-      {% endblock %}NEXTAGRAM
-    </title>
+  {% assets "home_js" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
 
-  </head>
-  <body>
+  {% block header %}
+  {% endblock %}
+  <script src="https://kit.fontawesome.com/1e5c2620c9.js" crossorigin="anonymous"></script>
+  <title>
+    {% block title %}
+    {% endblock %}NEXTAGRAM
+  </title>
+
+</head>
+
+<body>
+
+  {{ navbar(current_user) }}
+
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class="flashes m-4">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+  {% for error in errors if errors|length > 0 %}
+  <li>{{error}}</li>
+  {% endfor %}
+
+  <div class="container-fluid" style="padding-top:20px;">
+
     {% block content %}
     {% endblock %}
-    <footer>
-      Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
-    </footer>
-  </body>
+  </div>
+
+
+
+  <footer style="margin-bottom:-10px">
+    Made with &hearts; by <a target="_blank" href="https://www.instagram.com/jynmun/">Jyn-Mun</a>
+  </footer>
+</body>
+
+<style>
+  .form-control::placeholder {
+    color: hotpink;
+  }
+
+  .form-control:hover {
+    cursor: url("{{url_for('static', filename="icons8-cursor-64.png")}}"),
+    auto;
+  }
+</style>
+
 </html>

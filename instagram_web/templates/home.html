@@ -1,12 +1,47 @@
 {% extends "_layout.html" %}
 
 {% block title %}
-  Homepage
+Homepage
 {% endblock %}
 
 {% block header %}
 {% endblock %}
 
 {% block content %}
-  <h1>Homepage</h1>
+{% if current_user.is_authenticated %}
+{% for image in images %}
+<div style="display:flex; justify-content:center;">
+  <div class="card" style="width: 800px; margin:20px;">
+    <div style="display:flex; flex-direction: row; margin-top: 20px; align-items:center;margin:20px;">
+      <img class="rounded-circle" style="width:40px;height:40px; object-fit: cover; margin-left: 20px;"
+        src="{{image.user.profile_image_url}}">
+      <a href="{{url_for('users.profile', id=image.user.id)}}" class="card-title"
+        id="home-username">{{image.user.username}}</a>
+    </div>
+    <div class="card-body" style="display:flex; flex-direction:column; margin:-20px">
+      <div style="display:flex; justify-content: center;">
+        <img src="{{image.user_image}}" alt="" style="height:800px; width:800px; object-fit:cover;">
+      </div>
+      {% if not image.user_caption == None %}
+      <div style="display: flex; flex-direction: row; align-items:center; margin-top:15px; margin-left:20px;">
+        <h6 style="font-size: 15px; font-weight: bold">{{image.user.username}}</h6>
+        <h6 style="font-size: 14px; margin-left:5px">{{image.user_caption}}</h6>
+      </div>
+      <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
+        style="margin-top:5px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
+          style="margin-right:20px;"></i><span></span>Donate</a>
+      {% else %}
+      <a href="{{url_for('donations.new', image_id=image.id)}}" class="btn btn-primary"
+        style="margin-top:20px; width:150px; margin-bottom: 20px; margin-left: 20px;"> <i class="fas fa-money-bill-wave"
+          style="margin-right:20px;"></i><span></span>Donate</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% else %}
+<h1 style="font-family: Georgia, 'Times New Roman', Times, serif; margin-top:20px;">You are not authorized to view this
+  page</h1>
+{% endif %}
 {% endblock %}
