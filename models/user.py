@@ -23,6 +23,14 @@ class User(BaseModel):
 
         return True
 
+    @hybrid_property
+    def requests(self):
+        from models.follow import Follow
+        req = Follow.select().where(
+            Follow.idol_id == current_user.id & Follow.authorized == False)
+
+        return req
+
     def is_authenticated(self):
         return True
 
