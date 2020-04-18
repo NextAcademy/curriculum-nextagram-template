@@ -19,3 +19,9 @@ footer a {
   text-decoration: none;
   color: #303030;
 }
+
+#innerBody{
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 2em;
+}
