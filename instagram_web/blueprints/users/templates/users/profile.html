@@ -7,7 +7,7 @@ Profile Page
 {% block content %}
 <div class="container">
     <div class='row'>
-        <div class='col-lg-6'>
+        <div class='col-lg-4'>
             <div class="d-flex flex-column align-items-center">
                 <h2>
                     {{username}}'s Profile Page
@@ -15,10 +15,11 @@ Profile Page
                 <img width='200px' src={{user.image}}>
             </div>
         </div>
-        <div class="col-lg-6 justify-content-center d-flex align-items-center">
-            <div>
+        <div class="col-lg-4 justify-content-center d-flex align-items-center">
+            <div class='follows'>
                 {% if username == current_user.username %}
-                <a href="{{url_for('follows.show_fans', id = current_user.id)}}">Followers:</a> {{ user.fans|length }}
+                <a href="{{url_for('follows.show_fans', id = current_user.id)}}">Followers:</a>
+                {{ user.fans|length }}
                 <br>
                 <a href="{{url_for('follows.show_idols', id = current_user.id)}}">Following:</a> {{ user.idols|length }}
                 {% else %}
@@ -28,11 +29,13 @@ Profile Page
                 {% endif %}
 
             </div>
+        </div>
+        <div class='col-lg-4 align-items-center d-flex justify-content-center'>
             {% if username != current_user.username %}
             {% if user.is_followed %}
-            <a href="{{url_for('follows.delete', id=user.id)}}">Unfollow!</a>
+            <a class='follow-btn' href="{{url_for('follows.delete', id=user.id)}}">Unfollow</a>
             {% else %}
-            <a href="{{url_for('follows.create', id=user.id)}}">Follow!</a>
+            <a class='follow-btn' href="{{url_for('follows.create', id=user.id)}}">Follow</a>
             {% endif %}
             {% endif %}
         </div>
@@ -54,35 +57,37 @@ Profile Page
 {% endif %}
 <br>
 <section>
-    Gallery
-</section>
-<hr>
-{% for image in image_list%}
-<img id='{{image.id}}' class='pictures' src={{image.source}} width='200px'>
-<div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img width='300px' src="{{image.source}}" alt="">
-                <div>
-                    {{image.caption}}
+    <h4>
+        Gallery
+    </h4>
+    <hr>
+    {% for image in image_list%}
+    <img id='{{image.id}}' class='pictures' src={{image.source}} width='200px'>
+    <div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Das enough</button>
+                <div class="modal-body d-flex flex-column align-items-center">
+                    <img width='300px' src="{{image.source}}" alt="">
+                    <div class='caption'>
+                        {{image.caption}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Das enough</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
+</section>
+
 
 
 <script>

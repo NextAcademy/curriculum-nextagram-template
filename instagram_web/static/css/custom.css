@@ -25,3 +25,41 @@ footer a {
   box-sizing: border-box;
   padding: 2em;
 }
+
+h4{
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.pictures{
+  margin-left: 1em;
+  margin-right: 1em;
+  
+}
+.pictures:hover{
+  border: 2px solid blue;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.follows{
+  font-size: large;
+  font-weight: bold;
+}
+
+.follow-btn{
+  text-decoration:none;
+  font-size: large;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.follow-btn:hover{
+  text-decoration: none;
+  background-color: lightgray;
+  border: 2px solid gray;
+}
+
+.caption{
+  margin-top: 2em;
+}
