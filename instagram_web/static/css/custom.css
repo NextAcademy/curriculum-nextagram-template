@@ -3,6 +3,7 @@ body {
   padding-bottom: 15px;
   position: relative;
   min-height: 100vh;
+  padding-top: 3.5em;
 }
 
 footer {
@@ -62,4 +63,16 @@ h4{
 
 .caption{
   margin-top: 2em;
+}
+
+.card{
+  margin-bottom: 2em;
+}
+
+.navbar{
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
+  height: 3.5em;
 }

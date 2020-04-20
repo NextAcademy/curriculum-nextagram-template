@@ -6,41 +6,57 @@ Homepage
 
 {% block content %}
 
-{% for image in images%}
-<h3>
-    {{image.user.username}}
-</h3>
-<img id='{{image.id}}' class='pictures' src={{image.source}} width='200px'>
-<div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header"><a href="{{url_for('users.show', username = image.user.username)}}">
-                    <h5 class="modal-title" id="exampleModalScrollableTitle">{{image.user.username}}</h5>
-                </a>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <img width='300px' src="{{image.source}}" alt="">
-                <div>
-                    {{image.caption}}
+<div class="container">
+    <div class="row">
+        {% for image in images%}
+        <div class="col-lg-3 col-sm-5">
+            <div class="card" id='{{image.id}}' style="width: 100%;">
+                <img id=' {{image.id}}' class='card-img-top' src={{image.source}} width='200px'>
+                <div class="card-body">
+                    <h3 class='card-text'>
+                        {{image.user.username}}
+                    </h3>
                 </div>
-                <a href="{{url_for('donations.new', image_id=image.id)}}">dono</a>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Das enough.</button>
+
+            <div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header"><a href="{{url_for('users.show', username = image.user.username)}}">
+                                <h5 class="modal-title" id="exampleModalScrollableTitle">{{image.user.username}}
+                                </h5>
+                            </a>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img width='300px' src="{{image.source}}" alt="">
+                            <div>
+                                {{image.caption}}
+                            </div>
+                            <a href="{{url_for('donations.new', image_id=image.id)}}">dono</a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Das enough.</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
+        <div class="col-1"></div>
+        {% endfor %}
+    </div class="row">
 </div>
-{% endfor %}
+
 
 <script>
     $(document).ready(() => {
-        $('.pictures').click((e) => {
-            id = e.target.id
+        $('.card').click((e) => {
+            id = e.currentTarget.id
+            console.log(e)
             $(`#picModal${id}`).modal('toggle')
         })
     })
