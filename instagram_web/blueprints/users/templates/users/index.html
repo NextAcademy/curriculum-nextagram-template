@@ -9,9 +9,12 @@ Homepage
 <div class="container">
     <div class="row">
         {% for image in images%}
-        <div class="col-lg-3 col-sm-5">
+        <div class="col-lg-4 col-sm-5">
             <div class="card" id='{{image.id}}' style="width: 100%;">
-                <img id=' {{image.id}}' class='card-img-top' src={{image.source}} width='200px'>
+                <img class='card-img-top' id='img{{image.id}}' src={{image.source}} width='100%'>
+                <div class="caption-index">
+                    {{image.caption}}
+                </div>
                 <div class="card-body">
                     <h3 class='card-text'>
                         {{image.user.username}}
@@ -46,7 +49,7 @@ Homepage
             </div>
 
         </div>
-        <div class="col-1"></div>
+        <div class="col-lg-2 col-1"></div>
         {% endfor %}
     </div class="row">
 </div>
@@ -54,11 +57,16 @@ Homepage
 
 <script>
     $(document).ready(() => {
-        $('.card').click((e) => {
-            id = e.currentTarget.id
-            console.log(e)
-            $(`#picModal${id}`).modal('toggle')
-        })
+        console.log($)
+        // $('.card').click((e) => {
+        //     id = e.currentTarget.id
+        //     $(`#picModal${id}`).modal('toggle')
+        // })
+        // $('.card').hover(() => {
+        //     id = e.currentTarget.id
+        //     $(`#fig${id}`).addClass('fig-index')
+        // })
     })
+
 </script>
 {% endblock %}

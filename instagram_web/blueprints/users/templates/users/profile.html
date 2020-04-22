@@ -31,7 +31,7 @@ Profile Page
             </div>
         </div>
         <div class='col-lg-4 align-items-center d-flex justify-content-center'>
-            {% if username != current_user.username %}
+            {% if (username != current_user.username) and (current_user.is_authenticated) %}
             {% if user.is_followed %}
             <a class='follow-btn' href="{{url_for('follows.delete', id=user.id)}}">Unfollow</a>
             {% else %}
