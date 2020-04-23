@@ -13,12 +13,22 @@ Homepage
             <div class="card" id='{{image.id}}' style="width: 100%;">
                 <img class='card-img-top' id='img{{image.id}}' src={{image.source}} width='100%'>
                 <div class="caption-index">
+                    {% if image.caption == None %}
+                    #NoCaptionIsSexy
+                    {% else %}
                     {{image.caption}}
+                    {% endif %}
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex justify-content-around align-items-center">
                     <h3 class='card-text'>
-                        {{image.user.username}}
+                        <a href="{{url_for('users.show', username = image.user.username)}}">
+                            {{image.user.username}}
+                        </a>
                     </h3>
+                    <a class='dollar-box d-flex justify-content-center align-items-center'
+                        href="{{url_for('donations.new', image_id=image.id)}}">
+                        <i class="fas fa-dollar-sign"></i>
+                    </a>
                 </div>
             </div>
 
@@ -39,7 +49,8 @@ Homepage
                             <div>
                                 {{image.caption}}
                             </div>
-                            <a href="{{url_for('donations.new', image_id=image.id)}}">dono</a>
+                            <a href="{{url_for('donations.new', image_id=image.id)}}"><i
+                                    class="fas fa-dollar-sign"></i></a>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary">Das enough.</button>
@@ -57,14 +68,9 @@ Homepage
 
 <script>
     $(document).ready(() => {
-        console.log($)
         // $('.card').click((e) => {
         //     id = e.currentTarget.id
         //     $(`#picModal${id}`).modal('toggle')
-        // })
-        // $('.card').hover(() => {
-        //     id = e.currentTarget.id
-        //     $(`#fig${id}`).addClass('fig-index')
         // })
     })
 
