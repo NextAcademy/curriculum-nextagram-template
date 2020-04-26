@@ -127,3 +127,8 @@ h4{
 .navbar-collapse{
   background-color: #f8f9fa;
 }
+
+#dono-button{
+  border-radius: 5px;
+  padding: 0.5em;
+}

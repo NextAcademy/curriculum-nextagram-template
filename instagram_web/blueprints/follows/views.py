@@ -9,24 +9,24 @@ follows_blueprint = Blueprint('follows', __name__, template_folder='templates')
 @follows_blueprint.route('/<id>/create')
 def create(id):
     if id == current_user.id:
-        flash('you cannot follow yourself -.-', 'error')
+        flash(u'you cannot follow yourself -.-', 'warning')
         return redirect(request.referrer)
 
     user = User.get_or_none(User.id == id)
     if not user:
-        flash('that user does not exist :(', 'danger')
+        flash(u'that user does not exist :(', 'danger')
         return redirect(request.referrer)
 
     if user.is_followed:
-        flash('you are already following that user', 'danger')
+        flash(u'you are already following that user', 'danger')
         return redirect(request.referrer)
 
     new_follow = Follow(fan_id=current_user.id, idol_id=id)
     if not new_follow.save():
-        flash('sorry, could not process the request:(', 'danger')
+        flash(u'sorry, could not process the request:(', 'danger')
         return redirect(request.referrer)
 
-    flash('Followed successfully!!', 'success')
+    flash(u'Followed successfully!!', 'success')
     return redirect(request.referrer)
 
 
@@ -35,11 +35,11 @@ def delete(id):
     user = User.get_or_none(User.id == id)
 
     if not user:
-        flash('sorry that user does not exist.')
+        flash(u'sorry that user does not exist.', 'danger')
         return redirect(url_for('users.index'))
 
     if not user.is_followed:
-        flash('sorry, you are not currently following that user, so no need to unfollow.')
+        flash(u'sorry, you are not currently following that user, so no need to unfollow.', 'warning')
         return redirect(url_for('users.index'))
 
     follow = Follow.get_or_none(

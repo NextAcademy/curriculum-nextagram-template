@@ -10,11 +10,19 @@
         <input type="hidden" name='csrf_token' value="{{ csrf_token() }}">
         <input type='hidden' id='payment_nonce' name='payment_nonce'>
         <div id="dropin-container"></div>
-        <label for="amount">Amount:</label>
+        <label for="amount">Donation amount:</label>
         <div id='amount-warning'></div>
         <input type="number" name='amount'>
     </form>
-    <button id="dono-button">Request payment method</button>
+    <summary>
+        100% of the donations will go to user you have chosen to donate to.
+        <br>
+        Non-refundable.
+        <br>
+        Please be noted no exchange of goods is occuring.
+    </summary>
+    <hr>
+    <button class="btn-primary" id="dono-button">Confirm</button>
 </main>
 <div>
     <!-- {{payment_nonce}} -->

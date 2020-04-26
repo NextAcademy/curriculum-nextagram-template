@@ -79,7 +79,11 @@ Profile Page
                         {{image.caption}}
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex justify-content-between">
+                    <a class='dollar-box d-flex justify-content-center align-items-center'
+                        href="{{url_for('donations.new', image_id=image.id)}}">
+                        <i class="fas fa-dollar-sign"></i>
+                    </a>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Das enough</button>
                 </div>
             </div>

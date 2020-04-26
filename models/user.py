@@ -16,18 +16,15 @@ class User(BaseModel):
     def is_followed(self):
         from models.follow import Follow
         followed = Follow.get_or_none(
-            Follow.fan_id == current_user and Follow.idol_id == self.id)
+            (Follow.fan_id == current_user.id) & (Follow.idol_id == self.id))
 
-        if not followed:
-            return False
-
-        return True
+        return followed
 
     @hybrid_property
     def requests(self):
         from models.follow import Follow
         req = Follow.select().where(
-            Follow.idol_id == current_user.id & Follow.authorized == False)
+            (Follow.idol_id == current_user.id) & (Follow.authorized == False))
 
         return req
 

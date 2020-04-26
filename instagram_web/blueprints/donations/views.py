@@ -28,7 +28,7 @@ donations_blueprint = Blueprint(
 @donations_blueprint.route('/<image_id>/new', methods=['GET'])
 def new(image_id):
     if not current_user.is_authenticated:
-        flash('Need to be logged in to donate.', 'warning')
+        flash(u'Need to be logged in to donate.', 'warning')
         return redirect(request.referrer)
     current_user_images = Image.select(Image.id).where(
         Image.user_id == current_user.id)
@@ -55,12 +55,12 @@ def create(image_id):
         }
     })
     if not result.is_success:
-        flash('dono did not work out.', 'warning')
+        flash(u'dono did not work out.', 'warning')
         return redirect(request.referrer)
 
     dono = Donation(amount=amount, image_id=image_id)
     if dono.save():
         user = User.select().join(Image).where(Image.id == image_id)
         send_simple_message(user[0].email)
-        flash(f'successfully donated {amount}', 'notice')
+        flash(f'successfully donated RM{amount}', 'info')
         return redirect(url_for('users.index'))
