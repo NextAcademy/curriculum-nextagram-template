@@ -132,3 +132,17 @@ h4{
   border-radius: 5px;
   padding: 0.5em;
 }
+
+.fa-plus-circle{
+  color: #db30db;
+}
+
+.fa-plus-circle:hover{
+  color: #962296;
+  /* cursor: pointer; */
+}
+
+#gallery-title{
+  /* height: 2.5em; */
+  box-sizing: border-box;
+}

@@ -9,8 +9,19 @@ from werkzeug.utils import secure_filename
 images_blueprint = Blueprint('images', __name__, template_folder='templates')
 
 
-@images_blueprint.route('/create', methods=['POST'])
-def create():
+@images_blueprint.route('/new/<id>', methods=['GET'])
+def new(id):
+    if int(id) == current_user.id:
+        return render_template('/new.html')
+
+    else:
+        flash(
+            f'Sorry but you do not have access to that.', 'danger')
+        return redirect(request.referrer)
+
+
+@images_blueprint.route('/create/<id>', methods=['POST'])
+def create(id):
     if "user_file" not in request.files:
         flash("No file was chosen! :O", 'warning')
         return redirect(url_for('users.show', username=current_user.username))

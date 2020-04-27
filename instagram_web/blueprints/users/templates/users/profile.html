@@ -42,8 +42,10 @@ Profile Page
     </div>
 </div>
 
+<br>
+
 {% if current_user.username==username %}
-<form action="{{url_for('images.create', username= current_user.username)}}" method="POST"
+<!-- <form action="{{url_for('images.create', id= current_user.id)}}" method="POST"
     enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     <label for="user_file">Upload Your File</label>
@@ -53,12 +55,14 @@ Profile Page
     <input type="text" name='caption'>
     <br></br>
     <button type="submit">Upload</button>
-</form>
+</form> -->
 {% endif %}
 <br>
 <section>
-    <h4>
-        Gallery
+    <h4 id='gallery-title'>
+        Gallery &nbsp; <a href="{{url_for('images.new', id=current_user.id)}}"><i class="fas fa-plus-circle"></i></a>
+
+
     </h4>
     <hr>
     {% for image in image_list%}

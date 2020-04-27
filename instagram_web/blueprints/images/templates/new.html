@@ -1,0 +1,21 @@
+{% extends '_layout.html'%}
+
+{% block content %}
+<h4>Add a photo to your gallery...</h4>
+<hr>
+
+<figure id='preview'>
+    <img id='preview-img' src="" alt="">
+</figure>
+
+<form action="{{url_for('images.create', id= current_user.id)}}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <!-- <label for="user_file">Upload Your File</label> -->
+    <br></br>
+    <input type="file" id='imageUpload' name="user_file">
+    Caption:
+    <input type="text" name='caption'>
+    <br></br>
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}
