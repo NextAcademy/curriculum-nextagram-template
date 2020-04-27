@@ -68,7 +68,8 @@ def edit(id):
     if id == str(current_user.id):
         return render_template('users/edit.html')
     else:
-        return "soz, but no access for u"
+        flash('Unauthorized request.', 'danger')
+        return redirect(url_for('users.index'))
 
 
 @users_blueprint.route('/<id>/update', methods=['POST'])
@@ -91,7 +92,7 @@ def update(id):
             return render_template('users/edit.html', errors='That password is too short!')
 
     if user.save():
-        flash('Updated successfully!')
+        flash(u'Updated successfully!', 'success')
         return redirect(url_for('users.edit', id=current_user.id))
 
     else:

@@ -146,3 +146,7 @@ h4{
   /* height: 2.5em; */
   box-sizing: border-box;
 }
+
+#preview{
+  width: 400;
+}
