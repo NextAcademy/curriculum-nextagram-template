@@ -1,21 +1,52 @@
 {% extends '_layout.html'%}
 
 {% block content %}
-<h4>Add a photo to your gallery...</h4>
+<h4> &nbsp Add a photo to your gallery...</h4>
 <hr>
 
-<figure id='preview'>
-    <img id='preview-img' src="" alt="">
+<figure id='preview' class='d-flex justify-content-center align-items-center'>
 </figure>
 
 <form action="{{url_for('images.create', id= current_user.id)}}" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <!-- <label for="user_file">Upload Your File</label> -->
-    <br></br>
+    <br>
     <input type="file" id='imageUpload' name="user_file">
-    Caption:
-    <input type="text" name='caption'>
-    <br></br>
-    <button type="submit">Upload</button>
+    <br>
+
+    <div id=caption-container>
+        Caption: <span style="font-size: small;">(max 50 characters)</span>
+        <br>
+        <input id='caption-input' type="text" name='caption'>
+    </div>
+
+    <br>
+
+    <button type="submit" class="btn btn-secondary">Upload</button>
 </form>
+
+<script>
+    $(document).ready(() => {
+        $('#imageUpload').change((e) => {
+            imgSrc = URL.createObjectURL(e.target.files[0])
+            $('#preview').empty()
+            $('#preview').append(`<img id='preview-img' src=${imgSrc} alt="preview">`)
+        })
+        $('#caption-input').change((e) => {
+            let subButt = $('.btn-secondary')
+            let capInput = e.target.value
+            if (capInput.length > 50) {
+                subButt.addClass('disabled')
+                subButt.attr('disabled', true)
+                subButt.attr('aria-disabled', 'true')
+            }
+            else if (subButt.hasClass('disabled')) {
+                subButt.removeClass('disabled')
+                subButt.removeAttr('aria-disabled')
+                subButt.removeAttr('disabled')
+            }
+        })
+    })
+</script>
 {% endblock %}
+<!-- 
+'https://www.petmd.com/sites/default/files/Acute-Dog-Diarrhea-47066074.jpg' -->

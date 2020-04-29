@@ -61,8 +61,6 @@ Profile Page
 <section>
     <h4 id='gallery-title'>
         Gallery &nbsp; <a href="{{url_for('images.new', id=current_user.id)}}"><i class="fas fa-plus-circle"></i></a>
-
-
     </h4>
     <hr>
     {% for image in image_list%}
@@ -84,10 +82,12 @@ Profile Page
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
+                    {% if user.id != current_user.id %}
                     <a class='dollar-box d-flex justify-content-center align-items-center'
                         href="{{url_for('donations.new', image_id=image.id)}}">
                         <i class="fas fa-dollar-sign"></i>
                     </a>
+                    {% endif %}
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Das enough</button>
                 </div>
             </div>

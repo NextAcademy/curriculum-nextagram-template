@@ -147,6 +147,43 @@ h4{
   box-sizing: border-box;
 }
 
+
+/* New gallery pic styles */
+#caption-container{
+  margin-top: 2em;
+}
+
+#caption-input{
+  width: 100%;
+  border-radius: 5px;
+
+}
+
 #preview{
-  width: 400;
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+#preview-img{
+  width: 90%;
+}
+
+@media screen and (min-width:600px){
+  #preview-img{
+  width: 75%;
+}
+#caption-input{
+  width: 75%;
+}
+}
+
+
+@media screen and (min-width: 1000px){
+  #caption-input{
+    width: 50%;
+  }
+  #preview-img{
+  width: 60%;
+}
 }
