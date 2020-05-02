@@ -119,3 +119,19 @@ def upload(id):
     else:
         flash('File has no name!')
         return redirect(url_for('users.edit'))
+
+
+@users_blueprint.route('/search', methods=['POST'])
+def search():
+    search_input = request.form.get("search")
+    text = re.sub(r'\s', '', search_input)
+    search_list = list(text)
+    users = User.select()
+    usernames = []
+    for user in users:
+        username = re.sub(r'\s', '', user.username)
+        listen_username = list(username)
+        for n in range(len(search_list)):
+            usernames.append(n)
+
+    return render_template('users/search.html', text=text, usernames=usernames)

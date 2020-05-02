@@ -1,0 +1,9 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+{{text}}
+<br>
+{% for username in usernames %}
+{{username}}
+{% endfor %}
+{% endblock %}
