@@ -1,9 +1,17 @@
 {% extends '_layout.html' %}
 
 {% block content %}
-{{text}}
+<h4>Search results...</h4>
+<hr>
+{% if user_list|length < 1 %}
+<h5>
+    no username matches
+</h5>
+{% endif %}
+{% for user in user_list %}
+<div>{{user.username}}</div>
+<img src="{{user.image}}" alt="">
 <br>
-{% for username in usernames %}
-{{username}}
 {% endfor %}
+
 {% endblock %}

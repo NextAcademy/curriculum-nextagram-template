@@ -125,13 +125,20 @@ def upload(id):
 def search():
     search_input = request.form.get("search")
     text = re.sub(r'\s', '', search_input)
-    search_list = list(text)
+    text_lower = text.lower()
+    search_list = list(text_lower)
     users = User.select()
-    usernames = []
+    user_list = []
     for user in users:
+        i = 0
         username = re.sub(r'\s', '', user.username)
-        listen_username = list(username)
-        for n in range(len(search_list)):
-            usernames.append(n)
+        username_lower = username.lower()
+        for char in search_list:
+            if username_lower.find(char) >= 0:
+                username_lower.replace(char, '', 1)
+                i += 1
 
-    return render_template('users/search.html', text=text, usernames=usernames)
+        if i == len(search_list):
+            user_list.append(user)
+
+    return render_template('users/search.html', text=search_list, user_list=user_list)
