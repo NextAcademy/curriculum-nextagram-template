@@ -8,10 +8,22 @@
     no username matches
 </h5>
 {% endif %}
-{% for user in user_list %}
-<div>{{user.username}}</div>
-<img src="{{user.image}}" alt="">
-<br>
-{% endfor %}
+
+<div id='search-container' class="container">
+    <div class="row">
+        {% for user in user_list %}
+        <div class='col-lg-5 col-12 justify-content-center'>
+            <a href="{{url_for('users.show', username=user.username )}}">
+                <div class="row justify-content-around align-items-center search-result">
+                    <div>{{user.username}}</div>
+                    <img class='search-img' src="{{user.image}}" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-1"></div>
+        {% endfor %}
+    </div>
+</div class="container">
+
 
 {% endblock %}

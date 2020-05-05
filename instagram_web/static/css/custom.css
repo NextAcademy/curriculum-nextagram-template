@@ -84,6 +84,10 @@ h4{
   transition: opacity 0.5;
 }
 
+.caption-index:hover{
+  opacity: .8;
+}
+
 .card-body{
   height: 4.5em;
 }
@@ -186,4 +190,29 @@ h4{
   #preview-img{
   width: 60%;
 }
+}
+
+/* Search results page */
+#search-container{
+box-sizing: border-box;
+}
+
+.search-result{
+height: 100px;
+box-sizing: border-box;
+border: 1px solid gray;
+margin-bottom: 2em;
+font-family: 'Comfortaa', cursive;
+font-size: 1.75em;
+color: black;
+}
+
+.search-result:hover{
+  border: 2px solid #a59595;
+  cursor: pointer;
+}
+
+.search-img{
+  max-width: 20%;
+  max-height: 100%;
 }
