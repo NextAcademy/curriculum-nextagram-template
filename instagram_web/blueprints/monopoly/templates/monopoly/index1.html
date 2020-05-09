@@ -430,9 +430,14 @@
             </div>
         </div>
     </div>
-
+    <hr>
+    <summary id='current_user'>
+        {{current_user.position}}
+        {{user_positions}}
+    </summary>
     <script>
         $(document).ready(() => {
+            positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
             }

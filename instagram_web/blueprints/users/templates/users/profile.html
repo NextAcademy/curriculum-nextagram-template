@@ -38,6 +38,10 @@ Profile Page
             <a class='follow-btn' href="{{url_for('follows.create', id=user.id)}}">Follow</a>
             {% endif %}
             {% endif %}
+            {% if current_user.username == username %}
+            <div>{{current_user.monopoly}}</div>
+            <a href="{{url_for('monopoly.create')}}">Toggle</a>
+            {% endif %}
         </div>
     </div>
 </div>
