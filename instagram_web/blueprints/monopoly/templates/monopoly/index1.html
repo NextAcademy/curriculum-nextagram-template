@@ -21,6 +21,15 @@
 </head>
 
 <body id='mon-body'>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class=flashes>
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
     <div class="fluid-container">
         <div class="row">
             <div class="col-1 mon-col">
@@ -221,7 +230,7 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-
+                    <button type="button" id='dice-btn' class="btn btn-outline-secondary">Roll Dice.</button>
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -421,6 +430,24 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(() => {
+            reloadPage = () => {
+                location.reload()
+            }
+            dieRoll = () => {
+                return Math.floor((Math.random() * 5) + 1)
+            }
+            $('#dice-btn').click(() => {
+                let roll = dieRoll()
+                roll += dieRoll()
+                alert('Your roll is:\n' + roll)
+            })
+            // setInterval(reloadPage, 5000)
+
+        })
+    </script>
 </body>
 
 </html>
