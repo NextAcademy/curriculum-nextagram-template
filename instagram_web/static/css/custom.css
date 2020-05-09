@@ -1,4 +1,4 @@
-body {
+#layout-body {
   margin: 0;
   padding-bottom: 15px;
   position: relative;
@@ -215,4 +215,36 @@ color: black;
 .search-img{
   max-width: 20%;
   max-height: 100%;
+}
+
+
+
+
+
+/* Styling for monopoly board */
+#mon-body{
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 1em;
+  padding-left: 2em;
+}
+
+.mon-section{
+  height: 5em;
+  border: 1px solid black;
+  box-sizing: border-box;
+  width: 100%;
+  padding: .5em;
+}
+
+.mon-blank{
+  border: none;
+}
+
+.mon-col{
+  padding: 0px;
+}
+
+.mon-red{
+  background-color: rgba(255, 0, 0, 0.74);
 }

@@ -8,6 +8,7 @@ from instagram_web.blueprints.images.views import images_blueprint
 from instagram_web.blueprints.donations.views import donations_blueprint
 from instagram_web.util.google_oauth import oauth
 from instagram_web.blueprints.follows.views import follows_blueprint
+from instagram_web.blueprints.monopoly.views import monopoly_blueprint
 
 assets = Environment(app)
 assets.register(bundles)
@@ -18,6 +19,7 @@ app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 app.register_blueprint(images_blueprint, url_prefix='/images')
 app.register_blueprint(donations_blueprint, url_prefix='/donations')
 app.register_blueprint(follows_blueprint, url_prefix='/follows')
+app.register_blueprint(monopoly_blueprint, url_prefix='/monopoly')
 
 
 @app.errorhandler(500)
