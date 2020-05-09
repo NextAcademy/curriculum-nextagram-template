@@ -16,3 +16,11 @@ class Mon_User(BaseModel):
 
     def is_active(self):
         return True
+
+    def validate(self):
+        duplicate_name = Mon_User.get_or_none(
+            Mon_User.name == self.name)
+
+        if not current_user.is_authenticated:
+            if duplicate_name:
+                self.errors.append('Username taken.')

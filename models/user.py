@@ -11,6 +11,10 @@ class User(BaseModel):
     password = pw.CharField(unique=False, null=False)
     image = pw.CharField(unique=False, null=True,
                          default=S3_LOCATION + 'default-profile-image.png')
+    position = pw.IntegerField(unique=False, default=0)
+    properties = pw.TextField(null=True)
+    money = pw.IntegerField(default=0)
+    monopoly = pw.IntegerField(default=0)
 
     @hybrid_property
     def is_followed(self):
