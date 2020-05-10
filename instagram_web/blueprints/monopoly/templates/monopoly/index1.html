@@ -434,7 +434,15 @@
     <summary id='current_user'>
         {{current_user.position}}
         {{user_positions}}
+
     </summary>
+
+    <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="roll-value" id="roll-input">
+    </form>
+
+    <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script>
         $(document).ready(() => {
             positions = ($('summary'))
@@ -442,12 +450,15 @@
                 location.reload()
             }
             dieRoll = () => {
-                return Math.floor((Math.random() * 5) + 1)
+                return Math.floor((Math.random() * 6) + 1)
             }
             $('#dice-btn').click(() => {
-                let roll = dieRoll()
-                roll += dieRoll()
-                alert('Your roll is:\n' + roll)
+                let roll1 = dieRoll()
+                let roll2 = dieRoll()
+                alert('Your roll is:\n' + roll1 + '+' + roll2)
+                let num = roll1 + roll2
+                $('#roll-input').attr('value', num)
+                $('#roll-form').submit()
             })
             // setInterval(reloadPage, 5000)
 
