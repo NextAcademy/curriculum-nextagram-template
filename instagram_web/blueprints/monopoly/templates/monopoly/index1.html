@@ -434,7 +434,8 @@
     <summary id='current_user'>
         {{current_user.position}}
         {{user_positions}}
-
+        {{properties[0].name}}
+        {{properties[0].is_owned}}
     </summary>
 
     <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
