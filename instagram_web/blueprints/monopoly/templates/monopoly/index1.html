@@ -230,7 +230,12 @@
 
                 </section>
                 <section class="mon-blank mon-section">
+                    {% if current_user.jailed > -1 %}
+                    <button id='jail-roll' type="button" class="btn btn-outline-warning">Jail Roll</button>
+                    {% else %}
                     <button type="button" id='dice-btn' class="btn btn-outline-secondary">Roll Dice.</button>
+                    {% endif %}
+
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -432,10 +437,15 @@
     </div>
     <hr>
     <summary id='current_user'>
-        {{current_user.position}}
+
         {{user_positions}}
-        {{properties[0].name}}
-        {{properties[0].is_owned}}
+
+        {{current_user.jailed}}
+        <br>
+        {% if current_user.jailed >-1 %}
+        <a href="{{url_for('monopoly.jail_add')}}">+1</a>
+        {% endif %}
+
     </summary>
 
     <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
@@ -456,7 +466,7 @@
             $('#dice-btn').click(() => {
                 let roll1 = dieRoll()
                 let roll2 = dieRoll()
-                alert('Your roll is:\n' + roll1 + '+' + roll2)
+                // alert('Your roll is:\n' + roll1 + '+' + roll2)
                 let num = roll1 + roll2
                 $('#roll-input').attr('value', num)
                 $('#roll-form').submit()
