@@ -52,13 +52,14 @@ def create():
 @monopoly_blueprint.route('/roll', methods=['POST'])
 def roll():
     roll_value = request.form.get('roll-value')
-    current_user.position += int(roll_value)
+    # current_user.position += int(roll_value)
+    current_user.position = 30
     if current_user.position > 39:
         current_user.position -= 40
 
     if current_user.position == 30:
         current_user.position = 10
-        current_user.jailed = True
+        current_user.jailed = 0
 
     if current_user.save():
         return redirect(request.referrer)
@@ -69,11 +70,19 @@ def roll():
 
 @monopoly_blueprint.route('/reset')
 def reset():
+    banker = User.get_or_none(User.username == 'Banker')
     users = User.select().where(User.monopoly > 0)
     for user in users:
+        user.jailed = -1
         user.position = 0
         user.save()
 
+    properties = Property.select()
+    for prop in properties:
+        prop.houses = 0
+        prop.mortgaged = False
+        prop.user_id = banker.id
+        prop.save()
     return redirect(request.referrer)
 
 
@@ -96,4 +105,16 @@ def create_property():
             return redirect(url_for('monopoly.new_property'))
         else:
             flash('failed for some reason')
+            return redirect(request.referrer)
+
+
+@monopoly_blueprint.route("/jail-add")
+def jail_add():
+    if current_user.is_authenticated:
+        if current_user.jailed < 3:
+            current_user.jailed += 1
+            current_user.save()
+            return redirect(request.referrer)
+        else:
+            flash("reached max number of turns", "danger")
             return redirect(request.referrer)

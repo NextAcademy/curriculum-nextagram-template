@@ -14,7 +14,7 @@ class User(BaseModel):
     position = pw.IntegerField(unique=False, default=0)
     money = pw.IntegerField(default=0)
     monopoly = pw.IntegerField(default=0)
-    jailed = pw.BooleanField(default=False)
+    jailed = pw.IntegerField(default=-1)
 
     @hybrid_property
     def is_followed(self):
