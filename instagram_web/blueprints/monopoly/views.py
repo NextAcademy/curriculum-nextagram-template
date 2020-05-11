@@ -52,8 +52,8 @@ def create():
 @monopoly_blueprint.route('/roll', methods=['POST'])
 def roll():
     roll_value = request.form.get('roll-value')
-    # current_user.position += int(roll_value)
-    current_user.position = 30
+    current_user.position += int(roll_value)
+    # current_user.position = 30
     if current_user.position > 39:
         current_user.position -= 40
 
@@ -118,3 +118,14 @@ def jail_add():
         else:
             flash("reached max number of turns", "danger")
             return redirect(request.referrer)
+
+
+@monopoly_blueprint.route('/jail-free')
+def jail_free():
+    if current_user.is_authenticated:
+        current_user.jailed = -1
+        current_user.save()
+        return redirect(request.referrer)
+    else:
+        flash('no access, soz', 'danger')
+        return redirect(request.referrer)

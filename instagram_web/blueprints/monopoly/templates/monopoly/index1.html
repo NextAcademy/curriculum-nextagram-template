@@ -238,7 +238,10 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-
+                    {% if current_user.jailed > -1 %}
+                    <a href="{{url_for('monopoly.jail_free')}}"><button type="button"
+                            class="btn btn-success">Freedom</button></a>
+                    {% endif %}
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -440,7 +443,10 @@
 
         {{user_positions}}
 
-        {{current_user.jailed}}
+        <p id='jail-status'>
+            {{current_user.jailed}}
+        </p>
+
         <br>
         {% if current_user.jailed >-1 %}
         <a href="{{url_for('monopoly.jail_add')}}">+1</a>
@@ -463,14 +469,35 @@
             dieRoll = () => {
                 return Math.floor((Math.random() * 6) + 1)
             }
+
+            // submits dice rolls to change position
+            function submitRoll(r1, r2) {
+                let num = r1 + r2
+                $('#roll-input').attr('value', num)
+                $('#roll-form').submit()
+            }
+            //normal dice roll
             $('#dice-btn').click(() => {
                 let roll1 = dieRoll()
                 let roll2 = dieRoll()
                 // alert('Your roll is:\n' + roll1 + '+' + roll2)
-                let num = roll1 + roll2
-                $('#roll-input').attr('value', num)
-                $('#roll-form').submit()
+                submitRoll(roll1, roll2)
             })
+            //jailed dice roll
+            $('#jail-roll').click(() => {
+                let jailRoll0 = dieRoll()
+                let jailRoll1 = dieRoll()
+                alert(`your roll was ${jailRoll0} + ${jailRoll1}`)
+                if (jailRoll0 == jailRoll1) {
+                    submitRoll(jailRoll0, jailRoll1)
+                }
+                // else if (){
+
+                // }
+                console.log($('#jail-status'))
+            })
+
+
             // setInterval(reloadPage, 5000)
 
         })
