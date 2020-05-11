@@ -35,7 +35,7 @@ def index():
 
         activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
-        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, activities=activities)
+        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, activities=activities, users=users)
 
     else:
         flash('login is required', 'danger')
@@ -155,3 +155,11 @@ def jail_free():
     else:
         flash('no access, soz', 'danger')
         return redirect(request.referrer)
+
+
+@monopoly_blueprint.route('/pay')
+def pay():
+    if current_user.is_authenticated:
+        payer_username = request.form.get('payer')
+        recipient_username = request.form.get('recipient')
+        amount = request.form.get('amount')
