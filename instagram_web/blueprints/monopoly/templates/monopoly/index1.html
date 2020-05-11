@@ -11,8 +11,6 @@
     {% assets "home_css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     {% assets "home_js" %}
     <script src="https://kit.fontawesome.com/1816c993a6.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
@@ -77,7 +75,11 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-
+                    {% for user_pos in user_positions %}
+                    <div class='user-location'>
+                        {{user_pos}}
+                    </div>
+                    {% endfor %}
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -298,10 +300,19 @@
                     Coventry Street
                 </section>
                 <section class="mon-blank mon-section">
-
+                    <br>
+                    <p class='activity-box'>
+                        Activity Log:
+                    </p>
+                    <hr>
                 </section>
                 <section class="mon-blank mon-section">
-
+                    {% for activity in activities %}
+                    <div class='activity-box'>
+                        {{activity.text}}
+                    </div>
+                    <br>
+                    {% endfor %}
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -355,7 +366,42 @@
 
                 </section>
                 <section class="mon-blank mon-section">
+                    <!-- dropdown for payments, etc. -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-dollar-sign"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" type='button' data-toggle="modal" data-target="#payModal">Pay
+                                Player/Bank </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Hentai Here</a>
+                        </div>
+                    </div>
 
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="payModalLabel">Funds Transfer.</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ${{current_user.money}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -456,11 +502,14 @@
 
     <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <input type="hidden" name="roll-value" id="roll-input">
+        <input type="hidden" name="roll-1" id="roll-input-1">
+        <input type="hidden" name='roll-0' id=roll-input-0>
+        <input type="hidden" name="username" id="roll-username" value='{{current_user.username}}'>
     </form>
 
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script>
+
         $(document).ready(() => {
             positions = ($('summary'))
             reloadPage = () => {
@@ -472,8 +521,8 @@
 
             // submits dice rolls to change position
             function submitRoll(r1, r2) {
-                let num = r1 + r2
-                $('#roll-input').attr('value', num)
+                $('#roll-input-0').attr('value', r1)
+                $('#roll-input-1').attr('value', r2)
                 $('#roll-form').submit()
             }
             //normal dice roll
@@ -502,6 +551,15 @@
 
         })
     </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
