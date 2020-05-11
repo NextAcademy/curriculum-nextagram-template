@@ -403,10 +403,10 @@
                                             <select class="form-control" id="exampleFormControlSelect1">
                                                 {% for user in users %}
                                                 {% if user.id != current_user.id %}
-                                                <option>{{user.username}}</option>
+                                                <option class='recipient-option'>{{user.username}}</option>
                                                 {% endif %}
                                                 {% endfor %}
-                                                <option>Banker</option>
+                                                <option class="recipient-option">Banker</option>
                                             </select>
                                         </div>
                                         <br>
@@ -563,7 +563,7 @@
                 // }
                 console.log($('#jail-status'))
             })
-            $('option').click((e) => {
+            $('.recipient-option').click((e) => {
                 console.log(e.target.value)
             })
 
