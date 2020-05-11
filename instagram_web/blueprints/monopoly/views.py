@@ -163,3 +163,4 @@ def pay():
         payer_username = request.form.get('payer')
         recipient_username = request.form.get('recipient')
         amount = request.form.get('amount')
+        return
