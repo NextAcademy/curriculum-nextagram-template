@@ -381,7 +381,7 @@
                     </div>
 
 
-                    <!-- Modal -->
+                    <!-- Payment modal -->
                     <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -394,20 +394,24 @@
                                 </div>
                                 <div class="modal-body">
                                     Your Money: ${{current_user.money}}
-                                    <form action="{{url_for('monopoly.pay')}}" method="post">
-                                        <input type="hidden" value='{{csrf_token()}}'>
+                                    <form id='pay-form' action="{{url_for('monopoly.pay')}}" method="post">
+                                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
                                         <br>
-                                        <input type="hidden" name="recipient" id="recipient">
+                                        <!-- Recipient selector -->
+                                        <input type="hidden" name="recipient" id="recipient" value="">
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Select recipient!</label>
-                                            <select class="form-control" id="exampleFormControlSelect1">
+                                            <label for="formControlSelect1">Select recipient!</label>
+                                            <select class="form-control" id="formControlSelect1">
+                                                <option value=""></option>
+                                                <option class="recipient-option">Banker</option>
                                                 {% for user in users %}
                                                 {% if user.id != current_user.id %}
-                                                <option>{{user.username}}</option>
+                                                <option class='recipient-option'>{{user.username}}</option>
                                                 {% endif %}
                                                 {% endfor %}
                                             </select>
                                         </div>
+
                                         <br>
                                         <input type="hidden" name="payer" value={{current_user.username}}>
                                         <label for="amount-input">Amount:</label>
@@ -416,7 +420,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary">Confirm</button>
+                                    <button type="button" id='confirm-btn' class="btn btn-primary"
+                                        disabled>Confirm</button>
                                 </div>
                             </div>
                         </div>
@@ -558,14 +563,30 @@
                     submitRoll(jailRoll0, jailRoll1)
                 }
                 // else if (){
-
+                //need jail-status check for turn3
                 // }
                 console.log($('#jail-status'))
             })
-            $('option').click((e) => {
-                console.log(e.target.value)
+
+            const confirmBtn = $('#confirm-btn')
+            $('select').click((e) => {
+                $('#recipient').val(e.target.value)
+                if (e.target.value != '') {
+                    confirmBtn.removeAttr('disabled')
+                }
+                else {
+                    confirmBtn.attr('disabled', true)
+                }
+
             })
 
+            // if ($('#recipient').val() === '') {
+            //     confirmBtn.attr('disabled', true)
+            // }
+
+            confirmBtn.click(() => {
+                $('#pay-form').submit()
+            })
             // setInterval(reloadPage, 5000)
 
         })

@@ -31,7 +31,7 @@ def index():
 
         for user in users:
             user_positions.append(
-                f'{user.username} @ {locations[user.position]}')
+                f'{user.username} @ {locations[user.position]} | with ${user.money}')
 
         activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
@@ -107,6 +107,8 @@ def reset():
         prop.user_id = banker.id
         prop.save()
 
+    banker.money = 1000000
+    banker.save()
     deletion = ActivityLog.delete().where(ActivityLog.text != '')
     deletion.execute()
     return redirect(request.referrer)
@@ -157,10 +159,26 @@ def jail_free():
         return redirect(request.referrer)
 
 
-@monopoly_blueprint.route('/pay')
+@monopoly_blueprint.route('/pay', methods=['POST'])
 def pay():
     if current_user.is_authenticated:
         payer_username = request.form.get('payer')
         recipient_username = request.form.get('recipient')
-        amount = request.form.get('amount')
-        return
+        amount = int(request.form.get('amount'))
+        if current_user.username != payer_username:
+            flash('sorry but you cannot do that!', 'danger')
+            return redirect(request.referrer)
+
+        recipient = User.get_or_none(User.username == recipient_username)
+
+        if amount > current_user.money:
+            flash('sorry, but you too broke for that shit. lmao', 'warning')
+            return redirect(request.referrer)
+
+        current_user.money -= amount
+        recipient.money += amount
+
+        if current_user.save() and recipient.save():
+            activity_create(
+                f'{payer_username} payed ${amount} to {recipient_username}')
+            return redirect(request.referrer)
