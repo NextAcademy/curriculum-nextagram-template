@@ -68,9 +68,24 @@ def create():
 def roll():
     roll_0 = request.form.get('roll-0')
     roll_1 = request.form.get('roll-1')
-    username = request.form.get('username')
+    jail_roll = int(request.form.get('jr-input'))
     roll_sum = int(roll_0) + int(roll_1)
     current_user.position += roll_sum
+
+    if roll_0 == roll_1 and jail_roll > 0:
+        current_user.doubles = 0
+        current_user.jailed = -1
+    elif roll_0 == roll_1:
+        current_user.doubles += 1
+    else:
+        current_user.doubles = 0
+
+    current_user.save()
+
+    if current_user.doubles == 3:
+        current_user.position = 30
+
+    current_user.save()
 
     if current_user.position > 39:
         current_user.position = current_user.position - 40
@@ -79,11 +94,11 @@ def roll():
     if current_user.position == 30:
         current_user.position = 10
         current_user.jailed = 0
-
-    activity_create(
-        f'{username} rolled {roll_0} and {roll_1}')
+        current_user.doubles = 0
 
     if current_user.save():
+        activity_create(
+            f'{current_user.username} rolled {roll_0} and {roll_1}')
         return redirect(request.referrer)
     else:
         flash('roll adding failed. Contact Shen.', 'danger')
@@ -98,6 +113,7 @@ def reset():
         user.jailed = -1
         user.position = 0
         user.money = 1500
+        user.doubles = 0
         user.save()
 
     properties = Property.select()
@@ -152,6 +168,7 @@ def jail_add():
 def jail_free():
     if current_user.is_authenticated:
         current_user.jailed = -1
+        current_user.doubles = 0
         current_user.save()
         return redirect(request.referrer)
     else:
@@ -182,3 +199,8 @@ def pay():
             activity_create(
                 f'{payer_username} payed ${amount} to {recipient_username}')
             return redirect(request.referrer)
+
+
+@monopoly_blueprint.route("/house", methods=['POST'])
+def buy_house():
+    return
