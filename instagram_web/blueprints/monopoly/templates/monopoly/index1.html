@@ -375,57 +375,13 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" type='button' data-toggle="modal" data-target="#payModal">Pay
                                 Player/Bank </a>
+                            <a data-target='#houseModal' data-toggle='modal' type='button' class="dropdown-item"> Buy
+                                houses/hotels</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Hentai Here</a>
                         </div>
                     </div>
 
-
-                    <!-- Payment modal -->
-                    <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="payModalLabel">Funds Transfer.</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Your Money: ${{current_user.money}}
-                                    <form id='pay-form' action="{{url_for('monopoly.pay')}}" method="post">
-                                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
-                                        <br>
-                                        <!-- Recipient selector -->
-                                        <input type="hidden" name="recipient" id="recipient" value="">
-                                        <div class="form-group">
-                                            <label for="formControlSelect1">Select recipient!</label>
-                                            <select class="form-control" id="formControlSelect1">
-                                                <option value=""></option>
-                                                <option class="recipient-option">Banker</option>
-                                                {% for user in users %}
-                                                {% if user.id != current_user.id %}
-                                                <option class='recipient-option'>{{user.username}}</option>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-                                        <br>
-                                        <input type="hidden" name="payer" value={{current_user.username}}>
-                                        <label for="amount-input">Amount:</label>
-                                        <input type="text" name="amount" id="amount-input">
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" id='confirm-btn' class="btn btn-primary"
-                                        disabled>Confirm</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -503,11 +459,97 @@
                     Mayfair
                 </section>
                 <section class="mon-section">
-                    Go -->
-                </section>
+                    Go <br>
+                    <-- </section>
             </div>
         </div>
     </div>
+    <!-- Payment modal -->
+    <div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payModalLabel">Funds Transfer.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your Money: ${{current_user.money}}
+                    <form id='pay-form' action="{{url_for('monopoly.pay')}}" method="post">
+                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
+                        <br>
+                        <!-- Recipient selector -->
+                        <input type="hidden" name="recipient" id="recipient" value="">
+                        <div class="form-group">
+                            <label for="formControlSelect1">Select recipient!</label>
+                            <select class="form-control" id="formControlSelect1">
+                                <option value=""></option>
+                                <option>Banker</option>
+                                {% for user in users %}
+                                {% if user.id != current_user.id %}
+                                <option>{{user.username}}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <br>
+                        <input type="hidden" name="payer" value={{current_user.username}}>
+                        <label for="amount-input">Amount:</label>
+                        <input type="text" name="amount" id="amount-input">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- house modal -->
+    <div class="modal fade" id="houseModal" tabindex="-1" role="dialog" aria-labelledby="houseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="houseModalLabel">House/Hotel buying</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your Money: ${{current_user.money}}
+                    <form id='pay-form' action="{{url_for('monopoly.buy_house')}}" method="post">
+                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
+                        <br>
+                        <!-- Property selector -->
+                        <input type="hidden" name="property" id="house-prop" value="">
+                        <div class="form-group">
+                            <label for="formControlSelect1">Select property!</label>
+                            <select class="form-control" id="formControlSelect1">
+                                <option value=""></option>
+                                {% for property in current_user.properties %}
+                                <option>{{property}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <br>
+                        <input type="hidden" name="payer" value={{current_user.username}}>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of modals -->
+
     <hr>
     <summary id='current_user'>
 
@@ -520,13 +562,15 @@
         <a href="{{url_for('monopoly.jail_add')}}">+1</a>
         {% endif %}
 
+        <p>{{current_user.doubles}}</p>
     </summary>
 
+    <!-- Dice roll form -->
     <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <input type="hidden" name="roll-1" id="roll-input-1">
         <input type="hidden" name='roll-0' id=roll-input-0>
-        <input type="hidden" name="username" id="roll-username" value='{{current_user.username}}'>
+        <input type="hidden" name='jr-input' id='jr-input'>
     </form>
 
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
@@ -542,16 +586,17 @@
             }
 
             // submits dice rolls to change position
-            function submitRoll(r1, r2) {
+            function submitRoll(r1, r2, jr = 0) {
                 $('#roll-input-0').attr('value', r1)
                 $('#roll-input-1').attr('value', r2)
+                $('#jr-input').attr('value', jr)
                 $('#roll-form').submit()
             }
             //normal dice roll
             $('#dice-btn').click(() => {
                 let roll1 = dieRoll()
                 let roll2 = dieRoll()
-                // alert('Your roll is:\n' + roll1 + '+' + roll2)
+                alert('Your roll is:\n' + roll1 + '+' + roll2)
                 submitRoll(roll1, roll2)
             })
             //jailed dice roll
@@ -560,7 +605,7 @@
                 let jailRoll1 = dieRoll()
                 alert(`your roll was ${jailRoll0} + ${jailRoll1}`)
                 if (jailRoll0 == jailRoll1) {
-                    submitRoll(jailRoll0, jailRoll1)
+                    submitRoll(jailRoll0, jailRoll1, 1)
                 }
                 // else if (){
                 //need jail-status check for turn3
@@ -579,10 +624,6 @@
                 }
 
             })
-
-            // if ($('#recipient').val() === '') {
-            //     confirmBtn.attr('disabled', true)
-            // }
 
             confirmBtn.click(() => {
                 $('#pay-form').submit()
