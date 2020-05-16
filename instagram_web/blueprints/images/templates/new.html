@@ -44,7 +44,7 @@
             $('#preview').empty()
             $('#preview').append(`<img id='preview-img' src=${imgSrc} alt="preview">`)
             // regex check for filename
-            let re = /^[A-Za-z0-9_-]+\.[A-Za-z0-9]{3,4}?/;
+            let re = /^[A-Za-z0-9_-]+\.[A-Za-z0-9]{3,4}$/;
             if (re.test(e.target.files[0].name)) {
                 subButt.removeClass('filenameError')
             }

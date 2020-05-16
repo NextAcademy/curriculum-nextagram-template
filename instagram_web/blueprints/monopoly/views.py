@@ -21,6 +21,12 @@ def activity_create(txt):
             old_act.delete_instance()
 
 
+def jail_free():
+    current_user.jailed = -1
+    current_user.doubles = 0
+    current_user.save()
+
+
 @monopoly_blueprint.route('/')
 def index():
     if current_user.is_authenticated:
@@ -71,14 +77,20 @@ def roll():
     jail_roll = int(request.form.get('jr-input'))
     roll_sum = int(roll_0) + int(roll_1)
     current_user.position += roll_sum
+    # current_user.position = 30
 
-    if roll_0 == roll_1 and jail_roll > 0:
-        current_user.doubles = 0
-        current_user.jailed = -1
-    elif roll_0 == roll_1:
-        current_user.doubles += 1
+    if jail_roll > 0:
+        if roll_0 == roll_1:
+            jail_free()
+        elif current_user.jailed == 3:
+            jail_pay()
+        else:
+            current_user.jailed += 1
     else:
-        current_user.doubles = 0
+        if roll_0 == roll_1:
+            current_user.doubles += 1
+        else:
+            current_user.doubles = 0
 
     current_user.save()
 
@@ -164,16 +176,17 @@ def jail_add():
             return redirect(request.referrer)
 
 
-@monopoly_blueprint.route('/jail-free')
-def jail_free():
+@monopoly_blueprint.route('/jail-pay')
+def jail_pay():
     if current_user.is_authenticated:
-        current_user.jailed = -1
-        current_user.doubles = 0
-        current_user.save()
-        return redirect(request.referrer)
+        current_user.money -= 50
+        jail_free()
+        if not current_user.save():
+            flash('payment could not be done for some reason.', 'danger')
     else:
-        flash('no access, soz', 'danger')
-        return redirect(request.referrer)
+        flash('need to be signed in to perform this action!', 'warning')
+
+    return redirect(request.referrer)
 
 
 @monopoly_blueprint.route('/pay', methods=['POST'])
