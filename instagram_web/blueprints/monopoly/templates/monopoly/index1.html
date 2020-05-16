@@ -196,7 +196,10 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-
+                    {% if current_user.jailed > -1 %}
+                    <a href="{{url_for('monopoly.jail_pay')}}"><button type="button" class="btn btn-outline-warning">Pay
+                            $50</button></a>
+                    {% endif %}
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -233,17 +236,14 @@
                 </section>
                 <section class="mon-blank mon-section">
                     {% if current_user.jailed > -1 %}
-                    <button id='jail-roll' type="button" class="btn btn-outline-warning">Jail Roll</button>
+                    <button id='jail-roll' type="button" class="btn btn-outline-danger">Jail Roll</button>
                     {% else %}
                     <button type="button" id='dice-btn' class="btn btn-outline-secondary">Roll Dice.</button>
                     {% endif %}
 
                 </section>
                 <section class="mon-blank mon-section">
-                    {% if current_user.jailed > -1 %}
-                    <a href="{{url_for('monopoly.jail_free')}}"><button type="button"
-                            class="btn btn-success">Freedom</button></a>
-                    {% endif %}
+                    <button type="button" class="btn btn-success">random button for now</button>
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -494,7 +494,6 @@
                                 {% endfor %}
                             </select>
                         </div>
-
                         <br>
                         <input type="hidden" name="payer" value={{current_user.username}}>
                         <label for="amount-input">Amount:</label>
@@ -503,7 +502,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
+                    <div data-toggle="tooltip" data-placement="top" title="somethoing">
+                        <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -552,16 +554,10 @@
 
     <hr>
     <summary id='current_user'>
-
         <p id='jail-status'>
             {{current_user.jailed}}
         </p>
-
         <br>
-        {% if current_user.jailed >-1 %}
-        <a href="{{url_for('monopoly.jail_add')}}">+1</a>
-        {% endif %}
-
         <p>{{current_user.doubles}}</p>
     </summary>
 
@@ -575,8 +571,8 @@
 
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script>
-
         $(document).ready(() => {
+            $('[data-toggle="tooltip"]').tooltip()
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
@@ -603,44 +599,56 @@
             $('#jail-roll').click(() => {
                 let jailRoll0 = dieRoll()
                 let jailRoll1 = dieRoll()
-                alert(`your roll was ${jailRoll0} + ${jailRoll1}`)
                 if (jailRoll0 == jailRoll1) {
-                    submitRoll(jailRoll0, jailRoll1, 1)
+                    alert(`your roll was ${jailRoll0} + ${jailRoll1}\n Congrats! you're free from jail!`)
                 }
-                // else if (){
-                //need jail-status check for turn3
-                // }
-                console.log($('#jail-status'))
+                else {
+                    alert(`your roll was ${jailRoll0} + ${jailRoll1}`)
+                }
+                submitRoll(jailRoll0, jailRoll1, 1)
             })
 
             const confirmBtn = $('#confirm-btn')
+            let recipientValid, amountValid;
             $('select').click((e) => {
                 $('#recipient').val(e.target.value)
                 if (e.target.value != '') {
+                    recipientValid = true
+                }
+                else {
+                    recipientValid = false
+                }
+                updateBtn()
+            })
+
+            $('#amount-input').keyup((e) => {
+                let re = /^[0-9]+$/
+                if ((re.test(e.target.value)) && (e.target.value > 0)) {
+                    amountValid = true
+                }
+                else {
+                    amountValid = false
+                }
+                updateBtn()
+            })
+            updateBtn = () => {
+                if (recipientValid && amountValid) {
                     confirmBtn.removeAttr('disabled')
                 }
                 else {
                     confirmBtn.attr('disabled', true)
                 }
-
-            })
+            }
 
             confirmBtn.click(() => {
                 $('#pay-form').submit()
             })
-            // setInterval(reloadPage, 5000)
+
+            // Page refresh every 10 seconds
+            // setInterval(reloadPage, 10000)
 
         })
     </script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
