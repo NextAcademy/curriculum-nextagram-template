@@ -222,6 +222,7 @@ color: black;
 
 
 /* Styling for monopoly board */
+
 #mon-body{
   width: 100vw;
   box-sizing: border-box;
@@ -229,6 +230,9 @@ color: black;
   padding-left: 2em;
 }
 
+#mon-nav{
+  margin-right: 1em;
+}
 .mon-section{
   height: 5em;
   border: 1px solid black;

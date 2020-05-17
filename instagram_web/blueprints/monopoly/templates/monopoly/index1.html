@@ -30,6 +30,23 @@
     {% endwith %}
     <div class="fluid-container">
         <div class="row">
+            <div id='mon-nav' class="col-.5 align-items-center">
+                <!-- dropdown for payments, etc. -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-dollar-sign"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" type='button' data-toggle="modal" data-target="#payModal">Pay
+                            Player/Bank </a>
+                        <a data-target='#houseModal' data-toggle='modal' type='button' class="dropdown-item"> Buy
+                            houses/hotels</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Hentai Here</a>
+                    </div>
+                </div>
+            </div>
             <div class="col-1 mon-col">
                 <section class="mon-section">
                     Free parking
@@ -366,22 +383,6 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-                    <!-- dropdown for payments, etc. -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-dollar-sign"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" type='button' data-toggle="modal" data-target="#payModal">Pay
-                                Player/Bank </a>
-                            <a data-target='#houseModal' data-toggle='modal' type='button' class="dropdown-item"> Buy
-                                houses/hotels</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Hentai Here</a>
-                        </div>
-                    </div>
-
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -493,19 +494,19 @@
                                 {% endif %}
                                 {% endfor %}
                             </select>
+                            <p id='user-select-cap'></p>
                         </div>
                         <br>
-                        <input type="hidden" name="payer" value={{current_user.username}}>
                         <label for="amount-input">Amount:</label>
                         <input type="text" name="amount" id="amount-input">
+                        <p id='amount-caption'></p>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <div data-toggle="tooltip" data-placement="top" title="somethoing">
-                        <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
-                    </div>
 
+                    <button type="button" id='confirm-btn' class="btn btn-primary" data-toggle='tooltip' title=''
+                        disabled>Confirm</button>
                 </div>
             </div>
         </div>
@@ -555,9 +556,11 @@
     <hr>
     <summary id='current_user'>
         <p id='jail-status'>
+            jailed status
             {{current_user.jailed}}
         </p>
         <br>
+        doubles count
         <p>{{current_user.doubles}}</p>
     </summary>
 
@@ -572,7 +575,6 @@
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script>
         $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip()
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
@@ -632,6 +634,17 @@
                 updateBtn()
             })
             updateBtn = () => {
+                if (!recipientValid) {
+                    $('#user-select-cap').text('Please select someone :)')
+                } else {
+                    $('#user-select-cap').text('')
+                }
+                if (!amountValid) {
+                    $('#amount-caption').text('Only non-zero positive integers are acceptable!')
+                } else {
+                    $('#amount-caption').text('')
+                }
+
                 if (recipientValid && amountValid) {
                     confirmBtn.removeAttr('disabled')
                 }

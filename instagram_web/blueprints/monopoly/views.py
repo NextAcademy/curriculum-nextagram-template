@@ -72,26 +72,37 @@ def create():
 
 @monopoly_blueprint.route('/roll', methods=['POST'])
 def roll():
+
     roll_0 = request.form.get('roll-0')
     roll_1 = request.form.get('roll-1')
     jail_roll = int(request.form.get('jr-input'))
     roll_sum = int(roll_0) + int(roll_1)
-    current_user.position += roll_sum
-    # current_user.position = 30
-
+    text = f'{current_user.username} rolled {roll_0} & {roll_1}.'
+    # executes if this is a roll from jail.
     if jail_roll > 0:
         if roll_0 == roll_1:
             jail_free()
-        elif current_user.jailed == 3:
-            jail_pay()
+            activity_create(f'{text} Thus escaping jail.')
+        elif current_user.jailed == 2:
+            current_user.money -= 50
+            jail_free()
+            activity_create(
+                f'{text} And got out of jail by paying $50')
         else:
             current_user.jailed += 1
+            activity_create(
+                f'{text} Thus failing to get out of jail.')
+            current_user.save()
+            return redirect(request.referrer)
     else:
+        activity_create(text)
         if roll_0 == roll_1:
             current_user.doubles += 1
         else:
             current_user.doubles = 0
 
+    current_user.position += roll_sum
+    # current_user.position = 30
     current_user.save()
 
     if current_user.doubles == 3:
@@ -109,8 +120,6 @@ def roll():
         current_user.doubles = 0
 
     if current_user.save():
-        activity_create(
-            f'{current_user.username} rolled {roll_0} and {roll_1}')
         return redirect(request.referrer)
     else:
         flash('roll adding failed. Contact Shen.', 'danger')
@@ -164,16 +173,16 @@ def create_property():
             return redirect(request.referrer)
 
 
-@monopoly_blueprint.route("/jail-add")
-def jail_add():
-    if current_user.is_authenticated:
-        if current_user.jailed < 3:
-            current_user.jailed += 1
-            current_user.save()
-            return redirect(request.referrer)
-        else:
-            flash("reached max number of turns", "danger")
-            return redirect(request.referrer)
+# @monopoly_blueprint.route("/jail-add")
+# def jail_add():
+#     if current_user.is_authenticated:
+#         if current_user.jailed < 2:
+#             current_user.jailed += 1
+#             current_user.save()
+#             return redirect(request.referrer)
+#         else:
+#             flash("reached max number of turns", "danger")
+#             return redirect(request.referrer)
 
 
 @monopoly_blueprint.route('/jail-pay')
@@ -183,6 +192,9 @@ def jail_pay():
         jail_free()
         if not current_user.save():
             flash('payment could not be done for some reason.', 'danger')
+        else:
+            activity_create(
+                f'{current_user.username} payed $50 to get out of jail.')
     else:
         flash('need to be signed in to perform this action!', 'warning')
 
@@ -192,12 +204,8 @@ def jail_pay():
 @monopoly_blueprint.route('/pay', methods=['POST'])
 def pay():
     if current_user.is_authenticated:
-        payer_username = request.form.get('payer')
         recipient_username = request.form.get('recipient')
         amount = int(request.form.get('amount'))
-        if current_user.username != payer_username:
-            flash('sorry but you cannot do that!', 'danger')
-            return redirect(request.referrer)
 
         recipient = User.get_or_none(User.username == recipient_username)
 
@@ -210,7 +218,7 @@ def pay():
 
         if current_user.save() and recipient.save():
             activity_create(
-                f'{payer_username} payed ${amount} to {recipient_username}')
+                f'{current_user.username} payed ${amount} to {recipient_username}')
             return redirect(request.referrer)
 
 
