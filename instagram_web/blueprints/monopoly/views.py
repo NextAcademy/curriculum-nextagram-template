@@ -83,7 +83,8 @@ def roll():
         if roll_0 == roll_1:
             jail_free()
         elif current_user.jailed == 3:
-            jail_pay()
+            current_user.money -= 50
+            jail_free
         else:
             current_user.jailed += 1
     else:
@@ -192,12 +193,8 @@ def jail_pay():
 @monopoly_blueprint.route('/pay', methods=['POST'])
 def pay():
     if current_user.is_authenticated:
-        payer_username = request.form.get('payer')
         recipient_username = request.form.get('recipient')
         amount = int(request.form.get('amount'))
-        if current_user.username != payer_username:
-            flash('sorry but you cannot do that!', 'danger')
-            return redirect(request.referrer)
 
         recipient = User.get_or_none(User.username == recipient_username)
 
@@ -210,7 +207,7 @@ def pay():
 
         if current_user.save() and recipient.save():
             activity_create(
-                f'{payer_username} payed ${amount} to {recipient_username}')
+                f'{current_user.username} payed ${amount} to {recipient_username}')
             return redirect(request.referrer)
 
 

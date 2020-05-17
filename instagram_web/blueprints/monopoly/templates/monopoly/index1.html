@@ -493,19 +493,19 @@
                                 {% endif %}
                                 {% endfor %}
                             </select>
+                            <p id='user-select-cap'></p>
                         </div>
                         <br>
-                        <input type="hidden" name="payer" value={{current_user.username}}>
                         <label for="amount-input">Amount:</label>
                         <input type="text" name="amount" id="amount-input">
+                        <p id='amount-caption'></p>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <div data-toggle="tooltip" data-placement="top" title="somethoing">
-                        <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
-                    </div>
 
+                    <button type="button" id='confirm-btn' class="btn btn-primary" data-toggle='tooltip' title=''
+                        disabled>Confirm</button>
                 </div>
             </div>
         </div>
@@ -572,7 +572,6 @@
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script>
         $(document).ready(() => {
-            $('[data-toggle="tooltip"]').tooltip()
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
@@ -632,6 +631,17 @@
                 updateBtn()
             })
             updateBtn = () => {
+                if (!recipientValid) {
+                    $('#user-select-cap').text('Please select someone :)')
+                } else {
+                    $('#user-select-cap').text('')
+                }
+                if (!amountValid) {
+                    $('#amount-caption').text('Only non-zero positive integers are acceptable!')
+                } else {
+                    $('#amount-caption').text('')
+                }
+
                 if (recipientValid && amountValid) {
                     confirmBtn.removeAttr('disabled')
                 }
