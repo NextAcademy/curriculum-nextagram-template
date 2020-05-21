@@ -204,10 +204,18 @@
 
                 </section>
                 <section class="mon-blank mon-section">
+                    <div id='ownership-div'>
+                        {% if current_property %}
+                        {{current_property.name}} is {% if current_property.is_owned %} owned. {% else %} unowned.
+                        {% endif %}
+                        {% endif %}
+                    </div>
 
                 </section>
                 <section class="mon-blank mon-section">
-
+                    <!-- {% if (current_property) and (not current_property.is_owned) %}
+                    <button>Purchase!</button>
+                    {% endif %} -->
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -260,7 +268,7 @@
 
                 </section>
                 <section class="mon-blank mon-section">
-                    <button type="button" class="btn btn-success">random button for now</button>
+                    <!-- <button type="button" class="btn btn-success">random button for now</button> -->
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -507,46 +515,6 @@
 
                     <button type="button" id='confirm-btn' class="btn btn-primary" data-toggle='tooltip' title=''
                         disabled>Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- house modal -->
-    <div class="modal fade" id="houseModal" tabindex="-1" role="dialog" aria-labelledby="houseModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="houseModalLabel">House/Hotel buying</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Your Money: ${{current_user.money}}
-                    <form id='pay-form' action="{{url_for('monopoly.buy_house')}}" method="post">
-                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
-                        <br>
-                        <!-- Property selector -->
-                        <input type="hidden" name="property" id="house-prop" value="">
-                        <div class="form-group">
-                            <label for="formControlSelect1">Select property!</label>
-                            <select class="form-control" id="formControlSelect1">
-                                <option value=""></option>
-                                {% for property in current_user.properties %}
-                                <option>{{property}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <br>
-                        <input type="hidden" name="payer" value={{current_user.username}}>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" id='confirm-btn' class="btn btn-primary" disabled>Confirm</button>
                 </div>
             </div>
         </div>
