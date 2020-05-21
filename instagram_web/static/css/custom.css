@@ -254,10 +254,14 @@ color: black;
 }
 
 .activity-box{
-  width: 250%;
+ width: 250%;
 }
 
 .user-location{
   margin-left: 1em;
+  width: 250%;
+}
+
+#ownership-div{
   width: 250%;
 }

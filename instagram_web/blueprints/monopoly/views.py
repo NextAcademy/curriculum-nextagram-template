@@ -32,25 +32,24 @@ def index():
     if current_user.is_authenticated:
         users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
         user_positions = []
-        locations = ['Go', 'Old Kent Road', 'Community Chest', 'Whitechapel Road', 'Income Tax', "King's Cross Station", 'The Angel Islington', 'Chance', 'Euston Road', 'Pentonville Road', 'Jail', 'Pall Mall', 'Electric Company', 'Whitehall', 'Northumber Land Ave.', 'Marylebone Station', 'Bow Street', 'Community Chest 2', 'Marlborough Street',
-                     'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Picadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
+        locations = ['Go', 'Old Kent Road', 'Community Chest', 'Whitechapel Road', 'Income Tax', "King's Cross Station", 'The Angel Islington', 'Chance', 'Euston Road', 'Pentonville Road', 'Jail', 'Pall Mall', 'Electric Company', 'Whitehall', 'Northumberland Ave.', 'Marylebone Station', 'Bow Street', 'Community Chest 2', 'Marlborough Street',
+                     'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Picadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St. Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
 
         for user in users:
             user_positions.append(
                 f'{user.username} @ {locations[user.position]} | with ${user.money}')
 
+        current_property = Property.get_or_none(
+            Property.name == locations[current_user.position])
+        # if location:
+
         activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
-        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, activities=activities, users=users)
+        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, activities=activities, users=users, current_property=current_property)
 
     else:
         flash('login is required', 'danger')
         return redirect(request.referrer)
-
-
-# @monopoly_blueprint.route('/new')
-# def new():
-#     return render_template('users/new.html')
 
 
 @monopoly_blueprint.route('/create')
@@ -164,9 +163,14 @@ def new_property():
 def create_property():
     if current_user.username == 'Banker':
         name = request.form.get('name')
-        new_prop = Property(name=name, user_id=current_user.id)
+        house_price = request.form.get('house-price')
+        category = request.form.get('category')
+        if house_price == '':
+            house_price = 0
+        new_prop = Property(name=name, user_id=current_user.id,
+                            house_price=house_price, category=category)
         if new_prop.save():
-            flash('new property was saved')
+            flash('new property was saved', 'success')
             return redirect(url_for('monopoly.new_property'))
         else:
             flash('failed for some reason')

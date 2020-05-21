@@ -32,9 +32,12 @@
     {% endwith %}
     <form action="{{url_for('monopoly.create_property')}}" method='POST'>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <input type="text" name="name" id="">
-        <input type="text" name='house-price'>
-        <input type="text" name='category'>
+        <label for="name-input">Property Name:</label>
+        <input type="text" name="name" id='name-input'>
+        <label for="house-price-input">Price of a House(if applicable):</label>
+        <input type="text" name='house-price' id='house-price-input'>
+        <label for="category-input">Category(colour, utility, station)</label>
+        <input type="text" name='category' id='category-input'>
         <button type="submit">Submit</button>
     </form>
 </body>
