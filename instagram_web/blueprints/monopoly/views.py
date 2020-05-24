@@ -154,18 +154,6 @@ def reset():
     return redirect(request.referrer)
 
 
-# @monopoly_blueprint.route("/jail-add")
-# def jail_add():
-#     if current_user.is_authenticated:
-#         if current_user.jailed < 2:
-#             current_user.jailed += 1
-#             current_user.save()
-#             return redirect(request.referrer)
-#         else:
-#             flash("reached max number of turns", "danger")
-#             return redirect(request.referrer)
-
-
 @monopoly_blueprint.route('/jail-pay')
 def jail_pay():
     if current_user.is_authenticated:

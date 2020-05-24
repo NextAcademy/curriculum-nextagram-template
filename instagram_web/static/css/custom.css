@@ -253,6 +253,37 @@ color: black;
   background-color: rgba(255, 0, 0, 0.74);
 }
 
+.mon-yellow{
+  background-color: yellow;
+}
+
+.mon-blue{
+  background-color: blue;
+  color: lightgoldenrodyellow;
+}
+
+.mon-green{
+  background-color: green;
+  color: rgb(255, 145, 145);
+}
+
+.mon-brown{
+  background-color: brown;
+  color: white;
+}
+
+.mon-pink{
+  background-color: #e4179f;
+}
+
+.mon-light-blue{
+  background-color: lightblue;
+}
+
+.mon-orange{
+  background-color: orange;
+}
+
 .activity-box{
  width: 250%;
 }
