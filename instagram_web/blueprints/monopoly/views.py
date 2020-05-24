@@ -214,7 +214,7 @@ def create_property():
         if house_price == '':
             house_price = 0
 
-        if "image_file" not in request.files:
+        if "image-file" not in request.files:
             flash("No file was chosen! :O", 'warning')
             return redirect(request.referrer)
         file = request.files.get('user_file')
