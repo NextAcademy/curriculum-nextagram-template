@@ -1,0 +1,185 @@
+{% extends "_layout.html" %} {%block content%}
+
+<h2 class="d-flex justify-content-center mx-auto" >
+  User Profile
+</h2>
+
+<h3 class="d-flex justify-content-center mx-auto">{{user_id.name}}</h3>
+<div class="justify-content-center mx-auto">
+  {% if user_id.profile_image %}
+
+  <img class="d-flex w-25 overflow-hidden justify-content-center mx-auto rounded-circle" src="{{user_id.profile_image_url}}" alt="">
+
+  {%else%}
+
+  <img class="d-flex justify-content-center mx-auto rounded-circle" src="{{url_for('static',filename='images/placeholder.png')}}" alt="placeholder">
+
+  {% endif %}
+
+{%if current_user.id == user.id %}
+<div class="d-flex justify-content-center mt-3">
+  {%if not user.private_profile == True %}
+  <form method="post" action="{{url_for('users.private')}}">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    
+    <button class="btn btn-outline-primary border-0 font-weight-bold" type="button submit">
+      Private?
+    </button>
+    
+  </form>
+</div>
+{% else %}
+
+<form method="post" action="{{url_for('users.unprivate')}}">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+
+  <button type="button submit">
+    UnPrivate?
+  </button>
+
+</form>
+</div>
+
+{%endif%}
+
+{%else%}
+<div></div>
+{%endif%}
+
+
+<div class="d-flex justify-content-center mt-3 mx-auto">
+  {% if not current_user.is_following(user) %}
+  <form action="{{url_for('follows.create', idol_id=user.id)}}" method="post">
+
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <button class="mx-auto btn border-0 font-weight-bold btn-outline-primary"> Follow </button>
+    
+  </form>
+{%else%}
+  <form action="{{url_for('follows.delete', idol_id=user.id)}}" method="post">
+  
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <button class="mx-auto btn border-0 font-weight-bold btn-outline-primary"> Unfollow </button>
+  
+  </form>
+{%endif%}
+</div>
+
+<div class="d-flex flex-row text-center justify-content-center px-0 mx-auto d-flex">
+  <div class="d-flex justify-content-center text-center col-2 ">  Followers: {{users.fans | length }} </div>
+
+  <div class=" d-flex justify-content-center text-center col-2 ">  
+    Following: {{users.idols | length }}
+  </div>
+</div>
+
+
+
+
+<button type="button" class="border-0 font-weight-bold btn btn-outline-dark d-flex justify-content-center mx-auto my-2" data-toggle="modal"
+  data-target="#uploadImage">
+  Change Profile Picture
+</button>
+<div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">
+          Upload Profile Image
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('users.upload', id=current_user.id)}}" enctype="multipart/form-data">
+          <div class="form-group">
+            
+        
+            <input id="image-form" type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="profile_image" type="file" id="prof-img"
+              >
+
+          
+
+          </div>
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      <button class="btn btn-primary" type="submit, button">
+        Upload Image
+      </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<button type="button" class="border-0 font-weight-bold btn btn-outline-dark d-flex justify-content-center mx-auto"  data-toggle="modal" data-target="#editProfile">
+  Edit Profile
+</button>
+<div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">
+          Update Profile Details
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{url_for('users.user_profile_update', id=user_id)}}">
+          <div class="form-group">
+            <label for="username" class="col-form-label">New Username</label>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="NewUser" type="text" class="form-control" id="user-name" />
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-form-label">New Email</label>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+            <input name="NewEmail" type="text" class="form-control" id="pass-word" />
+          </div>
+      </div>
+      
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button, submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div class="overflow-hidden container">
+<h3>Photo Album</h3>
+</div>
+<div class="overflow-hidden col-lg-10 d-flex flex-wrap justify-content-center container">
+{% for i in user_id.images %}
+<img class="col-3 overflow-hidden rounded d-block justify-content-center w-25 mx-3 my-3"  id="current_user.id" src="{{i.image_url}}">
+
+{%endfor%}
+
+</div>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{%extends "_layout.html" %} {%block content%} {% for i in images %} {% if not
+i.user_id == current_user.id %}
+<div class="card" style="width: 18rem;">
+  <div class="d-flex flex-row">
+    <img src="{{image.profile_image_url}}" />
+    <h5 class="card-title">{{image.user.name}}</h5>
+  </div>
+  <img src="{{image.image_url}}" class="card-img-top" alt="..." />
+  <div class="card-body">
+    <p class="card-text">{{image.caption}}</p>
+    <a href="#" class="btn btn-outline-primary">Go somewhere</a>
+  </div>
+</div>
+{%endif%} {%endfor%} {%endblock%}
