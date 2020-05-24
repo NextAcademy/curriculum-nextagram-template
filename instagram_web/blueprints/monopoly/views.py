@@ -3,6 +3,10 @@ from flask_login import current_user, login_user, login_required
 from models.user import User
 from models.properties import Property
 from models.activity_log import ActivityLog
+from werkzeug.utils import secure_filename
+from config import S3_BUCKET, S3_LOCATION
+from helpers import upload_file_to_s3
+
 
 monopoly_blueprint = Blueprint(
     'monopoly', __name__, template_folder='templates')
@@ -150,33 +154,6 @@ def reset():
     return redirect(request.referrer)
 
 
-@monopoly_blueprint.route('/new-property')
-def new_property():
-    if current_user.username == 'Banker':
-        return render_template('monopoly/new-property.html')
-    else:
-        flash('sorry, but you do not have access to that feature!', 'danger')
-        return redirect(url_for('monopoly.index'))
-
-
-@monopoly_blueprint.route('/create-property', methods=['POST'])
-def create_property():
-    if current_user.username == 'Banker':
-        name = request.form.get('name')
-        house_price = request.form.get('house-price')
-        category = request.form.get('category')
-        if house_price == '':
-            house_price = 0
-        new_prop = Property(name=name, user_id=current_user.id,
-                            house_price=house_price, category=category)
-        if new_prop.save():
-            flash('new property was saved', 'success')
-            return redirect(url_for('monopoly.new_property'))
-        else:
-            flash('failed for some reason')
-            return redirect(request.referrer)
-
-
 # @monopoly_blueprint.route("/jail-add")
 # def jail_add():
 #     if current_user.is_authenticated:
@@ -229,3 +206,37 @@ def pay():
 @monopoly_blueprint.route("/house", methods=['POST'])
 def buy_house():
     return
+
+
+@monopoly_blueprint.route('/new-property')
+def new_property():
+    if current_user.username == 'Banker':
+        return render_template('monopoly/new-property.html')
+    else:
+        flash('sorry, but you do not have access to that feature!', 'danger')
+        return redirect(url_for('monopoly.index'))
+
+
+@monopoly_blueprint.route('/create-property', methods=['POST'])
+def create_property():
+    if current_user.username == 'Banker':
+        name = request.form.get('name')
+        house_price = request.form.get('house-price')
+        category = request.form.get('category')
+        if house_price == '':
+            house_price = 0
+
+        if "image_file" not in request.files:
+            flash("No file was chosen! :O", 'warning')
+            return redirect(request.referrer)
+        file = request.files.get('user_file')
+        file_name = secure_filename(file.filename)
+        img_upload_err = str(upload_file_to_s3(file, S3_BUCKET))
+        new_prop = Property(name=name, user_id=current_user.id,
+                            house_price=house_price, category=category, image=S3_LOCATION + file_name)
+        if new_prop.save():
+            flash('new property was saved', 'success')
+            return redirect(url_for('monopoly.new_property'))
+        else:
+            flash(f'failed, {img_upload_err}', 'danger')
+            return redirect(request.referrer)
