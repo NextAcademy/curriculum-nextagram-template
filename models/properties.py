@@ -2,6 +2,7 @@ import peewee as pw
 from models.base_model import BaseModel
 from models.user import User
 from playhouse.hybrid import hybrid_property
+from config import S3_LOCATION
 
 
 class Property(BaseModel):
@@ -22,3 +23,7 @@ class Property(BaseModel):
             return False
         else:
             return True
+
+    @hybrid_property
+    def image_url(self):
+        return(S3_LOCATION + self.image)
