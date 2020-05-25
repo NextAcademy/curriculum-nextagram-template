@@ -217,11 +217,11 @@ def create_property():
         if "image-file" not in request.files:
             flash("No file was chosen! :O", 'warning')
             return redirect(request.referrer)
-        file = request.files.get('user_file')
+        file = request.files.get('image-file')
         file_name = secure_filename(file.filename)
         img_upload_err = str(upload_file_to_s3(file, S3_BUCKET))
         new_prop = Property(name=name, user_id=current_user.id,
-                            house_price=house_price, category=category, image=S3_LOCATION + file_name)
+                            house_price=house_price, category=category, image=file_name)
         if new_prop.save():
             flash('new property was saved', 'success')
             return redirect(url_for('monopoly.new_property'))
