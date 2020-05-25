@@ -264,7 +264,7 @@ color: black;
 
 .mon-green{
   background-color: green;
-  color: rgb(255, 145, 145);
+  color: white;
 }
 
 .mon-brown{
@@ -274,6 +274,7 @@ color: black;
 
 .mon-pink{
   background-color: #e4179f;
+  color: white;
 }
 
 .mon-light-blue{
@@ -295,4 +296,10 @@ color: black;
 
 #ownership-div{
   width: 250%;
+}
+
+.prop:hover{
+  border: 2px black solid;
+  /* filter: brightness(150%); */
+  cursor: pointer;
 }
