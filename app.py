@@ -43,3 +43,8 @@ def _db_close(exc):
         print(db)
         print(db.close())
     return exc
+
+
+@socketio.on('message')
+def handle_message(message):
+    print('received message: ' + message)
