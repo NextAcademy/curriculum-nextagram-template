@@ -574,17 +574,17 @@
         socket.on('connect', function () {
             socket.send("{{current_user.username}} connected");
         });
-        socket.on('message', (message) => {
-            if (message == 'broke') {
-                console.log('lmao, u too broke for that shit.')
-            }
-        })
-        socket.on('update', (data) => {
-            data = JSON.parse(data)
-            console.log(data.activities)
-        })
 
         $(document).ready(() => {
+            socket.on('message', (message) => {
+                if (message == 'broke') {
+                    console.log('lmao, u too broke for that shit.')
+                }
+            })
+            socket.on('update', (data) => {
+                data = JSON.parse(data)
+                console.log(data.activities)
+            })
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
