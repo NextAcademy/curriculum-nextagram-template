@@ -3,7 +3,7 @@ import os
 import config
 from flask import Flask
 from models.base_model import db
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 
 # import logging
 # import redis
@@ -47,4 +47,4 @@ def _db_close(exc):
 
 @socketio.on('message')
 def handle_message(message):
-    print('received message: ' + message)
+    socoketio.emit('message', message)
