@@ -37,7 +37,6 @@ def activity_create(txt):
             old_act.delete_instance()
     activities = ActivityLog.select()
     activity_list = [x.text for x in activities]
-    socket_update(activity_list)
 
 
 def jail_free():
