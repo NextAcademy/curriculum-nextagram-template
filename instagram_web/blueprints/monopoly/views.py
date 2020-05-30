@@ -133,6 +133,9 @@ def roll():
         flash('roll adding failed. Contact Shen.', 'danger')
         return redirect(request.referrer)
 
+    else:
+        return redirect(request.referrer)
+
     return
 
 
