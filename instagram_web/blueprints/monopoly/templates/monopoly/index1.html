@@ -664,7 +664,9 @@
             }
 
             confirmBtn.click(() => {
+                console.log($('#recipientSelect').val() + $('#amount-input').val())
                 socket.emit('pay', ($('#recipientSelect').val(), $('#amount-input').val()))
+                $('#payModal').toggle()
             })
 
             let monProperties = $('.prop')
