@@ -486,7 +486,7 @@
                 </div>
                 <div class="modal-body">
                     Your Money: ${{current_user.money}}
-                    <form id='pay-form' action="{{url_for('monopoly.pay')}}" method="post">
+                    <form id='pay-form'>
                         <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
                         <br>
                         <!-- Recipient selector -->

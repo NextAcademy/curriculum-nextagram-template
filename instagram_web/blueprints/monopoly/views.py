@@ -68,7 +68,7 @@ def index():
 
     else:
         flash('login is required', 'danger')
-        return redirect(request.referrer)
+        return redirect(url_for('users.index'))
 
 
 @monopoly_blueprint.route('/create')
