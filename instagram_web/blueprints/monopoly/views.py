@@ -7,13 +7,20 @@ from werkzeug.utils import secure_filename
 from config import S3_BUCKET, S3_LOCATION
 from helpers import upload_file_to_s3
 from app import socketio
+from flask_socketio import send, emit
+import json
 
 
 monopoly_blueprint = Blueprint(
     'monopoly', __name__, template_folder='templates')
 
 
-def socket_update(data):
+def update_all():
+    activities = ActivityLog.select().order_by(
+        ActivityLog.created_at.desc())
+    activity_text = [x.text for x in activities]
+    dictionary = {'activities': activity_text}
+    data = json.dumps(dictionary)
     socketio.emit('update', data)
 
 
@@ -180,17 +187,14 @@ def jail_pay():
     return redirect(request.referrer)
 
 
-@monopoly_blueprint.route('/pay', methods=['POST'])
-def pay():
+@socketio.on('pay')
+def pay(recipient_username, amount):
     if current_user.is_authenticated:
-        recipient_username = request.form.get('recipient')
-        amount = int(request.form.get('amount'))
-
         recipient = User.get_or_none(User.username == recipient_username)
-
+        amount = int(amount)
         if amount > current_user.money:
-            flash('sorry, but you too broke for that shit. lmao', 'warning')
-            return redirect(request.referrer)
+            send('broke')
+            return
 
         current_user.money -= amount
         recipient.money += amount
@@ -198,7 +202,7 @@ def pay():
         if current_user.save() and recipient.save():
             activity_create(
                 f'{current_user.username} payed ${amount} to {recipient_username}')
-            return redirect(request.referrer)
+            update_all()
 
 
 @monopoly_blueprint.route("/house", methods=['POST'])
