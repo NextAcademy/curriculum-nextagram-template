@@ -133,6 +133,8 @@ def roll():
         flash('roll adding failed. Contact Shen.', 'danger')
         return redirect(request.referrer)
 
+    return
+
 
 @monopoly_blueprint.route('/reset')
 def reset():
