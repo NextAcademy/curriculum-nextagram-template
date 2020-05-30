@@ -6,10 +6,15 @@ from models.activity_log import ActivityLog
 from werkzeug.utils import secure_filename
 from config import S3_BUCKET, S3_LOCATION
 from helpers import upload_file_to_s3
+from app import socketio
 
 
 monopoly_blueprint = Blueprint(
     'monopoly', __name__, template_folder='templates')
+
+
+def socket_update(data):
+    socketio.emit('update', data)
 
 
 def activity_create(txt):
@@ -23,6 +28,9 @@ def activity_create(txt):
             ActivityLog.id.not_in([activity.id for activity in new_activities]))
         for old_act in old_activities:
             old_act.delete_instance()
+    activities = ActivityLog.select()
+    activity_list = [x.text for x in activities]
+    socket_update(activity_list)
 
 
 def jail_free():
@@ -105,7 +113,6 @@ def roll():
             current_user.doubles = 0
 
     current_user.position += roll_sum
-    # current_user.position = 30
     current_user.save()
 
     if current_user.doubles == 3:
@@ -122,9 +129,7 @@ def roll():
         current_user.jailed = 0
         current_user.doubles = 0
 
-    if current_user.save():
-        return redirect(request.referrer)
-    else:
+    if not current_user.save():
         flash('roll adding failed. Contact Shen.', 'danger')
         return redirect(request.referrer)
 

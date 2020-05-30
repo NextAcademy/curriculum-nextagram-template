@@ -575,6 +575,9 @@
         socket.on('message', () => {
             console.log('you a wanker')
         })
+        socket.on('update', (data) => {
+            console.log(data)
+        })
     </script>
     <script>
         $(document).ready(() => {
