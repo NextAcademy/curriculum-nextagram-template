@@ -667,7 +667,7 @@
                 console.log($('#recipientSelect').val() + $('#amount-input').val())
                 payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
                 socket.emit('pay', payInfo)
-                $('#payModal').toggle()
+                $('#payModal').modal("hide")
             })
 
             let monProperties = $('.prop')
