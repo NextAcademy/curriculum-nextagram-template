@@ -47,4 +47,4 @@ def _db_close(exc):
 
 @socketio.on('message')
 def handle_message(message):
-    socoketio.emit('message', message)
+    socketio.emit('message', message)
