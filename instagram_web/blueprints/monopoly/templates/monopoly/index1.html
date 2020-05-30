@@ -492,8 +492,8 @@
                         <!-- Recipient selector -->
                         <input type="hidden" name="recipient" id="recipient" value="">
                         <div class="form-group">
-                            <label for="formControlSelect1">Select recipient!</label>
-                            <select class="form-control" id="formControlSelect1">
+                            <label for="recipientSelect">Select recipient!</label>
+                            <select class="form-control" id="recipientSelect">
                                 <option value=""></option>
                                 <option>Banker</option>
                                 {% for user in users %}
@@ -567,19 +567,23 @@
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
         integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+
     <script type="text/javascript" charset="utf-8">
         const socket = io();
         socket.on('connect', function () {
             socket.send("{{current_user.username}} connected");
         });
-        socket.on('message', () => {
-            console.log('you a wanker')
+        socket.on('message', (message) => {
+            if (message == 'broke') {
+                console.log('lmao, u too broke for that shit.')
+            }
         })
         socket.on('update', (data) => {
-            console.log(data)
+            data = JSON.parse(data)
+            console.log(data.activities)
         })
-    </script>
-    <script>
+
         $(document).ready(() => {
             positions = ($('summary'))
             reloadPage = () => {
@@ -660,9 +664,8 @@
             }
 
             confirmBtn.click(() => {
-                $('#pay-form').submit()
+                socket.emit('pay', ($('#recipientSelect').val(), $('#amount-input').val()))
             })
-
 
             let monProperties = $('.prop')
             monProperties.click((e) => {
@@ -670,12 +673,7 @@
                 $(`#${id}ImageModal`).modal('show')
                 // $('#ImageModal').modal('show')
             })
-
-            // Page refresh every 10 seconds
-            // setInterval(reloadPage, 10000)
-
         })
-
     </script>
 </body>
 
