@@ -188,8 +188,11 @@ def jail_pay():
 
 
 @socketio.on('pay')
-def pay(recipient_username, amount):
+def pay(data):
     if current_user.is_authenticated:
+        pay_data = json.loads(data)
+        recipient_username = pay_data['recipient']
+        amount = pay_data['amount']
         recipient = User.get_or_none(User.username == recipient_username)
         amount = int(amount)
         if amount > current_user.money:

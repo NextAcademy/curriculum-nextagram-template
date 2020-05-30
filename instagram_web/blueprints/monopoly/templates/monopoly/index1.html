@@ -665,7 +665,8 @@
 
             confirmBtn.click(() => {
                 console.log($('#recipientSelect').val() + $('#amount-input').val())
-                socket.emit('pay', ($('#recipientSelect').val(), $('#amount-input').val()))
+                payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
+                socket.emit('pay', payInfo)
                 $('#payModal').toggle()
             })
 
