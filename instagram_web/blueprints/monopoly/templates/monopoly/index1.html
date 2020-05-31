@@ -28,6 +28,13 @@
     </div>
     {% endif %}
     {% endwith %}
+    <div id='mon-alert' class="alert alert-warning show fade" role="alert">
+        If you see this, it's broken. Please contact Shen.
+        <button type="button" class="close" id='alert-btn' aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <div class="fluid-container">
         <div class="row">
             <div id='mon-nav' class="col-.5 align-items-center">
@@ -576,9 +583,14 @@
         });
 
         $(document).ready(() => {
+            alertBox = $('#mon-alert')
+            $('#alert-btn').click(() => {
+                alertBox.removeClass('show')
+            })
+
             socket.on('message', (message) => {
                 if (message == 'broke') {
-                    console.log('lmao, u too broke for that shit.')
+                    // $('#mon-alert').text('Lmao, you too broke for that shit.')
                 }
             })
             socket.on('update', (data) => {

@@ -230,6 +230,14 @@ color: black;
   padding-left: 2em;
 }
 
+#mon-alert{
+  position: absolute;
+  width: 97%;
+  box-sizing: border-box;
+  z-index: 1;
+  border: solid 1px gray;
+}
+
 #mon-nav{
   margin-right: 1em;
 }
