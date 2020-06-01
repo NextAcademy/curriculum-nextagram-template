@@ -573,11 +573,12 @@
     <script type="text/javascript" charset="utf-8">
         const socket = io();
         const currentUsername = $('#current-username').text()
-        socket.on('connect', function () {
-            socket.emit('connect');
-        });
+        if (socket.connected) {
+            socket.emit('connect')
+        }
 
         $(document).ready(() => {
+
             alertBox = $('#mon-alert')
             hideAlert = () => {
                 alertBox.removeClass('show')
@@ -609,7 +610,7 @@
                 })
             })
 
-            socket.on('position_update', ((data) => {
+            socket.on('position_update', (data) => {
                 data.forEach((item) => {
                     $('#position-container').append(`
                     <div class='user-location'>
@@ -617,7 +618,7 @@
                     </div>
                     `)
                 })
-            }))
+            })
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
