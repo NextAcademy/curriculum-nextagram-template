@@ -32,7 +32,7 @@ def update_positions():
 
     for user in users:
         user_positions.append(
-            f'{user.username} @ {locations[user.position]} | with ${user.money}')
+            f'{user.username} @ {locations[user.position]} | ${user.money}')
     socketio.emit('position_update', user_positions)
 
     # current_property = Property.get_or_none(
