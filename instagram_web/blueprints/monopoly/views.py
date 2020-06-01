@@ -68,9 +68,9 @@ def jail_free():
 @monopoly_blueprint.route('/')
 def index():
     if current_user.is_authenticated:
-
+        users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
         properties = Property.select()
-        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, users=users, current_property=current_property)
+        return render_template('monopoly/index1.html', properties=properties, users=users)
 
     else:
         flash('login is required', 'danger')
