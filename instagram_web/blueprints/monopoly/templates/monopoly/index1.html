@@ -98,12 +98,8 @@
                 <section class="mon-blank mon-section">
 
                 </section>
-                <section class="mon-blank mon-section">
-                    {% for user_pos in user_positions %}
-                    <div class='user-location'>
-                        {{user_pos}}
-                    </div>
-                    {% endfor %}
+                <section id='position-container' class="mon-blank mon-section">
+
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -556,6 +552,9 @@
         <br>
         doubles count
         <p>{{current_user.doubles}}</p>
+        <div id='current-username'>
+            {{current_user.username}}
+        </div>
     </summary>
 
     <!-- Dice roll form -->
@@ -573,8 +572,9 @@
 
     <script type="text/javascript" charset="utf-8">
         const socket = io();
+        const currentUsername = $('#current-username').text()
         socket.on('connect', function () {
-            socket.send("{{current_user.username}} connected");
+            socket.emit('connect', `${currentUsername} has connected`);
         });
 
         $(document).ready(() => {
@@ -598,7 +598,7 @@
                 }
             })
 
-            socket.on('update', (data) => {
+            socket.on('activity_update', (data) => {
                 data = JSON.parse(data)
                 data.activities.forEach((item) => {
                     $('#activity-container').append(`<div class='activity-box'>
@@ -606,11 +606,18 @@
                     </div>
                     <br>
                 `)
-
                 })
-
-                console.log(data.activities)
             })
+
+            socket.on('position_update', ((data) => {
+                data.forEach((item) => {
+                    $('#position-container').append(`
+                    <div class='user-location'>
+                        ${item}
+                    </div>
+                    `)
+                })
+            }))
             positions = ($('summary'))
             reloadPage = () => {
                 location.reload()
@@ -689,6 +696,7 @@
                 }
             }
 
+            // sends pay information via socket
             confirmBtn.click(() => {
                 console.log($('#recipientSelect').val() + $('#amount-input').val())
                 payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
@@ -700,7 +708,6 @@
             monProperties.click((e) => {
                 let id = e.target.id
                 $(`#${id}ImageModal`).modal('show')
-                // $('#ImageModal').modal('show')
             })
         })
     </script>

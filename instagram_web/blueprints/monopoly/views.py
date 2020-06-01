@@ -15,13 +15,34 @@ monopoly_blueprint = Blueprint(
     'monopoly', __name__, template_folder='templates')
 
 
-def update_all():
+def update_activities():
     activities = ActivityLog.select().order_by(
         ActivityLog.created_at.desc())
     activity_text = [x.text for x in activities]
     dictionary = {'activities': activity_text}
     data = json.dumps(dictionary)
-    socketio.emit('update', data)
+    socketio.emit('activity_update', data)
+
+
+def update_positions():
+    users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
+    user_positions = []
+    locations = ['Go', 'Old Kent Road', 'Community Chest', 'Whitechapel Road', 'Income Tax', "King's Cross Station", 'The Angel Islington', 'Chance', 'Euston Road', 'Pentonville Road', 'Jail', 'Pall Mall', 'Electric Company', 'Whitehall', 'Northumberland Ave.', 'Marylebone Station', 'Bow Street', 'Community Chest 2', 'Marlborough Street',
+                 'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Piccadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St. Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
+
+    for user in users:
+        user_positions.append(
+            f'{user.username} @ {locations[user.position]} | with ${user.money}')
+    socketio.emit('position_update', user_positions)
+
+    # current_property = Property.get_or_none(
+    #     Property.name == locations[current_user.position])
+
+
+@socketio.on('connect')
+def handle_connection(message):
+    update_positions()
+    update_activities()
 
 
 def activity_create(txt):
@@ -35,7 +56,7 @@ def activity_create(txt):
             ActivityLog.id.not_in([activity.id for activity in new_activities]))
         for old_act in old_activities:
             old_act.delete_instance()
-    update_all()
+    update_activities()
 
 
 def jail_free():
@@ -48,20 +69,8 @@ def jail_free():
 def index():
     if current_user.is_authenticated:
         users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
-        user_positions = []
-        locations = ['Go', 'Old Kent Road', 'Community Chest', 'Whitechapel Road', 'Income Tax', "King's Cross Station", 'The Angel Islington', 'Chance', 'Euston Road', 'Pentonville Road', 'Jail', 'Pall Mall', 'Electric Company', 'Whitehall', 'Northumberland Ave.', 'Marylebone Station', 'Bow Street', 'Community Chest 2', 'Marlborough Street',
-                     'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Piccadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St. Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
-
-        for user in users:
-            user_positions.append(
-                f'{user.username} @ {locations[user.position]} | with ${user.money}')
-
-        current_property = Property.get_or_none(
-            Property.name == locations[current_user.position])
-
-        # activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
-        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, users=users, current_property=current_property)
+        return render_template('monopoly/index1.html', properties=properties, users=users)
 
     else:
         flash('login is required', 'danger')
