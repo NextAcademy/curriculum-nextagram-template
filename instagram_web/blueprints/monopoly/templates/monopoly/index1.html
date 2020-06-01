@@ -584,15 +584,25 @@
 
         $(document).ready(() => {
             alertBox = $('#mon-alert')
-            $('#alert-btn').click(() => {
+            hideAlert = () => {
                 alertBox.removeClass('show')
+            }
+            showAlert = (t) => {
+                alertBox.addClass('show')
+                setTimeout(hideAlert(), t)
+            }
+            // close btn for alert
+            $('#alert-btn').click(() => {
+                hideAlert()
             })
 
             socket.on('message', (message) => {
                 if (message == 'broke') {
-                    // $('#mon-alert').text('Lmao, you too broke for that shit.')
+                    $('#mon-alert').text('Lmao, you too broke for that shit.')
+                    showAlert(2000)
                 }
             })
+
             socket.on('update', (data) => {
                 data = JSON.parse(data)
                 console.log(data.activities)
