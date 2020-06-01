@@ -556,6 +556,9 @@
         <br>
         doubles count
         <p>{{current_user.doubles}}</p>
+        <div id='current-username'>
+            {{current_user.username}}
+        </div>
     </summary>
 
     <!-- Dice roll form -->
@@ -573,8 +576,9 @@
 
     <script type="text/javascript" charset="utf-8">
         const socket = io();
+        const currentUsername = $('#current-username').text()
         socket.on('connect', function () {
-            socket.send("{{current_user.username}} connected");
+            socket.emit('connect', `${currentUsername} has connected`);
         });
 
         $(document).ready(() => {
@@ -689,6 +693,7 @@
                 }
             }
 
+            // sends pay information via socket
             confirmBtn.click(() => {
                 console.log($('#recipientSelect').val() + $('#amount-input').val())
                 payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
@@ -700,7 +705,6 @@
             monProperties.click((e) => {
                 let id = e.target.id
                 $(`#${id}ImageModal`).modal('show')
-                // $('#ImageModal').modal('show')
             })
         })
     </script>

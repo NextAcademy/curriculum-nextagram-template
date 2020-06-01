@@ -24,6 +24,11 @@ def update_all():
     socketio.emit('update', data)
 
 
+@socketio.on('connect')
+def handle_connection(message):
+    update_all()
+
+
 def activity_create(txt):
     new_activity = ActivityLog(text=txt)
     new_activity.save()
@@ -59,7 +64,6 @@ def index():
         current_property = Property.get_or_none(
             Property.name == locations[current_user.position])
 
-        # activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
         return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, users=users, current_property=current_property)
 
