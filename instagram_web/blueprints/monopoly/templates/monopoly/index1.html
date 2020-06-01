@@ -338,13 +338,8 @@
                     </p>
                     <hr>
                 </section>
-                <section class="mon-blank mon-section">
-                    {% for activity in activities %}
-                    <div class='activity-box'>
-                        {{activity.text}}
-                    </div>
-                    <br>
-                    {% endfor %}
+                <section id='activity-container' class="mon-blank mon-section">
+
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -605,6 +600,15 @@
 
             socket.on('update', (data) => {
                 data = JSON.parse(data)
+                data.activities.forEach((item) => {
+                    $('#activity-container').append(`<div class='activity-box'>
+                        $(item)
+                    </div>
+                    <br>
+                `)
+
+                })
+
                 console.log(data.activities)
             })
             positions = ($('summary'))

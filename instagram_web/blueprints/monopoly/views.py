@@ -35,8 +35,7 @@ def activity_create(txt):
             ActivityLog.id.not_in([activity.id for activity in new_activities]))
         for old_act in old_activities:
             old_act.delete_instance()
-    activities = ActivityLog.select()
-    activity_list = [x.text for x in activities]
+    update_all()
 
 
 def jail_free():
@@ -59,11 +58,10 @@ def index():
 
         current_property = Property.get_or_none(
             Property.name == locations[current_user.position])
-        # if location:
 
-        activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
+        # activities = ActivityLog.select().order_by(ActivityLog.created_at.desc())
         properties = Property.select()
-        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, activities=activities, users=users, current_property=current_property)
+        return render_template('monopoly/index1.html', user_positions=user_positions, properties=properties, users=users, current_property=current_property)
 
     else:
         flash('login is required', 'danger')
@@ -204,7 +202,6 @@ def pay(data):
         if current_user.save() and recipient.save():
             activity_create(
                 f'{current_user.username} payed ${amount} to {recipient_username}')
-            update_all()
 
 
 @monopoly_blueprint.route("/house", methods=['POST'])
