@@ -4,4 +4,7 @@ import instagram_web
 import os
 
 if __name__ == '__main__':
-    app.run()
+    if os.getenv('FLASK_ENV') == 'development':
+        socketio.run(app)
+    else:
+        app.run()

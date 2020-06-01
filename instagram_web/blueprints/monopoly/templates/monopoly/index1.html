@@ -574,7 +574,7 @@
         const socket = io();
         const currentUsername = $('#current-username').text()
         socket.on('connect', function () {
-            socket.emit('connect', `${currentUsername} has connected`);
+            socket.emit('connect');
         });
 
         $(document).ready(() => {

@@ -40,7 +40,7 @@ def update_positions():
 
 
 @socketio.on('connect')
-def handle_connection(message):
+def handle_connection():
     update_positions()
     update_activities()
 
