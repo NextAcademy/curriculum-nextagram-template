@@ -593,7 +593,7 @@
 
             socket.on('activity_update', (data) => {
                 const activityContainer = $('#activity-container')
-                activityContainer.innerHTML('')
+                activityContainer.html('')
                 data = JSON.parse(data)
                 data.activities.forEach((item) => {
                     activityContainer.append(`<div class='activity-box'>
@@ -606,7 +606,7 @@
 
             socket.on('position_update', (data) => {
                 const positionContainer = $('#position-container')
-                positionContainer.innerHTML('')
+                positionContainer.html('')
                 data.forEach((item) => {
                     positionContainer.append(`
                     <div class='user-location'>
