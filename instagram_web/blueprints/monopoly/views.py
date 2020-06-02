@@ -35,9 +35,7 @@ def update_positions():
         user_positions.append(
             f'{user.username} @ {locations[user.position]} | ${user.money}')
     socketio.emit('position_update', user_positions)
-
-    # current_property = Property.get_or_none(
-    #     Property.name == locations[current_user.position])
+    emit('current_update', )
 
 
 @socketio.on('connect')
@@ -153,27 +151,31 @@ def roll(data):
 
 @monopoly_blueprint.route('/reset')
 def reset():
-    banker = User.get_or_none(User.username == 'Banker')
-    users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
-    for user in users:
-        user.jailed = -1
-        user.position = 0
-        user.money = 1500
-        user.doubles = 0
-        user.save()
+    if current_user.is_authenticated and (current_user.username == 'Banker' or current_user.username == 'shennex'):
+        banker = User.get_or_none(User.username == 'Banker')
+        users = User.select().where((User.monopoly > 0) & (User.username != 'Banker'))
+        for user in users:
+            user.jailed = -1
+            user.position = 0
+            user.money = 1500
+            user.doubles = 0
+            user.save()
 
-    properties = Property.select()
-    for prop in properties:
-        prop.houses = 0
-        prop.mortgaged = False
-        prop.user_id = banker.id
-        prop.save()
+        properties = Property.select()
+        for prop in properties:
+            prop.houses = 0
+            prop.mortgaged = False
+            prop.user_id = banker.id
+            prop.save()
 
-    banker.money = 1000000
-    banker.save()
-    deletion = ActivityLog.delete().where(ActivityLog.text != '')
-    deletion.execute()
-    return redirect(request.referrer)
+        banker.money = 1000000
+        banker.save()
+        deletion = ActivityLog.delete().where(ActivityLog.text != '')
+        deletion.execute()
+        return redirect(request.referrer)
+    else:
+        flash('no access for u, soz', 'danger')
+        return(redirect(url_for('users.index')))
 
 
 @monopoly_blueprint.route('/jail-pay')
@@ -249,3 +251,23 @@ def create_property():
         else:
             flash(f'failed, {img_upload_err}', 'danger')
             return redirect(request.referrer)
+
+
+@socketio.on('prop_request')
+def prop_show():
+    if current_user.is_authenticated:
+        owned_props = Property.select().where(Property.user == current_user.id)
+        prop_data = []
+        for each in owned_props:
+            image_url = each.image_url
+            house_price = each.house_price
+            houses = each.houses
+            name = each.name
+            prop_data.append({
+                'name': name,
+                'houses': houses,
+                'house_price': house_price,
+                'image_url': image_url
+            })
+        data = json.dumps(prop_data)
+        emit('prop_response', data)
