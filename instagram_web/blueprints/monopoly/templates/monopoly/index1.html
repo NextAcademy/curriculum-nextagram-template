@@ -558,12 +558,12 @@
     </summary>
 
     <!-- Dice roll form -->
-    <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
+    <!-- <form id='roll-form' action="{{url_for('monopoly.roll')}}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <input type="hidden" name="roll-1" id="roll-input-1">
         <input type="hidden" name='roll-0' id=roll-input-0>
         <input type="hidden" name='jr-input' id='jr-input'>
-    </form>
+    </form> -->
 
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
@@ -635,10 +635,8 @@
 
             // submits dice rolls to change position
             function submitRoll(r1, r2, jr = 0) {
-                $('#roll-input-0').attr('value', r1)
-                $('#roll-input-1').attr('value', r2)
-                $('#jr-input').attr('value', jr)
-                $('#roll-form').submit()
+                rollData = JSON.stringify({ 'roll1': r1, 'roll2': r2, 'jail roll': jr })
+                socket.emit('roll', rollData)
             }
             //normal dice roll
             $('#dice-btn').click(() => {
@@ -705,7 +703,6 @@
 
             // sends pay information via socket
             confirmBtn.click(() => {
-                console.log($('#recipientSelect').val() + $('#amount-input').val())
                 payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
                 socket.emit('pay', payInfo)
                 $('#payModal').modal("hide")
