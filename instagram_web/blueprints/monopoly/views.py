@@ -94,12 +94,12 @@ def create():
     return redirect(request.referrer)
 
 
-@monopoly_blueprint.route('/roll', methods=['POST'])
-def roll():
-
-    roll_0 = request.form.get('roll-0')
-    roll_1 = request.form.get('roll-1')
-    jail_roll = int(request.form.get('jr-input'))
+@socketio.on('roll')
+def roll(data):
+    roll_data = json.loads(data)
+    roll_0 = roll_data['roll1']
+    roll_1 = roll_data['roll2']
+    jail_roll = int(roll_data['jail roll'])
     roll_sum = int(roll_0) + int(roll_1)
     text = f'{current_user.username} rolled {roll_0} & {roll_1}.'
     # executes if this is a roll from jail.
@@ -117,7 +117,7 @@ def roll():
             activity_create(
                 f'{text} Thus failing to get out of jail.')
             current_user.save()
-            return redirect(request.referrer)
+            return
     else:
         activity_create(text)
         if roll_0 == roll_1:
@@ -146,10 +146,7 @@ def roll():
         flash('roll adding failed. Contact Shen.', 'danger')
         return redirect(request.referrer)
 
-    else:
-        return redirect(request.referrer)
-
-    return
+    update_positions()
 
 
 @monopoly_blueprint.route('/reset')
