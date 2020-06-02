@@ -117,6 +117,7 @@ def roll(data):
             activity_create(
                 f'{text} Thus failing to get out of jail.')
             current_user.save()
+            # early return to prevent position change.
             return
     else:
         activity_create(text)
@@ -144,7 +145,7 @@ def roll(data):
 
     if not current_user.save():
         flash('roll adding failed. Contact Shen.', 'danger')
-        return redirect(request.referrer)
+        return redirect(url_for('users.index'))
 
     update_positions()
 
