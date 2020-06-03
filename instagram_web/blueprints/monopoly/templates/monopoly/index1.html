@@ -558,10 +558,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-4">.col-md-4</div>
-                            <div class="col-md-4 ">.col-md-4</div>
-                            <div class="col-md-4 ">.col-md-4</div>
+                        <div class="row" id='prop-row'>
+
                         </div>
                     </div>
                 </div>
@@ -738,10 +736,13 @@
 
             socket.on('prop_response', (data) => {
                 propData = JSON.parse(data)
-                propData.forEach((x) => {
-                    console.log(x.name)
+                propRow = $('#prop-row')
+                propRow.html('')
+                propData.forEach((x, i) => {
+                    propRow.append(`
+                    <div class="col-md-4"><img src="${x.image_url}" alt="${i} prop"><br> Number of houses: ${x.houses}</div>
+                    `)
                 })
-                console.log('received resp.')
             })
         })
     </script>
