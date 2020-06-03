@@ -53,6 +53,14 @@
                         <a class="dropdown-item" href="#">Hentai Here</a>
                     </div>
                 </div>
+
+                <!-- Button to open property modal -->
+                <div>
+                    <button data-toggle="modal" data-target="#property-modal" id='prop-button' class="btn btn-dark"><i
+                            class="fas fa-home"></i>
+                    </button>
+                </div>
+
             </div>
             <div class="col-1 mon-col">
                 <section class="mon-section non-prop">
@@ -208,10 +216,7 @@
                 </section>
                 <section class="mon-blank mon-section">
                     <div id='ownership-div'>
-                        {% if current_property %}
-                        {{current_property.name}} is {% if current_property.is_owned %} owned. {% else %} unowned.
-                        {% endif %}
-                        {% endif %}
+                        somethin here
                     </div>
 
                 </section>
@@ -530,7 +535,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-bodyd d-flex justify-content-center">
                     <img src="{{prop.image_url}}" width="300px" alt="">
                 </div>
                 <div class="modal-footer">
@@ -541,23 +546,40 @@
     </div>
     {% endfor %}
 
+    <!-- Property modal -->
+    <div id='property-modal' class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Owned Props</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" id='prop-row'>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Donezo</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- end of modals -->
 
     <hr>
-    <summary id='current_user'>
-        <p id='jail-status'>
-            jailed status
-            {{current_user.jailed}}
-        </p>
-        <br>
-        doubles count
-        <p>{{current_user.doubles}}</p>
+    <summary id='current-user'>
         <div id='current-username'>
             {{current_user.username}}
         </div>
     </summary>
-
+    {% if (current_user.username == 'Banker') or (current_user.username == 'shennex') %}
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
+    {% endif %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
         integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
@@ -704,6 +726,23 @@
             monProperties.click((e) => {
                 let id = e.target.id
                 $(`#${id}ImageModal`).modal('show')
+            })
+
+            const propButton = $('#prop-button')
+            propButton.click(() => {
+                socket.emit('prop_request')
+                console.log('wanker')
+            })
+
+            socket.on('prop_response', (data) => {
+                propData = JSON.parse(data)
+                propRow = $('#prop-row')
+                propRow.html('')
+                propData.forEach((x, i) => {
+                    propRow.append(`
+                    <div class="col-md-4"><img src="${x.image_url}" alt="${i} prop"><br> Number of houses: ${x.houses}</div>
+                    `)
+                })
             })
         })
     </script>

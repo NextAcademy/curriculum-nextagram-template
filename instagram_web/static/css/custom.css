@@ -243,7 +243,22 @@ color: black;
 
 #mon-nav{
   margin-right: 1em;
+  box-sizing: border-box;
 }
+
+#prop-button{
+  margin-top: 2em;
+  max-width: 100%;
+}
+
+.fa-home{
+  color: gainsboro;
+  font-size: 1.5em;
+}
+#prop-button:hover .fa-home{
+  color: white;
+}
+
 .mon-section{
   height: 5em;
   border: 1px solid black;
@@ -313,4 +328,9 @@ color: black;
   border: 2px black solid;
   /* filter: brightness(150%); */
   cursor: pointer;
+}
+
+#current-user{
+  opacity: 0;
+  z-index: -1;
 }
