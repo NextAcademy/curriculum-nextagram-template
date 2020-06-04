@@ -745,13 +745,17 @@
                         <img width='100%' src="${x.image_url}" alt="${i} prop">
                         <br>
                         Number of houses: ${x.houses}
-                        <div id='${x.name}' class = '${x.house_price}'>
+                        <div id='${x.name}' class = '${x.house_price} prop-btn-container'>
                             <button type="button" class=" transfer-btn btn btn-warning">Transfer Ownership</button>
                         </div> 
                     </div>
                     `)
                 })
-                $('.0').prepend('<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>')
+                if (!$('.prop-btn-container').hasClass('.0')) {
+                    $('.prop-btn-container').prepend(
+                        '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
+                    )
+                }
             })
             $('#prop-row').on('click', '.house-btn', (e) => {
                 propName = e.target.parentElement.id
