@@ -488,7 +488,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Your Money: ${{current_user.money}}
+                    <div id='money-in-modal'></div>
                     <form id='pay-form'>
                         <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
                         <br>
@@ -633,9 +633,12 @@
                         ${item}
                         <hr>
                     </div>
-                
                     `)
                 })
+            })
+            socket.on('money_update', (data) => {
+                moneyDiv = $('#money-in-modal')
+                moneyDiv.html(` Your Money: $${data}`)
             })
             positions = ($('summary'))
             reloadPage = () => {
@@ -742,13 +745,13 @@
                         <img src="${x.image_url}" alt="${i} prop">
                         <br>
                         Number of houses: ${x.houses}
-                        <div id='${x.name}'>
-                            <button type="button" class="house-btn btn btn-success">Buy house/hotel</button>
+                        <div id='${x.name}' class = '${x.house_price}'>
                             <button type="button" class=" transfer-btn btn btn-warning">Transfer Ownership</button>
                         </div> 
                     </div>
                     `)
                 })
+                $('.0').prepend('<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>')
             })
             $('#prop-row').on('click', '.house-btn', (e) => {
                 propName = e.target.parentElement.id
