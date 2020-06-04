@@ -271,3 +271,38 @@ def prop_show():
             })
         data = json.dumps(prop_data)
         emit('prop_response', data)
+
+
+@socketio.on('house_buy')
+def house_create(prop_name):
+    if current_user.is_authenticated:
+        current_prop = Property.get_or_none(Property.name == prop_name)
+        if not current_prop:
+            print('not prop')
+            flash('No such property exists! Trouble. Contact shen.', 'warning')
+            return redirect(url_for('users.index'))
+        if current_prop.user_id != current_user.id:
+            print('not user')
+            flash('You are not authorized to do that', 'danger')
+            return redirect(url_for('users.index'))
+
+        if current_user.money < current_prop.house_price:
+            print('broke')
+            send('broke')
+        else:
+            current_user.money -= current_prop.house_price
+            current_prop.houses += 1
+            if not current_prop.save():
+                print('prop did not save')
+
+            if not current_user.save():
+                print('user did not save')
+            activity_create(
+                f'{current_user.username} bought a house for {prop_name} | ${current_prop.house_price}')
+            print(
+                f'{current_prop.houses} {current_prop.house_price} {current_user.money}')
+
+
+@socketio.on('tester')
+def tester():
+    print('fuck')
