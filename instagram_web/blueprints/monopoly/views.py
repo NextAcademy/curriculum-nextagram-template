@@ -35,7 +35,6 @@ def update_positions():
         user_positions.append(
             f'{user.username} @ {locations[user.position]} | ${user.money}')
     socketio.emit('position_update', user_positions)
-    emit('current_update', )
 
 
 @socketio.on('connect')
@@ -56,6 +55,8 @@ def activity_create(txt):
         for old_act in old_activities:
             old_act.delete_instance()
     update_activities()
+    emit('money_update', current_user.money)
+    update_positions()
 
 
 def jail_free():
@@ -212,6 +213,8 @@ def pay(data):
         if current_user.save() and recipient.save():
             activity_create(
                 f'{current_user.username} payed ${amount} to {recipient_username}')
+        else:
+            print('failed saving at pay func.')
 
 
 @monopoly_blueprint.route("/house", methods=['POST'])
@@ -256,7 +259,8 @@ def create_property():
 @socketio.on('prop_request')
 def prop_show():
     if current_user.is_authenticated:
-        owned_props = Property.select().where(Property.user == current_user.id)
+        owned_props = Property.select().where(
+            Property.user == current_user.id).order_by(Property.created_at.desc())
         prop_data = []
         for each in owned_props:
             image_url = each.image_url
@@ -271,3 +275,37 @@ def prop_show():
             })
         data = json.dumps(prop_data)
         emit('prop_response', data)
+
+
+@socketio.on('house_buy')
+def house_create(prop_name):
+    if current_user.is_authenticated:
+        current_prop = Property.get_or_none(Property.name == prop_name)
+        if not current_prop:
+            print('not prop')
+            flash('No such property exists! Trouble. Contact shen.', 'warning')
+            return redirect(url_for('users.index'))
+        if current_prop.user_id != current_user.id:
+            print('not user')
+            flash('You are not authorized to do that', 'danger')
+            return redirect(url_for('users.index'))
+
+        if current_user.money < current_prop.house_price:
+            print('broke')
+            send('broke')
+        else:
+            current_user.money -= current_prop.house_price
+            current_prop.houses += 1
+            if not current_prop.save():
+                print('prop did not save')
+
+            if not current_user.save():
+                print('user did not save')
+
+            activity_create(
+                f'{current_user.username} bought a house for {prop_name} | ${current_prop.house_price}')
+
+
+@socketio.on('tester')
+def tester():
+    print('fuck')

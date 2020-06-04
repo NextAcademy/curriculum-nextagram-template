@@ -488,7 +488,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Your Money: ${{current_user.money}}
+                    <div id='money-in-modal'></div>
                     <form id='pay-form'>
                         <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
                         <br>
@@ -548,8 +548,8 @@
 
     <!-- Property modal -->
     <div id='property-modal' class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg" role="document">
+            <div id='prop-modal-content' class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Owned Props</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -586,13 +586,11 @@
 
     <script type="text/javascript" charset="utf-8">
         const socket = io();
-        const currentUsername = $('#current-username').text()
-        if (socket.connected) {
-            socket.emit('connect')
-        }
-
-        $(document).ready(() => {
-
+        $(() => {
+            const currentUsername = $('#current-username').text()
+            if (socket.connected) {
+                socket.emit('connect')
+            }
             alertBox = $('#mon-alert')
             hideAlert = () => {
                 alertBox.removeClass('show')
@@ -635,9 +633,12 @@
                         ${item}
                         <hr>
                     </div>
-                
                     `)
                 })
+            })
+            socket.on('money_update', (data) => {
+                moneyDiv = $('#money-in-modal')
+                moneyDiv.html(` Your Money: $${data}`)
             })
             positions = ($('summary'))
             reloadPage = () => {
@@ -731,8 +732,8 @@
             const propButton = $('#prop-button')
             propButton.click(() => {
                 socket.emit('prop_request')
-                console.log('wanker')
             })
+
 
             socket.on('prop_response', (data) => {
                 propData = JSON.parse(data)
@@ -740,9 +741,28 @@
                 propRow.html('')
                 propData.forEach((x, i) => {
                     propRow.append(`
-                    <div class="col-md-4"><img src="${x.image_url}" alt="${i} prop"><br> Number of houses: ${x.houses}</div>
+                    <div class="col-md-6">
+                        <img src="${x.image_url}" alt="${i} prop">
+                        <br>
+                        Number of houses: ${x.houses}
+                        <div id='${x.name}' class = '${x.house_price}'>
+                            <button type="button" class=" transfer-btn btn btn-warning">Transfer Ownership</button>
+                        </div> 
+                    </div>
                     `)
                 })
+                $('.0').prepend('<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>')
+            })
+            $('#prop-row').on('click', '.house-btn', (e) => {
+                propName = e.target.parentElement.id
+                if (confirm(`Confirm house purchase for ${propName}?`)) {
+                    socket.emit('house_buy', propName)
+                    console.log('in if')
+                }
+            })
+            $('#prop-row').on('click', '.transfer-btn', (e) => {
+                console.log('wanek')
+                socket.emit('tester')
             })
         })
     </script>
