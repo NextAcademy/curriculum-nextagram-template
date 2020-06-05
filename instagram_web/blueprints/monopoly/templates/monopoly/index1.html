@@ -613,7 +613,7 @@
 
             socket.on('message', (message) => {
                 if (message == 'broke') {
-                    showAlert('Lmao, you too broke for that shit.', 6000)
+                    showAlert('Lmao, you too broke for that shit.', 4000)
                 }
                 else {
                     showAlert(message, 6000)
@@ -768,22 +768,25 @@
                     `)
                 })
                 otherUsers.forEach((value) => {
-                    $('.transfer-dropdown').append(`<a class="dropdown-item transfer-dropdown" href="#">${value}</a>`)
+                    $('.transfer-dropdown').append(`<a class="dropdown-item transfer-select" href="#">${value}</a>`)
                 })
 
                 $('.prop-btn-container').not('.0').prepend(
                     '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
                 )
 
-                $('.transfer-dropdown').click((e) => {
-                    socket.emit('prop_transfer', e.target.textContent, e.target.parentElement.parentElement.id)
+                $('.transfer-select').click((e) => {
+                    let propName = e.target.parentNode.parentNode.id
+                    let username = e.target.textContent
+                    if (confirm(`Give ${propName} to ${username}?`)) {
+                        socket.emit('prop_transfer', username, propName)
+                    }
                 })
             })
             $('#prop-row').on('click', '.house-btn', (e) => {
-                propName = e.target.parentElement.id
+                let propName = e.target.parentElement.id
                 if (confirm(`Confirm house purchase for ${propName}?`)) {
                     socket.emit('house_buy', propName)
-                    console.log('in if')
                 }
             })
 

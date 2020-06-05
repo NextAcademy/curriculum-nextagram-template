@@ -324,7 +324,7 @@ def house_create(prop_name):
 
 @socketio.on('prop_transfer')
 def prop_edit(recipient_username, prop_name):
-    prop_to_transfer = Property.get_or_none(Property.name == 'wank')
+    prop_to_transfer = Property.get_or_none(Property.name == prop_name)
     recipient = User.get_or_none(User.username == recipient_username)
     if not prop_to_transfer:
         send('no such property')
