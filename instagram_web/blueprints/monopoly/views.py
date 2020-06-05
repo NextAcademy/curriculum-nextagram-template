@@ -54,6 +54,12 @@ def handle_connection():
     update_users()
 
 
+@socketio.on('money_request')
+def money_show():
+    if current_user.is_authenticated:
+        emit('money_update', current_user.money)
+
+
 def activity_create(txt):
     new_activity = ActivityLog(text=txt)
     new_activity.save()
@@ -66,7 +72,6 @@ def activity_create(txt):
         for old_act in old_activities:
             old_act.delete_instance()
     update_activities()
-    emit('money_update', current_user.money)
     update_positions()
 
 
