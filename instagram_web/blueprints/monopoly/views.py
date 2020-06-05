@@ -37,10 +37,21 @@ def update_positions():
     socketio.emit('position_update', user_positions)
 
 
+@socketio.on('user_request')
+def update_users():
+    users = User.select().where(User.monopoly > 0).order_by(User.created_at.desc())
+    users_usernames = []
+    for user in users:
+        if user.username != current_user.username:
+            users_usernames.append(user.username)
+    emit('users_info', users_usernames)
+
+
 @socketio.on('connect')
 def handle_connection():
     update_positions()
     update_activities()
+    update_users()
 
 
 def activity_create(txt):
@@ -306,6 +317,20 @@ def house_create(prop_name):
                 f'{current_user.username} bought a house for {prop_name} | ${current_prop.house_price}')
 
 
-@socketio.on('tester')
-def tester():
-    print('fuck')
+@socketio.on('prop_transfer')
+def prop_edit(recipient_username, prop_name):
+    prop_to_transfer = Property.get_or_none(Property.name == 'wank')
+    recipient = User.get_or_none(User.username == recipient_username)
+    if not prop_to_transfer:
+        send('no such property')
+        return
+    if not recipient:
+        send('no such user')
+        return
+
+    prop_to_transfer.user_id = recipient.id
+    if prop_to_transfer.save():
+        activity_create(
+            f'{recipient_username} received {prop_name} from {current_user.username}')
+    else:
+        send('property.save failed')
