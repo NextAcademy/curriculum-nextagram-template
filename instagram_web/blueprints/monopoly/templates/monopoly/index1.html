@@ -751,23 +751,22 @@
                     </div>
                     `)
                 })
-                if ($('.prop-btn-container').not('.0')) {
-                    $('.prop-btn-container').prepend(
-                        '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
-                    )
-                }
+                $('.prop-btn-container').not('.0').prepend(
+                    '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
+                )
+            }
             })
-            $('#prop-row').on('click', '.house-btn', (e) => {
-                propName = e.target.parentElement.id
-                if (confirm(`Confirm house purchase for ${propName}?`)) {
-                    socket.emit('house_buy', propName)
-                    console.log('in if')
-                }
-            })
-            $('#prop-row').on('click', '.transfer-btn', (e) => {
-                console.log('wanek')
-                socket.emit('tester')
-            })
+        $('#prop-row').on('click', '.house-btn', (e) => {
+            propName = e.target.parentElement.id
+            if (confirm(`Confirm house purchase for ${propName}?`)) {
+                socket.emit('house_buy', propName)
+                console.log('in if')
+            }
+        })
+        $('#prop-row').on('click', '.transfer-btn', (e) => {
+            console.log('wanek')
+            socket.emit('tester')
+        })
         })
     </script>
 </body>
