@@ -60,7 +60,9 @@
                             class="fas fa-home"></i>
                     </button>
                 </div>
+                <div>
 
+                </div>
             </div>
             <div class="col-1 mon-col">
                 <section class="mon-section non-prop">
@@ -585,8 +587,8 @@
 
 
     <script type="text/javascript" charset="utf-8">
-        const socket = io();
         $(() => {
+            const socket = io();
             const currentUsername = $('#current-username').text()
             if (socket.connected) {
                 socket.emit('connect')
@@ -604,10 +606,19 @@
                 hideAlert()
             })
 
+            let otherUsers = []
+            socket.on('users_info', (usernameArray) => {
+                otherUsers = usernameArray;
+            })
+
             socket.on('message', (message) => {
                 if (message == 'broke') {
-                    $('#mon-alert').text('Lmao, you too broke for that shit.')
+                    alertBox.text('Lmao, you too broke for that shit.')
                     showAlert(5000)
+                }
+                else {
+                    alertBox.text(message)
+                    showAlert(6000)
                 }
             })
 
@@ -732,9 +743,9 @@
             const propButton = $('#prop-button')
             propButton.click(() => {
                 socket.emit('prop_request')
+                socket.emit('user_request')
             })
-
-
+            // receiving and displaying response for all owned properties.
             socket.on('prop_response', (data) => {
                 propData = JSON.parse(data)
                 propRow = $('#prop-row')
@@ -747,17 +758,24 @@
                         Number of houses: ${x.houses}
                         <div id='${x.name}' class = '${x.house_price} prop-btn-container'>
                             <button type="button" class=" transfer-btn btn dropdown-toggle btn-warning" data-toggle='dropdown'>Transfer Ownership</button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Action</a>
+                            <div class="dropdown-menu transfer-dropdown" aria-labelledby="dropdownMenuButton">
+                                
                             </div>
                         </div> 
                     </div>
                     `)
                 })
+                otherUsers.forEach((value) => {
+                    $('.transfer-dropdown').append(`<a class="dropdown-item" href="#">${value}</a>`)
+                })
+
                 $('.prop-btn-container').not('.0').prepend(
                     '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
                 )
+
+                $('.dropdown-item').click((e) => {
+                    socket.emit('prop_transfer', e.target.textContent, e.target.parentElement.parentElement.id)
+                })
             })
             $('#prop-row').on('click', '.house-btn', (e) => {
                 propName = e.target.parentElement.id
@@ -766,11 +784,7 @@
                     console.log('in if')
                 }
             })
-            $('#prop-row').on('click', '.transfer-btn', (e) => {
-                console.log('wanek')
 
-                socket.emit('tester')
-            })
         })
     </script>
 </body>
