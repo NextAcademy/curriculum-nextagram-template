@@ -746,7 +746,11 @@
                         <br>
                         Number of houses: ${x.houses}
                         <div id='${x.name}' class = '${x.house_price} prop-btn-container'>
-                            <button type="button" class=" transfer-btn btn btn-warning">Transfer Ownership</button>
+                            <button type="button" class=" transfer-btn btn dropdown-toggle btn-warning" data-toggle='dropdown'>Transfer Ownership</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Action</a>
+                            </div>
                         </div> 
                     </div>
                     `)
@@ -764,6 +768,7 @@
             })
             $('#prop-row').on('click', '.transfer-btn', (e) => {
                 console.log('wanek')
+
                 socket.emit('tester')
             })
         })
