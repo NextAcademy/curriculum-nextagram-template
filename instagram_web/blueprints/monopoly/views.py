@@ -54,6 +54,12 @@ def handle_connection():
     update_users()
 
 
+@socketio.on('money_request')
+def money_show():
+    if current_user.is_authenticated:
+        emit('money_update', current_user.money)
+
+
 def activity_create(txt):
     new_activity = ActivityLog(text=txt)
     new_activity.save()
@@ -66,7 +72,6 @@ def activity_create(txt):
         for old_act in old_activities:
             old_act.delete_instance()
     update_activities()
-    emit('money_update', current_user.money)
     update_positions()
 
 
@@ -319,7 +324,7 @@ def house_create(prop_name):
 
 @socketio.on('prop_transfer')
 def prop_edit(recipient_username, prop_name):
-    prop_to_transfer = Property.get_or_none(Property.name == 'wank')
+    prop_to_transfer = Property.get_or_none(Property.name == prop_name)
     recipient = User.get_or_none(User.username == recipient_username)
     if not prop_to_transfer:
         send('no such property')

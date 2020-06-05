@@ -30,9 +30,6 @@
     {% endwith %}
     <div id='mon-alert' class="alert alert-warning fade" role="alert">
         If you see this, it's broken. Please contact Shen.
-        <button type="button" class="close" id='alert-btn' aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
     </div>
 
     <div class="fluid-container">
@@ -45,7 +42,8 @@
                         <i class="fas fa-dollar-sign"></i>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" type='button' data-toggle="modal" data-target="#payModal">Pay
+                        <a class="dropdown-item" id='pay-modal-launcher' type='button' data-toggle="modal"
+                            data-target="#payModal">Pay
                             Player/Bank </a>
                         <a data-target='#houseModal' data-toggle='modal' type='button' class="dropdown-item"> Buy
                             houses/hotels</a>
@@ -597,9 +595,11 @@
             hideAlert = () => {
                 alertBox.removeClass('show')
             }
-            showAlert = (t) => {
+            showAlert = (text, time) => {
+                alertBox.html(`${text} <button type="button" class="close" id='alert-btn' aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>`)
                 alertBox.addClass('show')
-                setTimeout(hideAlert, t)
+                setTimeout(hideAlert, time)
             }
             // close btn for alert
             $('#alert-btn').click(() => {
@@ -613,12 +613,10 @@
 
             socket.on('message', (message) => {
                 if (message == 'broke') {
-                    alertBox.text('Lmao, you too broke for that shit.')
-                    showAlert(5000)
+                    showAlert('Lmao, you too broke for that shit.', 4000)
                 }
                 else {
-                    alertBox.text(message)
-                    showAlert(6000)
+                    showAlert(message, 6000)
                 }
             })
 
@@ -646,6 +644,10 @@
                     </div>
                     `)
                 })
+            })
+
+            $('#pay-modal-launcher').click(() => {
+                socket.emit('money_request')
             })
             socket.on('money_update', (data) => {
                 moneyDiv = $('#money-in-modal')
@@ -766,22 +768,25 @@
                     `)
                 })
                 otherUsers.forEach((value) => {
-                    $('.transfer-dropdown').append(`<a class="dropdown-item" href="#">${value}</a>`)
+                    $('.transfer-dropdown').append(`<a class="dropdown-item transfer-select" href="#">${value}</a>`)
                 })
 
                 $('.prop-btn-container').not('.0').prepend(
                     '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
                 )
 
-                $('.dropdown-item').click((e) => {
-                    socket.emit('prop_transfer', e.target.textContent, e.target.parentElement.parentElement.id)
+                $('.transfer-select').click((e) => {
+                    let propName = e.target.parentNode.parentNode.id
+                    let username = e.target.textContent
+                    if (confirm(`Give ${propName} to ${username}?`)) {
+                        socket.emit('prop_transfer', username, propName)
+                    }
                 })
             })
             $('#prop-row').on('click', '.house-btn', (e) => {
-                propName = e.target.parentElement.id
+                let propName = e.target.parentElement.id
                 if (confirm(`Confirm house purchase for ${propName}?`)) {
                     socket.emit('house_buy', propName)
-                    console.log('in if')
                 }
             })
 
