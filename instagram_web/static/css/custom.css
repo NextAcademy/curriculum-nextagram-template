@@ -326,11 +326,20 @@ color: black;
 
 .prop:hover{
   border: 2px black solid;
-  /* filter: brightness(150%); */
   cursor: pointer;
 }
 
 #current-user{
   opacity: 0;
   z-index: -1;
+}
+
+.username-span{
+  /* font-size: 1.2em; */
+  font-weight: bold;
+}
+
+.username-span:hover{
+  color: #53269c;
+  cursor: pointer;
 }

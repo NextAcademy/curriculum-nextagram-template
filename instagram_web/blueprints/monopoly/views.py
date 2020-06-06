@@ -27,14 +27,18 @@ def update_activities():
 def update_positions():
     users = User.select().where((User.monopoly > 0) & (
         User.username != 'Banker')).order_by(User.created_at.desc())
-    user_positions = []
+    user_dict = []
     locations = ['Go', 'Old Kent Road', 'Community Chest', 'Whitechapel Road', 'Income Tax', "King's Cross Station", 'The Angel Islington', 'Chance', 'Euston Road', 'Pentonville Road', 'Jail', 'Pall Mall', 'Electric Company', 'Whitehall', 'Northumberland Ave.', 'Marylebone Station', 'Bow Street', 'Community Chest 2', 'Marlborough Street',
                  'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Piccadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St. Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
 
     for user in users:
-        user_positions.append(
-            f'{user.username} @ {locations[user.position]} | ${user.money}')
-    socketio.emit('position_update', user_positions)
+        user_dict.append({
+            'username': user.username,
+            'position': locations[user.position],
+            'money': user.money
+        })
+    user_json = json.dumps(user_dict)
+    socketio.emit('position_update', user_json)
 
 
 @socketio.on('user_request')
@@ -233,11 +237,6 @@ def pay(data):
             print('failed saving at pay func.')
 
 
-@monopoly_blueprint.route("/house", methods=['POST'])
-def buy_house():
-    return
-
-
 @monopoly_blueprint.route('/new-property')
 def new_property():
     if current_user.username == 'Banker':
@@ -273,10 +272,12 @@ def create_property():
 
 
 @socketio.on('prop_request')
-def prop_show():
+def prop_show(username):
     if current_user.is_authenticated:
+        user = User.get_or_none(User.username == username)
         owned_props = Property.select().where(
-            Property.user == current_user.id).order_by(Property.created_at.desc())
+            Property.user_id == user.id).order_by(Property.created_at.desc())
+
         prop_data = []
         for each in owned_props:
             image_url = each.image_url
@@ -289,7 +290,11 @@ def prop_show():
                 'house_price': house_price,
                 'image_url': image_url
             })
-        data = json.dumps(prop_data)
+        prop_dict = {
+            'username': user.username,
+            'values': prop_data
+        }
+        data = json.dumps(prop_dict)
         emit('prop_response', data)
 
 
