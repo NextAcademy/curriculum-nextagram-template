@@ -41,6 +41,31 @@ def update_positions():
     socketio.emit('position_update', user_json)
 
 
+def activity_create(txt):
+    new_activity = ActivityLog(text=txt)
+    new_activity.save()
+    activities = ActivityLog.select()
+    if len(activities) > 8:
+        new_activities = ActivityLog.select().order_by(
+            ActivityLog.created_at.desc()).limit(8)
+        old_activities = ActivityLog.select().where(
+            ActivityLog.id.not_in([activity.id for activity in new_activities]))
+        for old_act in old_activities:
+            old_act.delete_instance()
+    update_activities()
+    update_positions()
+
+
+def update_jailed():
+    emit('jail_update', current_user.jailed)
+
+
+def jail_free():
+    current_user.jailed = -1
+    current_user.doubles = 0
+    current_user.save()
+
+
 @socketio.on('user_request')
 def update_users():
     users = User.select().where(User.monopoly > 0).order_by(User.created_at.desc())
@@ -62,27 +87,6 @@ def handle_connection():
 def money_show():
     if current_user.is_authenticated:
         emit('money_update', current_user.money)
-
-
-def activity_create(txt):
-    new_activity = ActivityLog(text=txt)
-    new_activity.save()
-    activities = ActivityLog.select()
-    if len(activities) > 8:
-        new_activities = ActivityLog.select().order_by(
-            ActivityLog.created_at.desc()).limit(8)
-        old_activities = ActivityLog.select().where(
-            ActivityLog.id.not_in([activity.id for activity in new_activities]))
-        for old_act in old_activities:
-            old_act.delete_instance()
-    update_activities()
-    update_positions()
-
-
-def jail_free():
-    current_user.jailed = -1
-    current_user.doubles = 0
-    current_user.save()
 
 
 @monopoly_blueprint.route('/')
@@ -166,7 +170,7 @@ def roll(data):
     if not current_user.save():
         flash('roll adding failed. Contact Shen.', 'danger')
         return redirect(url_for('users.index'))
-
+    update_jailed()
     update_positions()
 
 
@@ -199,20 +203,20 @@ def reset():
         return(redirect(url_for('users.index')))
 
 
-@monopoly_blueprint.route('/jail-pay')
+@socketio.on('jail_pay')
 def jail_pay():
     if current_user.is_authenticated:
         current_user.money -= 50
         jail_free()
+        update_jailed()
         if not current_user.save():
-            flash('payment could not be done for some reason.', 'danger')
+            send('payment could not be done for some reason.', 'danger')
         else:
             activity_create(
                 f'{current_user.username} payed $50 to get out of jail.')
     else:
         flash('need to be signed in to perform this action!', 'warning')
-
-    return redirect(request.referrer)
+        return redirect(request.referrer)
 
 
 @socketio.on('pay')

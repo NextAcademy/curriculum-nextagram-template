@@ -227,11 +227,7 @@
                 <section class="mon-blank mon-section">
 
                 </section>
-                <section class="mon-blank mon-section">
-                    {% if current_user.jailed > -1 %}
-                    <a href="{{url_for('monopoly.jail_pay')}}"><button type="button" class="btn btn-outline-warning">Pay
-                            $50</button></a>
-                    {% endif %}
+                <section id='jail-pay-section' class="mon-blank mon-section">
                 </section>
                 <section class="mon-blank mon-section">
 
@@ -643,7 +639,16 @@
                     `)
                 })
             })
-
+            // sockets handling jail status and resulting interface
+            const jailPaySection = $('jail-pay-section')
+            socket.on('jail_update', (value) => {
+                if (value > -1) {
+                    jailPaySection.append('<button type="button" class="btn btn-outline-warning">Pay $50</button>')
+                }
+            })
+            jailPaySection.on('click', 'button', (e) => {
+                console.log(e.target)
+            })
             $('#pay-modal-launcher').click(() => {
                 socket.emit('money_request')
             })
