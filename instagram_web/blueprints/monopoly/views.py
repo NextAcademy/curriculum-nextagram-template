@@ -81,6 +81,7 @@ def handle_connection():
     update_positions()
     update_activities()
     update_users()
+    update_jailed()
 
 
 @socketio.on('money_request')

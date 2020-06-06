@@ -645,32 +645,31 @@
                 }
                 else {
                     jailPaySection.html('')
-                    rollSection.html('<button type="button" id="dice-btn" class="btn btn-outline-secondary">Roll Dice.</button>')
+                    rollSection.html('<button type="button" id="roll-btn" class="btn btn-outline-secondary">Roll Dice.</button>')
                 }
             })
             jailPaySection.on('click', 'button', (e) => {
                 console.log(e.target)
+                socket.emit('jail_pay')
             })
 
             dieRoll = () => {
                 return Math.floor((Math.random() * 6) + 1)
             }
-
             // submits dice rolls to change position
             function submitRoll(r1, r2, jr = 0) {
                 rollData = JSON.stringify({ 'roll1': r1, 'roll2': r2, 'jail roll': jr })
                 socket.emit('roll', rollData)
             }
             //normal dice roll
-            rollSection.on('click', '#')
-            $('#dice-btn').click(() => {
+            rollSection.on('click', '#roll-btn', () => {
                 let roll1 = dieRoll()
                 let roll2 = dieRoll()
                 alert('Your roll is:\n' + roll1 + '+' + roll2)
                 submitRoll(roll1, roll2)
             })
             //jailed dice roll
-            $('#jail-roll').click(() => {
+            rollSection.on('click', '#jail-roll', () => {
                 let jailRoll0 = dieRoll()
                 let jailRoll1 = dieRoll()
                 if (jailRoll0 == jailRoll1) {
@@ -681,6 +680,7 @@
                 }
                 submitRoll(jailRoll0, jailRoll1, 1)
             })
+
 
             // Updating pay modal
             $('#pay-modal-launcher').click(() => {
