@@ -274,7 +274,11 @@ def create_property():
 @socketio.on('prop_request')
 def prop_show(username):
     if current_user.is_authenticated:
-        user = User.get_or_none(User.username == username)
+        user = User.get_or_none(User.username == str(username))
+        print(username)
+        if not user:
+            print('no such user')
+            return
         owned_props = Property.select().where(
             Property.user_id == user.id).order_by(Property.created_at.desc())
 

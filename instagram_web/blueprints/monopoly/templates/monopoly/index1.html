@@ -572,9 +572,7 @@
 
     <hr>
     <summary id='current-user'>
-        <div id='current-username'>
-            {{current_user.username}}
-        </div>
+        <div id='current-username'>{{current_user.username}}</div>
     </summary>
     {% if (current_user.username == 'Banker') or (current_user.username == 'shennex') %}
     <a href="{{url_for('monopoly.reset')}}">RESET!</a>
