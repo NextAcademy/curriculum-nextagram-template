@@ -57,8 +57,9 @@
                             class="fas fa-home"></i>
                     </button>
                 </div>
+                <br>
                 <div>
-
+                    <a href="{{url_for('monopoly.create')}}">Exit</a>
                 </div>
             </div>
             <div class="col-1 mon-col">
@@ -262,12 +263,7 @@
                 <section class="mon-blank mon-section">
 
                 </section>
-                <section class="mon-blank mon-section">
-                    {% if current_user.jailed > -1 %}
-                    <button id='jail-roll' type="button" class="btn btn-outline-danger">Jail Roll</button>
-                    {% else %}
-                    <button type="button" id='dice-btn' class="btn btn-outline-secondary">Roll Dice.</button>
-                    {% endif %}
+                <section id='roll-section' class="mon-blank mon-section">
 
                 </section>
                 <section class="mon-blank mon-section">
@@ -485,13 +481,11 @@
                 <div class="modal-body">
                     <div id='money-in-modal'></div>
                     <form id='pay-form'>
-                        <input type="hidden" name="csrf_token" value='{{csrf_token()}}'>
                         <br>
                         <!-- Recipient selector -->
-                        <input type="hidden" name="recipient" id="recipient" value="">
                         <div class="form-group">
-                            <label for="recipientSelect">Select recipient!</label>
-                            <select class="form-control" id="recipientSelect">
+                            <label for="recipient-select">Select recipient!</label>
+                            <select class="form-control" id="recipient-select">
                                 <option value=""></option>
                                 <option>Banker</option>
                                 {% for user in users %}
@@ -509,10 +503,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                    <button type="button" id='confirm-btn' class="btn btn-primary" data-toggle='tooltip' title=''
-                        disabled>Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="button" id='confirm-btn' class="btn btn-primary" disabled>
+                        Confirm
+                    </button>
                 </div>
             </div>
         </div>
@@ -640,26 +636,22 @@
                 })
             })
             // sockets handling jail status and resulting interface
-            const jailPaySection = $('jail-pay-section')
+            const jailPaySection = $('#jail-pay-section')
+            const rollSection = $('#roll-section')
             socket.on('jail_update', (value) => {
                 if (value > -1) {
-                    jailPaySection.append('<button type="button" class="btn btn-outline-warning">Pay $50</button>')
+                    jailPaySection.html('<button type="button" class="btn btn-outline-warning">Pay $50</button>')
+                    rollSection.html('<button id="jail-roll" type="button" class="btn btn-outline-danger">Jail Roll</button>')
+                }
+                else {
+                    jailPaySection.html('')
+                    rollSection.html('<button type="button" id="dice-btn" class="btn btn-outline-secondary">Roll Dice.</button>')
                 }
             })
             jailPaySection.on('click', 'button', (e) => {
                 console.log(e.target)
             })
-            $('#pay-modal-launcher').click(() => {
-                socket.emit('money_request')
-            })
-            socket.on('money_update', (data) => {
-                moneyDiv = $('#money-in-modal')
-                moneyDiv.html(` Your Money: $${data}`)
-            })
-            positions = ($('summary'))
-            reloadPage = () => {
-                location.reload()
-            }
+
             dieRoll = () => {
                 return Math.floor((Math.random() * 6) + 1)
             }
@@ -670,6 +662,7 @@
                 socket.emit('roll', rollData)
             }
             //normal dice roll
+            rollSection.on('click', '#')
             $('#dice-btn').click(() => {
                 let roll1 = dieRoll()
                 let roll2 = dieRoll()
@@ -689,29 +682,18 @@
                 submitRoll(jailRoll0, jailRoll1, 1)
             })
 
-            const confirmBtn = $('#confirm-btn')
-            let recipientValid, amountValid;
-            $('select').click((e) => {
-                $('#recipient').val(e.target.value)
-                if (e.target.value != '') {
-                    recipientValid = true
-                }
-                else {
-                    recipientValid = false
-                }
-                updateBtn()
+            // Updating pay modal
+            $('#pay-modal-launcher').click(() => {
+                socket.emit('money_request')
+            })
+            socket.on('money_update', (data) => {
+                moneyDiv = $('#money-in-modal')
+                moneyDiv.html(` Your Money: $${data}`)
             })
 
-            $('#amount-input').keyup((e) => {
-                let re = /^[0-9]+$/
-                if ((re.test(e.target.value)) && (e.target.value > 0)) {
-                    amountValid = true
-                }
-                else {
-                    amountValid = false
-                }
-                updateBtn()
-            })
+            //checking if fields are filled before enabling btn
+            const confirmBtn = $('#confirm-btn')
+            let recipientValid, amountValid;
             updateBtn = () => {
                 if (!recipientValid) {
                     $('#user-select-cap').text('Please select someone :)')
@@ -723,28 +705,49 @@
                 } else {
                     $('#amount-caption').text('')
                 }
-
                 if (recipientValid && amountValid) {
                     confirmBtn.removeAttr('disabled')
-                }
-                else {
+                } else {
                     confirmBtn.attr('disabled', true)
                 }
             }
 
-            // sends pay information via socket
-            confirmBtn.click(() => {
-                let payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipientSelect').val() })
-                socket.emit('pay', payInfo)
-                $('#payModal').modal("hide")
+            $('#recipient-select').click((e) => {
+                if (e.target.value != '') {
+                    recipientValid = true
+                }
+                else {
+                    recipientValid = false
+                }
+                updateBtn()
+            })
+            $('#amount-input').keyup((e) => {
+                let re = /^[0-9]+$/
+                if ((re.test(e.target.value)) && (e.target.value > 0)) {
+                    amountValid = true
+                }
+                else {
+                    amountValid = false
+                }
+                updateBtn()
             })
 
+            // sends pay information via socket
+            confirmBtn.click(() => {
+                let payInfo = JSON.stringify({ 'amount': $('#amount-input').val(), 'recipient': $('#recipient-select').val() })
+                socket.emit('pay', payInfo)
+                $('#payModal').modal("hide")
+
+            })
+
+            // showing img modal on click, board tiles.
             let monProperties = $('.prop')
             monProperties.click((e) => {
                 let id = e.target.id
                 $(`#${id}ImageModal`).modal('show')
             })
 
+            //sending requests for owned props, any user
             const propButton = $('#prop-button')
             propButton.click(() => {
                 socket.emit('prop_request', currentUsername)
@@ -788,15 +791,12 @@
                     `)
                     })
                 }
-
                 otherUsers.forEach((value) => {
                     $('.transfer-dropdown').append(`<a class="dropdown-item transfer-select" href="#">${value}</a>`)
                 })
-
                 $('.prop-btn-container').not('.0').prepend(
                     '<button type="button" class="house-btn btn btn-success">Buy house/hotel</button>'
                 )
-
                 $('.transfer-select').click((e) => {
                     let propName = e.target.parentNode.parentNode.id
                     let username = e.target.textContent

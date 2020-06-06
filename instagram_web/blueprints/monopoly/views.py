@@ -115,7 +115,7 @@ def create():
     else:
         flash('failwhale', 'danger')
 
-    return redirect(request.referrer)
+    return redirect(url_for('users.index'))
 
 
 @socketio.on('roll')
