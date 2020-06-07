@@ -11,8 +11,6 @@
     {% assets "home_css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     {% assets "home_js" %}
     <script src="https://kit.fontawesome.com/1816c993a6.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
@@ -30,7 +28,7 @@
     </div>
     {% endif %}
     {% endwith %}
-    <form action="{{url_for('monopoly.create_property')}}" method='POST' enctype="multipart/form-data">
+    <form action="{{url_for('monopoly.create')}}" method='POST' enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <label for="name-input">Property Name:</label>
         <input type="text" name="name" id='name-input'>

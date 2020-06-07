@@ -3,9 +3,6 @@ from flask_login import current_user, login_user, login_required
 from models.user import User
 from models.properties import Property
 from models.activity_log import ActivityLog
-from werkzeug.utils import secure_filename
-from config import S3_BUCKET, S3_LOCATION
-from helpers import upload_file_to_s3
 from app import socketio
 from flask_socketio import send, emit
 import json
@@ -32,9 +29,12 @@ def update_positions():
                  'Vine Street', 'Free Parking', 'Strand', 'Chance 2', 'Fleet Street', 'Trafalgar Square', 'Fenchurch St. Station', 'Leicester Square', 'Coventry Street', 'Water Works', 'Piccadilly', 'Go to Jail!', 'Regent Street', 'Oxford Street', 'Community Chest 3', 'Bond Street', 'Liverpool St. Station', 'Chance 3', 'Park Lane', 'Supertax', 'Mayfair']
 
     for user in users:
+        position = locations[user.position]
+        if position == 'Jail' and user.jailed < 0:
+            position = 'Visiting jail'
         user_dict.append({
             'username': user.username,
-            'position': locations[user.position],
+            'position': position,
             'money': user.money
         })
     user_json = json.dumps(user_dict)
@@ -240,40 +240,6 @@ def pay(data):
                 f'{current_user.username} payed ${amount} to {recipient_username}')
         else:
             print('failed saving at pay func.')
-
-
-@monopoly_blueprint.route('/new-property')
-def new_property():
-    if current_user.username == 'Banker':
-        return render_template('monopoly/new-property.html')
-    else:
-        flash('sorry, but you do not have access to that feature!', 'danger')
-        return redirect(url_for('monopoly.index'))
-
-
-@monopoly_blueprint.route('/create-property', methods=['POST'])
-def create_property():
-    if current_user.username == 'Banker':
-        name = request.form.get('name')
-        house_price = request.form.get('house-price')
-        category = request.form.get('category')
-        if house_price == '':
-            house_price = 0
-
-        if "image-file" not in request.files:
-            flash("No file was chosen! :O", 'warning')
-            return redirect(request.referrer)
-        file = request.files.get('image-file')
-        file_name = secure_filename(file.filename)
-        img_upload_err = str(upload_file_to_s3(file, S3_BUCKET))
-        new_prop = Property(name=name, user_id=current_user.id,
-                            house_price=house_price, category=category, image=file_name)
-        if new_prop.save():
-            flash('new property was saved', 'success')
-            return redirect(url_for('monopoly.new_property'))
-        else:
-            flash(f'failed, {img_upload_err}', 'danger')
-            return redirect(request.referrer)
 
 
 @socketio.on('prop_request')
