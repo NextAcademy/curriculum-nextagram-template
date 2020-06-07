@@ -127,7 +127,7 @@ def roll(data):
     jail_roll = int(roll_data['jail roll'])
     roll_sum = int(roll_0) + int(roll_1)
     text = f'{current_user.username} rolled {roll_0} & {roll_1}.'
-    # executes if this is a roll from jail.
+
     if jail_roll > 0:
         if roll_0 == roll_1:
             jail_free()
