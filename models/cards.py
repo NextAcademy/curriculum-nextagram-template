@@ -12,3 +12,6 @@ class Card(BaseModel):
     @hybrid_property
     def image_url(self):
         return(S3_LOCATION + self.image)
+
+    def validate(self):
+        return

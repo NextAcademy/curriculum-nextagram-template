@@ -32,13 +32,13 @@
         <input type="text" name='category' id='category-input'>
         <hr>
         <input type="file" name="image-file" id="image-file">
-        <img src="" id='preview' alt="">
+        <img src="" width='300px' id='mon-preview' alt="">
         <button type="submit">Submit</button>
     </form>
     <script>
         $(document).ready(() => {
             $('#image-file').change((e) => {
-                $('#preview').attr('src', URL.createObjectURL(e.target.files[0]))
+                $('#mon-preview').attr('src', URL.createObjectURL(e.target.files[0]))
                 console.log(e.target)
             })
         })
