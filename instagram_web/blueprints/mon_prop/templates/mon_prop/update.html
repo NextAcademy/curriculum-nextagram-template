@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% assets "home_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "home_js" %}
+    <script src="https://kit.fontawesome.com/1816c993a6.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <title>Update Property!</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class=flashes>
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form action="{{url_for('mon_prop.edit')}}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="prop_name" id="prop-name-input" value="unchanged">
+        <select name="" id="">
+            {% for prop in properties %}
+            <option>{{prop.name}}</option>
+            {% endfor %}
+        </select>
+        <label for="price-input"></label>
+        <input type="text" name='price_input' id='price-input'>
+        <button type="submit">submit</button>
+    </form>
+    <script>
+        $(() => {
+            $('select').click((e) => {
+                $('#prop-name-input').val(e.target.value)
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -621,7 +621,7 @@
                 `)
                 })
             })
-
+            // updates and lists users' positions and cash
             socket.on('position_update', (data) => {
                 const positionContainer = $('#position-container')
                 positionContainer.html('')
@@ -649,7 +649,6 @@
                 }
             })
             jailPaySection.on('click', 'button', (e) => {
-                console.log(e.target)
                 socket.emit('jail_pay')
             })
 

@@ -13,6 +13,7 @@ class Property(BaseModel):
     house_price = pw.IntegerField(null=True)
     category = pw.CharField()
     image = pw.CharField(null=True)
+    price = pw.IntegerField(null=True)
 
     def validate(self):
         return
