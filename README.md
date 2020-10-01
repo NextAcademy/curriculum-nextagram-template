@@ -52,7 +52,7 @@ Since this app uses Pooled Connections, you may also want to set:
 
 ```
 DB_TIMEOUT=300 # 5 minutes
-DB_POOL=5
+DB_POOL=10
 ```
 
 _(see `database.py`)_

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% assets "home_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets "home_js" %}
+    <script src="https://kit.fontawesome.com/1816c993a6.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <title>New Property!</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class=flashes>
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form action="{{url_for('cards.create')}}" method='POST' enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <label for="description-input">Description:</label>
+        <input type="text" name="description" id='description-input'>
+        <label for="category-input">Category(chance or community)</label>
+        <input type="text" name='category' id='category-input'>
+        <hr>
+        <input type="file" name="image-file" id="image-file">
+        <img src="" width='300px' id='mon-preview' alt="">
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        $(document).ready(() => {
+            $('#image-file').change((e) => {
+                $('#mon-preview').attr('src', URL.createObjectURL(e.target.files[0]))
+                console.log(e.target)
+            })
+        })
+    </script>
+</body>
+
+</html>

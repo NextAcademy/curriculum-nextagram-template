@@ -1,0 +1,78 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+Homepage
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for image in images%}
+        <div class="col-lg-4 col-sm-5">
+            <div class="card" id='{{image.id}}' style="width: 100%;">
+                <img class='card-img-top' id='img{{image.id}}' src={{image.source}} width='100%'>
+                <div class="caption-index">
+                    {% if image.caption == None %}
+                    #NoCaptionIsSexy
+                    {% else %}
+                    {{image.caption}}
+                    {% endif %}
+                </div>
+                <div class="card-body d-flex justify-content-around align-items-center">
+                    <h3 class='card-text'>
+                        <a href="{{url_for('users.show', username = image.user.username)}}">
+                            {{image.user.username}}
+                        </a>
+                    </h3>
+                    <a class='dollar-box d-flex justify-content-center align-items-center'
+                        href="{{url_for('donations.new', image_id=image.id)}}">
+                        <i class="fas fa-dollar-sign"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="modal fade" id="picModal{{image.id}}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header"><a href="{{url_for('users.show', username = image.user.username)}}">
+                                <h5 class="modal-title" id="exampleModalScrollableTitle">{{image.user.username}}
+                                </h5>
+                            </a>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img width='300px' src="{{image.source}}" alt="">
+                            <div>
+                                {{image.caption}}
+                            </div>
+                            <a href="{{url_for('donations.new', image_id=image.id)}}"><i
+                                    class="fas fa-dollar-sign"></i></a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Das enough.</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-2 col-1"></div>
+        {% endfor %}
+    </div class="row">
+</div>
+
+
+<script>
+    $(document).ready(() => {
+        // $('.card').click((e) => {
+        //     id = e.currentTarget.id
+        //     $(`#picModal${id}`).modal('toggle')
+        // })
+    })
+
+</script>
+{% endblock %}
