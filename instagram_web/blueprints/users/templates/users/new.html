@@ -18,6 +18,7 @@
 <h1>Sign up page</h1>
 
   <form action="{{url_for('users.create')}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
     <div class="form-group">
         <label for="name">Username:</label>
         <input type="name" name="name" class="form-control">
