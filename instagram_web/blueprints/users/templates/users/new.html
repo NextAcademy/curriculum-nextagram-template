@@ -1,14 +1,21 @@
 {% extends "_layout.html" %}
 
 {% block title %}
-  Homepage
+  Sign Up
 {% endblock %}
 
 {% block header %}
 {% endblock %}
 
 {% block content %}
-  <h1>Sign up page</h1>
+
+<div class ="mx-auto p-3">
+{% for error in errors if errors|length>0 %}
+    <li>{{error}}</li>
+    {% endfor%}
+</div>
+
+<h1>Sign up page</h1>
 
   <form action="{{url_for('users.create')}}" method="POST">
     <div class="form-group">
@@ -16,17 +23,14 @@
         <input type="name" name="name" class="form-control">
     </div>
     <div class="form-group">
-          <label for="email">Email address:</label>
-          <input type="email" name="email" class="form-control">
+        <label for="email">Email address:</label>
+        <input type="email" name="email" class="form-control">
     </div>
     <div class="form-group">
         <label for="password">Password</label>
         <input type="password" name="password" class="form-control">
+        <small>Password must be at least 6 characters long and contain at least one uppercase, one lowercase and one special character.</small>
     </div>
-    <div class="form-group">
-          <label for="address">Address:</label>
-          <input type="text" name="address" class="form-control">
-      </div>
-      <button class="btn btn-danger">Submit</button>
+      <button class="btn btn-danger" >Submit</button>
   </form>
 {% endblock %}
