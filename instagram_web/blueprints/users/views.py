@@ -38,10 +38,6 @@ def logout():
 #-----------------------------------------------------------------
 
 
-
-
-#------------------------------------------------------------
-
 @users_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('users/new.html')

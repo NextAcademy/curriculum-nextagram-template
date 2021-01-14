@@ -1,6 +1,6 @@
 {% extends "_layout.html" %}
 {% block title %}
-  Internal Server Error
+Forbidden
 {% endblock %}
 
 {% block content %}
@@ -11,8 +11,7 @@ style="
     background: rgb(238,174,202);
     background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 ">
-
-    <h1>Sorry! This is probably our fault. Please try again.</h1>
-    <small>Error code 500 : Internal Server Error</small>
+    <h1>Oops! You're not permitted to access this page.</h1>
+    <small>Error code 403 : Forbidden</small>
 </div>
 {% endblock %}

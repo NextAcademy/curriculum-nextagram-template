@@ -13,6 +13,13 @@ app.register_blueprint(users_blueprint, url_prefix="/users")
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'),404
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('403.html'),403
 
 @app.route("/")
 def home():
