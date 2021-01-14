@@ -2,12 +2,20 @@ from models.base_model import BaseModel
 import peewee as pw
 import re
 from werkzeug.security import generate_password_hash
+#-------------------------------------------------
+from flask_login import UserMixin
+#-------------------------------------------------
 
-
-class User(BaseModel):
+class User(BaseModel,UserMixin):
     name = pw.CharField(unique=True) #username
     email=pw.CharField(unique=True)
     password=pw.TextField(unique=False)
+
+    # Validation section
+    def validate(self):
+        self.email_check()
+        self.duplicate_check()
+        self.password_check()
 
     def email_check(self):
         email_split = self.email.split("@")
@@ -42,8 +50,4 @@ class User(BaseModel):
         self.password = generate_password_hash(self.password)
 
     
-    def validate(self):
-        self.email_check()
-        self.duplicate_check()
-        self.password_check()
 

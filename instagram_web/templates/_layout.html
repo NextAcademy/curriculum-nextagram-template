@@ -35,11 +35,21 @@
         {% endif %}
     {% endwith %}
     
-    {% if 'username' in session %}
-    <h4 style="color:blue">Howdy, {{session['username']}}!</h4>
+    <!--------------------------------------------------------------------->
+
+
+    {% if current_user.is_authenticated %}
+    <h4 style="color:blue">Howdy, {{current_user.name}}!</h4>
     {% else %}
     <h4>You're not logged in. </h4>
     {% endif %}
+
+    <!--------------------------------------------------------------------->
+    
+    <!-- <form>
+      <button href="/users/new" class="btn btn-primary" type="submit">Log in</button>
+    </form> -->
+
 
     {% block content %}
     {% endblock %}
