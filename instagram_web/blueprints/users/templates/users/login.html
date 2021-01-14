@@ -1,0 +1,26 @@
+{% extends "_layout.html"%}
+{% block title %}
+  Log in
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="container col-6 mx-auto">
+    <h1>Log in page</h1>
+    <br/>
+    <form action="{{url_for('users.authentication')}}" method="POST" class="form-control col-6">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+        <div class="form-group">
+            <label for="name">Username:</label>
+            <input type="name" name="name" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control"/>
+        </div>
+        <button class="btn btn-danger" >Submit</button>
+    </form>
+</div>
+{% endblock %}

@@ -19,7 +19,7 @@
 
     <title>
       {% block title %} 
-      {% endblock %}NEXTAGRAM
+      {% endblock %}| NEXTAGRAM
     </title>
 
   </head>
@@ -34,6 +34,12 @@
             </ul>
         {% endif %}
     {% endwith %}
+    
+    {% if 'username' in session %}
+    <h4 style="color:blue">Howdy, {{session['username']}}!</h4>
+    {% else %}
+    <h4>You're not logged in. </h4>
+    {% endif %}
 
     {% block content %}
     {% endblock %}
