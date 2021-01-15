@@ -46,6 +46,15 @@
     </form> -->
     <!--------------------------------------------------------------------->
 
+    <!----------------------Links----------------------------------------------->
+    <div class="d-flex justify-content-around">
+      <a href="{{url_for('home')}}">Home</a>
+      <a href="{{url_for('users.new')}}">Create new user</a>
+      <a href="{{url_for('users.login')}}">Log in</a>
+      <a href="{{url_for('users.logout')}}">Sign out</a>
+      <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details. user id: {{current_user.id}}</a>
+    </div>
+    <br/>
 
     {% block content %}
     {% endblock %}

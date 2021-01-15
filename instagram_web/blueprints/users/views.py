@@ -1,7 +1,7 @@
-from flask import Blueprint, flash, render_template,request,redirect,url_for,session
+from flask import Blueprint, flash, render_template,request,redirect,url_for,session,abort
 from models.user import User
 #---------------------DAY2--------------------------------------------
-from flask_login import login_user,login_required,logout_user
+from flask_login import login_user,login_required,logout_user,current_user
 #-----------------------END------------------------------------------
 
 users_blueprint = Blueprint('users',
@@ -80,10 +80,22 @@ def show(username):
 def index():
     return "USERS"
 
-
-@users_blueprint.route('/<id>/edit', methods=['GET'])
+# ----------- DAY 3 -----------------------------------------------------------
+@users_blueprint.route('/<int:id>/edit', methods=['GET'])
+@login_required
 def edit(id):
+    if current_user.id != id:
+        abort(403)
+    else:
+        return render_template('users/edit_user.html',id=id)
+
+# Method for changing email
+@users_blueprint.route('/<int:id>/update_email', methods=['POST'])
+def update_username(id):
     pass
+
+
+# ----------- END -------------------------------------------------------------
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
