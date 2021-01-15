@@ -1,14 +1,14 @@
 from flask import Blueprint, flash, render_template,request,redirect,url_for,session
 from models.user import User
-#-----------------------------------------------------------------
+#---------------------DAY2--------------------------------------------
 from flask_login import login_user,login_required,logout_user
-#-----------------------------------------------------------------
+#-----------------------END------------------------------------------
 
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
 
-#-----------------------------------------------------------------
+#---------------------DAY2--------------------------------------------
 @users_blueprint.route('/login', methods=["GET"])
 def login():
     return render_template('users/login.html')
@@ -35,7 +35,7 @@ def logout():
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('home'))
-#-----------------------------------------------------------------
+#-------------------------END----------------------------------------
 
 
 @users_blueprint.route('/new', methods=['GET'])
@@ -64,7 +64,7 @@ def create():
 
         login_user(user)
         flash('Logged in successfully.')
-    #--------------------------------------------------------------------------
+    #--------------------------- END-----------------------------------------------
         return redirect(url_for('home'))
     else:
         flash("Unable to create user!")
