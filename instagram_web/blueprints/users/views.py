@@ -96,33 +96,111 @@ def edit(id):
 # Method for changing email
 @users_blueprint.route('/<int:id>/update_email', methods=['POST'])
 def update_email(id):
+    if id != current_user.id:
+        abort(403)
+
     form_email = request.form['new_email']
     form_password=request.form['password_1']
-    user = User.get_by_id(id)
+    user=User.get_by_id(id)
 
-    # check if password matches user
+    # check password
     match = check_password_hash(user.password,form_password)
     if not match:
         flash("Incorrect password. Please try again")
-        return redirect(url_for('users.edit',id=user.id))
+        return redirect(url_for('users.edit',id=id))
     
-    # check if email fulfills unique requirement
-    email_check=User.get_or_none(email=form_email)
+    # check email
+    email_exists=User.get_or_none(email=form_email)
 
-    if email_check: # email is used
-        flash("This email is used. Please try a different email.")
-        return redirect(url_for('users.edit',id=user.id))
+    if email_exists:
+        flash("This email is used by another account. Please try a different email.")
+        return redirect(url_for('users.edit',id=id))
+    else: 
+        user = User(
+            id=id,
+            email=form_email
+        )
 
-    else: # create new user
-        new_user = User(name=user.name, password=form_password, email=form_email)
-        flash("Email updated!")
-        return redirect(url_for('users.edit',id=new_user.id))
+        if user.save(only=[User.email]):
+            # logout_user()
+            # login_user(update_user)
+            flash("Email updated!")
+            return redirect(url_for('home'))
+        else:
+            flash("Unable to change email!")
+            # asd
+            return render_template('users/edit_user.html',id=id, errors=user.errors)
 
+# Method for changing password
+@users_blueprint.route('/<int:id>/update_password', methods=['POST'])
+def update_password(id):
+    if id != current_user.id:
+        abort(403)
 
+    new_password_1 = request.form['new_password_1']
+    new_password_2 = request.form['new_password_2']
+    current_password = request.form['password_2']
+    
+    if new_password_1 != new_password_2:
+        flash("New passwords do not match. Please try again.")
+        return redirect(url_for('users.edit',id=id))
 
-# ----------- END -------------------------------------------------------------
+    user=User.get_by_id(id)
+
+    # check password
+    match = check_password_hash(user.password,current_password)
+    if not match:
+        flash("Incorrect password. Please try again")
+        return redirect(url_for('users.edit',id=id))
+
+    # update password
+    user = User(
+        id=id,
+        password=new_password_1
+    )
+
+    if user.save(only=[User.password]):
+        flash("Password updated!")
+        return redirect(url_for('home'))
+    else:
+        flash("Unable to update password!")
+        return render_template('users/edit_user.html',id=id, errors=user.errors)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     pass
+
+
+
+# --------------- WORKING SECTION for update email ----------------------------
+# -------------- creates new user after each change :( ------------------------
+        # # create new acc w old name, old password, new email.
+        # # old_pw = user.password
+        # # old_name = user.name
+
+        # new_user = User.create(
+        #     name=user.name, 
+        #     password=user.password, 
+        #     email=form_email
+        #     )
+        
+        # # asas
+        # flash("Email updated!")
+        # # 2. Logout current acc
+        # logout_user() # to check if working
+
+        # # 3. Delete old account code here
+        # user.delete_instance()
+
+        # # 4. login new acc
+        # if new_user.save():
+        #     login_user(new_user)
+        #     return redirect(url_for('home'))
+        # else:
+        #     flash("Unable to create user!")
+        #     return render_template('users/new.html', errors=user.errors) 
+
+# ----------- END -------------------------------------------------------------
+
+

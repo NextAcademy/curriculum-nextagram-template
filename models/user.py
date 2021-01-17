@@ -13,9 +13,15 @@ class User(BaseModel,UserMixin):
 
     # Validation section
     def validate(self):
-        self.email_check()
         self.duplicate_check()
-        self.password_check()
+
+        if self.email:
+            self.email_check()
+
+        if self.password:
+            if not (self.password[0:19] == "pbkdf2:sha256:50000"): # if password is not changed
+                self.password_check() # to verify if logic still works for changing password
+
 
     def email_check(self):
         email_split = self.email.split("@")
@@ -46,8 +52,10 @@ class User(BaseModel,UserMixin):
             self.errors.append("Password must have an uppercase letter, lowercase letter and at least one special character")
             error_flag = True
 
-        # if not error_flag: # <--may not need this condition
-        self.password = generate_password_hash(self.password)
+        if (self.password[0:19] == "pbkdf2:sha256:50000"): # hashed password
+            pass
+        else:
+            self.password = generate_password_hash(self.password)
 
     
 

@@ -1,6 +1,6 @@
 {% extends "_layout.html"%}
 {% block title %}
-  Log in
+  Change User Settings
 {% endblock %}
 
 {% block header %}
@@ -22,7 +22,7 @@
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
         <div class="form-group">
             <label for="name">New Email:</label>
-            <input type="name" name="new_email" class="form-control" placeholder="SuperMooo"/>
+            <input type="email" name="new_email" class="form-control" placeholder="SuperMooo"/>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
@@ -33,7 +33,7 @@
     </form>
     <br/>
 
-    <form action="" method="POST" class="form-control">
+    <form action="{{url_for('users.update_password',id=current_user.id)}}" method="POST" class="form-control">
         <h3>Change Password</h3>
         <hr/>
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>

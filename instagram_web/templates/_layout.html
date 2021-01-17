@@ -49,15 +49,26 @@
     <!----------------------Links----------------------------------------------->
     <div class="d-flex justify-content-around">
       <a href="{{url_for('home')}}">Home</a>
-      <a href="{{url_for('users.new')}}">Create new user</a>
-      <a href="{{url_for('users.login')}}">Log in</a>
-      <a href="{{url_for('users.logout')}}">Sign out</a>
-      <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details. user id: {{current_user.id}}</a>
+      {% if current_user.is_anonymous %}
+        <a href="{{url_for('users.new')}}">Create an account</a>
+        <a href="{{url_for('users.login')}}">Log in</a>
+      {% else %}
+        <a href="{{url_for('users.logout')}}">Sign out</a>
+        <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details. user id: {{current_user.id}}</a>
+      {% endif %}
     </div>
+    <!----------------------Error list----------------------------------------------->
     <br/>
-
+    <ul>
+    {% for error in errors if errors|length>0 %}
+        <li>{{error}}</li>
+    {% endfor%}
+    </ul>
+    <br/>
+    <div class="container p-3">
     {% block content %}
     {% endblock %}
+    </div>
     <footer>
       Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
     </footer>

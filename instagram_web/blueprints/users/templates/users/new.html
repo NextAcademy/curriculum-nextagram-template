@@ -8,29 +8,28 @@
 {% endblock %}
 
 {% block content %}
-
-<div class ="mx-auto p-3">
+<div class ="mx-auto">
 {% for error in errors if errors|length>0 %}
     <li>{{error}}</li>
     {% endfor%}
 </div>
 
 <h1>Sign up page</h1>
-  <form action="{{url_for('users.create')}}" method="POST">
-    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-    <div class="form-group">
-        <label for="name">Username:</label>
-        <input type="name" name="name" class="form-control">
-    </div>
-    <div class="form-group">
-        <label for="email">Email address:</label>
-        <input type="email" name="email" class="form-control">
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" class="form-control">
-        <small>Password must be at least 6 characters long and contain at least one uppercase, one lowercase and one special character.</small>
-    </div>
-      <button class="btn btn-danger" >Submit</button>
-  </form>
+<form action="{{url_for('users.create')}}" method="POST">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+  <div class="form-group">
+      <label for="name">Username:</label>
+      <input type="name" name="name" class="form-control">
+  </div>
+  <div class="form-group">
+      <label for="email">Email address:</label>
+      <input type="email" name="email" class="form-control">
+  </div>
+  <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control">
+      <small>Password must be at least 6 characters long and contain at least one uppercase, one lowercase and one special character.</small>
+  </div>
+    <button class="btn btn-danger" >Submit</button>
+</form>
 {% endblock %}
