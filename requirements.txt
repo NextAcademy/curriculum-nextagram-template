@@ -1,4 +1,6 @@
 autopep8==1.4.3
+boto3==1.16.56
+botocore==1.19.56
 certifi==2018.11.29
 Click==7.0
 colorama==0.4.1
@@ -10,14 +12,18 @@ Flask-Login==0.5.0
 Flask-WTF==0.14.3
 itsdangerous==1.1.0
 Jinja2==2.10
+jmespath==0.10.0
 jsmin==2.2.2
 MarkupSafe==1.1.0
 peewee==3.8.2
 peewee-db-evolve==3.7.0
 psycopg2-binary==2.7.7
 pycodestyle==2.5.0
+python-dateutil==2.8.1
 python-dotenv==0.10.1
+s3transfer==0.3.4
 six==1.12.0
+urllib3==1.26.2
 webassets==0.12.1
 Werkzeug==0.14.1
 WTForms==2.3.3

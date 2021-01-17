@@ -5,6 +5,13 @@ from flask_login import login_user,login_required,logout_user,current_user
 #-----------------------END------------------------------------------
 #---------------------DAY 3--------------------------------------------
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
+
+import boto3, botocore
+from config import S3_KEY, S3_SECRET, S3_BUCKET
+
+
+
 #-----------------------END------------------------------------------
 
 
@@ -204,3 +211,32 @@ def update(id):
 # ----------- END -------------------------------------------------------------
 
 
+# --------------- Day 3 Upload profile photo ----------------------------
+@users_blueprint.route('profile_photo', methods=["GET"])
+def profile_photo():
+    return render_template('users/profile_photo.html')
+
+@users_blueprint.route('upload_profile_photo', methods=["POST"])
+def upload_file_to_s3():
+    s3 = boto3.client(
+        's3',
+        aws_access_key_id=S3_KEY,
+        aws_secret_access_key=S3_SECRET
+    )
+
+    file = request.files["profile_photo"]
+    image_path="images/profile/"+ file.filename
+
+    s3.upload_fileobj(
+        file,
+        S3_BUCKET,
+        image_path,
+        ExtraArgs={
+            "ACL": "public-read",
+            "ContentType": file.content_type
+        }
+    )
+    return redirect(url_for('users.profile_photo',image_path=image_path))
+
+
+# ----------------------- END -----------------------------------------

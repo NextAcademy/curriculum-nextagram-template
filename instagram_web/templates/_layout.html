@@ -54,7 +54,8 @@
         <a href="{{url_for('users.login')}}">Log in</a>
       {% else %}
         <a href="{{url_for('users.logout')}}">Sign out</a>
-        <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details. user id: {{current_user.id}}</a>
+        <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details</a>
+        <a href="{{url_for('users.profile_photo')}}">Upload profile photo</a>
       {% endif %}
     </div>
     <!----------------------Error list----------------------------------------------->

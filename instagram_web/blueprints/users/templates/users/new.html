@@ -8,11 +8,6 @@
 {% endblock %}
 
 {% block content %}
-<div class ="mx-auto">
-{% for error in errors if errors|length>0 %}
-    <li>{{error}}</li>
-    {% endfor%}
-</div>
 
 <h1>Sign up page</h1>
 <form action="{{url_for('users.create')}}" method="POST">
