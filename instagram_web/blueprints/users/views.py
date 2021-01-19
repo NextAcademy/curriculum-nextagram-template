@@ -8,12 +8,8 @@ from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
 import boto3, botocore
-from config import S3_KEY, S3_SECRET, S3_BUCKET
-
-
-
+from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 #-----------------------END------------------------------------------
-
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -82,9 +78,15 @@ def create():
         return render_template('users/new.html', errors=user.errors) 
 
 
+#---------------------DAY 2--------------------------------------------
 @users_blueprint.route('/<username>', methods=["GET"])
-def show(username):
-    pass
+def show(username): # user profile page
+    try:
+        user = User.get(name=username)
+    except:
+        abort(404)
+    return render_template('users/profile_page.html',user=user,S3_LOCATION=S3_LOCATION)
+#-------------------------END----------------------------------------
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -102,6 +104,7 @@ def edit(id):
 
 # Method for changing email
 @users_blueprint.route('/<int:id>/update_email', methods=['POST'])
+@login_required
 def update_email(id):
     if id != current_user.id:
         abort(403)
@@ -140,6 +143,7 @@ def update_email(id):
 
 # Method for changing password
 @users_blueprint.route('/<int:id>/update_password', methods=['POST'])
+@login_required
 def update_password(id):
     if id != current_user.id:
         abort(403)
@@ -173,51 +177,22 @@ def update_password(id):
         flash("Unable to update password!")
         return render_template('users/edit_user.html',id=id, errors=user.errors)
 
-
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     pass
 
-
-
-# --------------- WORKING SECTION for update email ----------------------------
-# -------------- creates new user after each change :( ------------------------
-        # # create new acc w old name, old password, new email.
-        # # old_pw = user.password
-        # # old_name = user.name
-
-        # new_user = User.create(
-        #     name=user.name, 
-        #     password=user.password, 
-        #     email=form_email
-        #     )
-        
-        # # asas
-        # flash("Email updated!")
-        # # 2. Logout current acc
-        # logout_user() # to check if working
-
-        # # 3. Delete old account code here
-        # user.delete_instance()
-
-        # # 4. login new acc
-        # if new_user.save():
-        #     login_user(new_user)
-        #     return redirect(url_for('home'))
-        # else:
-        #     flash("Unable to create user!")
-        #     return render_template('users/new.html', errors=user.errors) 
-
-# ----------- END -------------------------------------------------------------
-
-
 # --------------- Day 3 Upload profile photo ----------------------------
-@users_blueprint.route('profile_photo', methods=["GET"])
-def profile_photo():
-    return render_template('users/profile_photo.html')
+@users_blueprint.route('/<int:id>/profile_photo', methods=["GET"])
+@login_required
+def profile_photo(id, image=""):
+    return render_template('users/profile_photo.html',image=image)
 
-@users_blueprint.route('upload_profile_photo', methods=["POST"])
-def upload_file_to_s3():
+@users_blueprint.route('/<int:id>/upload_profile_photo', methods=["POST"])
+@login_required
+def upload_file_to_s3(id):
+    if id!=current_user.id:
+        abort(403)
+
     s3 = boto3.client(
         's3',
         aws_access_key_id=S3_KEY,
@@ -225,7 +200,7 @@ def upload_file_to_s3():
     )
 
     file = request.files["profile_photo"]
-    image_path="images/profile/"+ file.filename
+    image_path= current_user.name + "/images/profile-pic/"+ file.filename
 
     s3.upload_fileobj(
         file,
@@ -236,7 +211,16 @@ def upload_file_to_s3():
             "ContentType": file.content_type
         }
     )
-    return redirect(url_for('users.profile_photo',image_path=image_path))
+    file_loc = S3_LOCATION + image_path
+    flash('Image uploaded successfully.')
 
+    # save photo url in database
+    user = User.get_by_id(id)
+    user.profile_photo=image_path
 
+    if user.save(only=[User.profile_photo]):
+        flash("Profile photo saved to database successfully!")
+    else:
+        flash("Unable to save profile photo to database.")
+    return render_template('users/profile_photo.html', image=file_loc,errors=user.errors)
 # ----------------------- END -----------------------------------------

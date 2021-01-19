@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  Upload photos
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h1>Upload photos</h1>
+<form action="{{url_for('images.upload_to_s3',id=current_user.id)}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+  <input type="file" name="user_image">
+  <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

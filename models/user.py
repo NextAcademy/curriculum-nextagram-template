@@ -7,9 +7,10 @@ from flask_login import UserMixin
 #-------------------------------------------------
 
 class User(BaseModel,UserMixin):
-    name = pw.CharField(unique=True) #username
-    email=pw.CharField(unique=True)
+    name = pw.CharField(unique=True ) #username
+    email=pw.CharField(unique=True )
     password=pw.TextField(unique=False)
+    profile_photo=pw.CharField(null=False, default="")
 
     # Validation section
     def validate(self):
@@ -31,10 +32,14 @@ class User(BaseModel,UserMixin):
     def duplicate_check(self):
         duplicate_name = User.get_or_none(User.name==self.name)
         duplicate_email =  User.get_or_none(User.email==self.email)
-        if duplicate_name:
-            self.errors.append("Username is already taken. Please try again.")
-        if duplicate_email:
-            self.errors.append("Email is already taken. Please try again.")
+        
+        if duplicate_name: # if duplicate_name exists
+            if not duplicate_name.id==self.id: #if the id is not your own
+                self.errors.append("Username is already taken. Please try again.")
+
+        if duplicate_email: # if duplicate_email exists
+            if not duplicate_email.id==self.id: #if the id is not your own
+                self.errors.append("Email is already taken. Please try again.")
 
     def password_check(self):
         error_flag = False

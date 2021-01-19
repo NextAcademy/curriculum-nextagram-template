@@ -21,7 +21,7 @@ login_manager.init_app(app)
 # as written: https://flask-login.readthedocs.io/en/latest/#how-it-works
 @login_manager.user_loader
 def load_user(user_id):    
-    return User.get_by_id(user_id) #maybe change to get_or_none?
+    return User.get_by_id(user_id)
 # ----------------------------------------------------------------
 csrf = CSRFProtect(app)
 

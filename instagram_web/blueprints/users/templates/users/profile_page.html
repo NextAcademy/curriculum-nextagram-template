@@ -1,0 +1,45 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  {{user.name}}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{user.name}}'s Profile Page</h1>
+    <div class="container d-flex justify-content-between">
+        <div class="container d-flex flex-column align-items-center">
+        {% if user.profile_photo %}
+            <img src="{{S3_LOCATION+user.profile_photo}}" alt="{{user.profile_photo}}" 
+            style=
+            "height: 200px;
+            border-radius: 15px;"
+            >
+        {% else %}
+            <img src="https://img.icons8.com/plasticine/100/000000/name.png" alt="placeholder-cat-profile" 
+            style=
+            "height: 200px;
+            border-radius: 15px;"
+            >
+        {% endif %}
+
+            <h4>{{user.name}}</h4>
+        </div>
+        <div class="container">
+            <h4>Photos Uploaded</h4>
+            {% if user.name == current_user.name %}
+            <a href="{{url_for('images.upload')}}">Upload photos</a>
+            {% endif %}
+            <div class="container d-flex flex-wrap" style="border-radius: 5px; border: 1px solid lightgray;">
+                
+                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
+                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
+                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
