@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+
+<h1>Sessions#new</h1>
+<form action="{{url_for('sessions.create')}}" method="POST">
+    <input type="hidden" name="csrf_token" value={{ csrf_token() }} />
+
+    <label>Username</label>
+    <input type="text" name="username" />
+
+    <label>Password</label>
+    <input type="password" name="password" />
+
+    <input type="submit" />
+</form>
+
+{% endblock %}

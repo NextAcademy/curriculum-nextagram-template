@@ -1,0 +1,8 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+<h1>This is {{user.username}}'s Profile</h1>
+{% if current_user.id == user.id %}
+<a href="{{url_for('users.edit', id=current_user.id)}}">Edit Profile</a>
+{% endif %}
+{% endblock %}

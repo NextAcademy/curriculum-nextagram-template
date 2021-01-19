@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+{% block content %}
+<h1>Users#edit</h1>
+<form action="{{url_for('users.update', id=user.id)}}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label>New username: </label>
+    <input type="text" name="username" value="{{user.username}}" />
+
+    <label>New email id:</label>
+    <input type="email" name="email" value="{{user.email}}" />
+
+    <label>New Password (leave empty if you wish to use password):</label>
+    <input type="password" name="password" />
+
+    <input type="submit" />
+</form>
+
+{% endblock %}

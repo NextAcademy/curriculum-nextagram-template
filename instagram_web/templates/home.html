@@ -8,5 +8,19 @@ Homepage
 {% endblock %}
 
 {% block content %}
-<h1>Hello!</h1>
+<h1>Hello! This is Homepage</h1>
+{% if current_user.is_authenticated %}
+<p>You are logged in as {{current_user.username}}</p>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
 {% endblock %}
