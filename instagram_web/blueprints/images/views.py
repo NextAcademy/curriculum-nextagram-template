@@ -6,6 +6,11 @@ from werkzeug.utils import secure_filename
 import boto3, botocore
 from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 
+# -------------------- Day 5 - Payment -------------------- 
+import braintree
+import os
+# -------------------- ---- End -------------------- 
+
 images_blueprint = Blueprint('images',
                             __name__,
                             template_folder='templates')
@@ -13,7 +18,6 @@ images_blueprint = Blueprint('images',
 @images_blueprint.route('upload', methods=["GET"])
 @login_required
 def upload():
-    # user can only upload photos to their accounts
     return render_template('images/upload.html')
 
 @images_blueprint.route('<int:id>/upload', methods=["POST"])
@@ -56,3 +60,42 @@ def upload_to_s3(id):
     return render_template('images/upload.html')
 
 
+# -------------------- Day 5 - Payment -------------------- 
+gateway=braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=os.getenv('BRAINTREE_MERCHANT_ID'),
+        public_key=os.getenv('BRAINTREE_PUBLIC_KEY'),
+        private_key=os.getenv('BRAINTREE_PRIVATE_KEY')
+    )
+)
+
+@images_blueprint.route("/payment",methods=["GET"])
+@login_required
+def new_payment():
+    # customer_id=current_user.id
+    token=gateway.client_token.generate()
+    return render_template('images/payment.html',token=token)
+
+@images_blueprint.route("/payment/submit",methods=["POST"])
+def make_payment():
+    nonce = request.form['nonce']
+
+    # Test payment
+    result = gateway.transaction.sale({
+        "amount": "10.00",
+        "payment_method_nonce": nonce,
+        "options": {
+            "submit_for_settlement": True
+        }
+    })
+
+    if result.is_success:
+        flash('Payment received')
+        return redirect(url_for('home'))
+    else:
+        flash('Pyament not received. Please try again')
+        return redirect(url_for('new_payment'))
+
+
+# -------------------- ---- End -------------------- 
