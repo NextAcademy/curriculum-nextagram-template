@@ -10,6 +10,10 @@ from werkzeug.utils import secure_filename
 import boto3, botocore
 from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 #-----------------------END------------------------------------------
+#---------------------DAY 4--------------------------------------------
+import peewee as pw
+from models.image import Image
+#-----------------------END------------------------------------------
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -44,11 +48,9 @@ def logout():
     return redirect(url_for('home'))
 #-------------------------END----------------------------------------
 
-
 @users_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('users/new.html')
-
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
@@ -66,17 +68,16 @@ def create():
         try:
             user = User.get(name=username)
         except:
-            flash('Username does not exist. Please try again.')
+            flash('Username does not exist. Please try again.',"danger")
             return redirect(url_for('users.login'))
 
         login_user(user)
-        flash('Logged in successfully.')
+        flash('Logged in successfully.',"info")
     #--------------------------- END-----------------------------------------------
         return redirect(url_for('home'))
     else:
-        flash("Unable to create user!")
+        flash("Unable to create user!","danger")
         return render_template('users/new.html', errors=user.errors) 
-
 
 #---------------------DAY 2--------------------------------------------
 @users_blueprint.route('/<username>', methods=["GET"])
@@ -85,9 +86,13 @@ def show(username): # user profile page
         user = User.get(name=username)
     except:
         abort(404)
-    return render_template('users/profile_page.html',user=user,S3_LOCATION=S3_LOCATION)
-#-------------------------END----------------------------------------
+    
+    image_list = pw.prefetch(Image.select().where(Image.user_id==user.id),User)
 
+    print(f"image_list length: {len(image_list)}")
+    print(f"username: {username}")
+    return render_template('users/profile_page.html',user=user,S3_LOCATION=S3_LOCATION,image_list=image_list)
+#-------------------------END----------------------------------------
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
@@ -116,14 +121,14 @@ def update_email(id):
     # check password
     match = check_password_hash(user.password,form_password)
     if not match:
-        flash("Incorrect password. Please try again")
+        flash("Incorrect password. Please try again","danger")
         return redirect(url_for('users.edit',id=id))
     
     # check email
     email_exists=User.get_or_none(email=form_email)
 
     if email_exists:
-        flash("This email is used by another account. Please try a different email.")
+        flash("This email is used by another account. Please try a different email.","danger")
         return redirect(url_for('users.edit',id=id))
     else: 
         user = User(
@@ -134,10 +139,10 @@ def update_email(id):
         if user.save(only=[User.email]):
             # logout_user()
             # login_user(update_user)
-            flash("Email updated!")
+            flash("Email updated!","info")
             return redirect(url_for('home'))
         else:
-            flash("Unable to change email!")
+            flash("Unable to change email!","danger")
             # asd
             return render_template('users/edit_user.html',id=id, errors=user.errors)
 
@@ -153,7 +158,7 @@ def update_password(id):
     current_password = request.form['password_2']
     
     if new_password_1 != new_password_2:
-        flash("New passwords do not match. Please try again.")
+        flash("New passwords do not match. Please try again.","danger")
         return redirect(url_for('users.edit',id=id))
 
     user=User.get_by_id(id)
@@ -161,7 +166,7 @@ def update_password(id):
     # check password
     match = check_password_hash(user.password,current_password)
     if not match:
-        flash("Incorrect password. Please try again")
+        flash("Incorrect password. Please try again","danger")
         return redirect(url_for('users.edit',id=id))
 
     # update password
@@ -171,10 +176,10 @@ def update_password(id):
     )
 
     if user.save(only=[User.password]):
-        flash("Password updated!")
+        flash("Password updated!","info")
         return redirect(url_for('home'))
     else:
-        flash("Unable to update password!")
+        flash("Unable to update password!",'danger')
         return render_template('users/edit_user.html',id=id, errors=user.errors)
 
 @users_blueprint.route('/<id>', methods=['POST'])
@@ -212,15 +217,15 @@ def upload_file_to_s3(id):
         }
     )
     file_loc = S3_LOCATION + image_path
-    flash('Image uploaded successfully.')
+    flash('Image uploaded successfully.','info')
 
     # save photo url in database
     user = User.get_by_id(id)
     user.profile_photo=image_path
 
     if user.save(only=[User.profile_photo]):
-        flash("Profile photo saved to database successfully!")
+        flash("Profile photo saved to database successfully!",'info')
     else:
-        flash("Unable to save profile photo to database.")
+        flash("Unable to save profile photo to database.",'danger')
     return render_template('users/profile_photo.html', image=file_loc,errors=user.errors)
 # ----------------------- END -----------------------------------------

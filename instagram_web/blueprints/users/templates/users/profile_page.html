@@ -8,15 +8,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>{{user.name}}'s Profile Page</h1>
-    <div class="container d-flex justify-content-between">
-        <div class="container d-flex flex-column align-items-center">
+<div>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column align-items-center" style="width: 25%;">
         {% if user.profile_photo %}
             <img src="{{S3_LOCATION+user.profile_photo}}" alt="{{user.profile_photo}}" 
             style=
             "height: 200px;
-            border-radius: 15px;"
+            border-radius: 15px;
+            min-width: 150px;"
             >
         {% else %}
             <img src="https://img.icons8.com/plasticine/100/000000/name.png" alt="placeholder-cat-profile" 
@@ -28,16 +28,25 @@
 
             <h4>{{user.name}}</h4>
         </div>
-        <div class="container">
-            <h4>Photos Uploaded</h4>
+        <div style="width: 75%;">
+            <h4>{{user.name}}'s photos</h4>
             {% if user.name == current_user.name %}
             <a href="{{url_for('images.upload')}}">Upload photos</a>
             {% endif %}
-            <div class="container d-flex flex-wrap" style="border-radius: 5px; border: 1px solid lightgray;">
-                
-                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
-                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
-                <img src="" class="mx-3" alt="This is where user uploaded photos will go">
+            <div class="d-flex flex-wrap" style="height: 50vh; color: cornflowerblue;">
+            {% if not image_list %}
+            <h4>No images uploaded yet :(</h4>
+            {% endif %}
+            {% if image_list|length >0 %}
+                {% for image in image_list %}
+                    {% if image.user_id == user.id %}
+                    <div class="card">
+                        <img src="{{S3_LOCATION+image.url}}" class="m-3" alt="{{image.url}}" style="width: 18rem; max-height: 12rem;">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            {% endif %}
             </div>
         </div>
     </div>
