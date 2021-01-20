@@ -8,16 +8,20 @@
 {% endblock %}
 
 {% block content %}
+<div class="d-flex flex-wrap justify-content-around mx-auto" style="width:80%">
     {% for user in users %}
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{S3_LOCATION+user.profile_photo}}" alt="Card image cap">
+    <div class="card " style="width: 18rem;">
+        {% if user.profile_photo %}
+        <img class="card-img-top" src="{{ S3_LOCATION+user.profile_photo }}" alt="{{user.profile_photo}}">
+        {% else %}        
+        <img class="card-img-top" src="https://img.icons8.com/plasticine/100/000000/name.png" alt="placeholder-cat-profile">
+        {% endif %}
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">{{user.name}}</h5>
+          <a href="{{url_for('users.show',username=user.name)}}" class="btn btn-primary">Visit profile page</a>
         </div>
       </div>
 
     {% endfor %}
-
+</div>
 {% endblock %}

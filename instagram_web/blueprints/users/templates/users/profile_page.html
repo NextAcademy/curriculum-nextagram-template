@@ -25,15 +25,15 @@
             border-radius: 15px;"
             >
         {% endif %}
-
             <h4>{{user.name}}</h4>
         </div>
+
         <div style="width: 75%;">
             <h4>{{user.name}}'s photos</h4>
             {% if user.name == current_user.name %}
             <a href="{{url_for('images.upload')}}">Upload photos</a>
             {% endif %}
-            <div class="d-flex flex-wrap" style="height: 50vh; color: cornflowerblue;">
+            <div class="d-flex flex-wrap" ">
             {% if not image_list %}
             <h4>No images uploaded yet :(</h4>
             {% endif %}

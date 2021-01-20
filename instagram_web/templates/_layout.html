@@ -52,6 +52,7 @@
         <a href="{{url_for('users.profile_photo',id=current_user.id)}}">Upload profile photo</a>
         <a href="{{url_for('users.show',username=current_user.name)}}">My profile</a>
       {% endif %}
+      <a href="{{url_for('users.index')}}">View all users</a>
     </div>
     <br/>
     <!----------------------Error list----------------------------------------------->
