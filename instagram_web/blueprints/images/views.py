@@ -9,6 +9,14 @@ from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 # -------------------- Day 5 - Payment -------------------- 
 import braintree
 import os
+import peewee as pw
+
+# from money.money import Money
+# from money.currency import Currency
+from decimal import *
+
+from models.user import User
+from werkzeug.security import check_password_hash
 # -------------------- ---- End -------------------- 
 
 images_blueprint = Blueprint('images',
@@ -61,7 +69,7 @@ def upload_to_s3(id):
 
 
 # -------------------- Day 5 - Payment -------------------- 
-gateway=braintree.BraintreeGateway(
+gateway = braintree.BraintreeGateway(
     braintree.Configuration(
         braintree.Environment.Sandbox,
         merchant_id=os.getenv('BRAINTREE_MERCHANT_ID'),
@@ -70,20 +78,49 @@ gateway=braintree.BraintreeGateway(
     )
 )
 
-@images_blueprint.route("/payment",methods=["GET"])
+@images_blueprint.route("<int:id>/payment-page-1",methods=["GET"])
 @login_required
-def new_payment():
-    # customer_id=current_user.id
+def new_payment(id):
+    image_list = pw.prefetch(Image.select().where(Image.id==id),User)
+
+    for image in image_list:
+        owner=image.user.name
+        image=image
+
+    return render_template('images/payment.html',owner=owner,image=image,S3_LOCATION=S3_LOCATION)
+
+
+@images_blueprint.route('<int:id>/payment-page-2', methods=["POST"])
+@login_required
+def braintree_payment(id):
+    user=current_user
+    donation = request.form['donation_amt']
+    password = request.form['password']
+
+    # Verify donor
+    match = check_password_hash(user.password,password)
+    if not match:
+        flash('Incorrect password. Please try again.')
+        return redirect(url_for('images.new_payment',id=id))
+
     token=gateway.client_token.generate()
-    return render_template('images/payment.html',token=token)
+    return render_template('images/bt-payment.html',token=token,donation=donation)
+
 
 @images_blueprint.route("/payment/submit",methods=["POST"])
+@login_required
 def make_payment():
     nonce = request.form['nonce']
 
-    # Test payment
+    # donation formatting for transaction
+    donation = request.form['donation_amt']
+    amount=''
+    for char in donation[0:-1]:
+        amount +=str(char)
+
+    # Transaction
     result = gateway.transaction.sale({
-        "amount": "10.00",
+        "amount": amount,
         "payment_method_nonce": nonce,
         "options": {
             "submit_for_settlement": True
@@ -91,11 +128,11 @@ def make_payment():
     })
 
     if result.is_success:
-        flash('Payment received')
-        return redirect(url_for('home'))
+        flash('Donation received. Thank you.')
     else:
-        flash('Pyament not received. Please try again')
-        return redirect(url_for('new_payment'))
-
-
+        for error in result.errors.deep_errors:
+            flash(str(error.message))
+        flash('Payment not successful. Please try again')
+    return redirect(url_for('home'))
+    
 # -------------------- ---- End -------------------- 

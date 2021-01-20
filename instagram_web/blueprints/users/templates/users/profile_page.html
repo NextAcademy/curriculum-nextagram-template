@@ -30,8 +30,11 @@
 
         <div style="width: 75%;">
             <h4>{{user.name}}'s photos</h4>
+            
             {% if user.name == current_user.name %}
             <a href="{{url_for('images.upload')}}">Upload photos</a>
+            {% else %}
+            <p>Click on any photo to donate</p>
             {% endif %}
             <div class="d-flex flex-wrap" ">
             {% if not image_list %}
@@ -42,6 +45,11 @@
                     {% if image.user_id == user.id %}
                     <div class="card">
                         <img src="{{S3_LOCATION+image.url}}" class="m-3" alt="{{image.url}}" style="width: 18rem; max-height: 12rem;">
+                        {% if user.name!=current_user.name %}
+                        <a href="{{url_for('images.new_payment', id=image.id)}}"
+                            <p class="mx-auto">#{{image.id}}</p>
+                        </a>
+                        {% endif %}
                     </div>
                     {% endif %}
                 {% endfor %}

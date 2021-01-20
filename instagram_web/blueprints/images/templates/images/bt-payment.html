@@ -1,0 +1,43 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  Payment
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<h2>You are donating {{donation}} USD</h2>
+<form action="{{url_for('images.make_payment')}}" method="POST" id="payment-form">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+    <input type="hidden" id="donation_amt" name="donation_amt" value={{donation}}/>
+    <input type="hidden" id="nonce" name="nonce" />
+    <div id="container"></div>
+    <input type="submit" value="Donate">
+</form>
+
+<script type="text/javascript">
+    const form = document.getElementById('payment-form')
+
+    braintree.dropin.create({
+        authorization: "{{token}}",
+        container:'#container',
+    },(error, dropinInstance)=>{
+        // use dropinInstance here
+        if (error) console.error(error)
+
+        form.addEventListener('submit', e=>{
+            e.preventDefault();
+
+            dropinInstance.requestPaymentMethod((error,payload)=>{
+                if (error) console.error(error)
+                document.getElementById('nonce').value = payload.nonce
+                console.log("NONCE:",nonce)
+                form.submit()
+            })
+        })
+    }
+    )
+</script>
+{% endblock %}

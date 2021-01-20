@@ -1,47 +1,43 @@
 {% extends "_layout.html" %}
 
 {% block title %}
-  Payment
+  Payment Confirmation Page
 {% endblock %}
 
 {% block header %}
 {% endblock %}
 
 {% block content %}
-<div class="mx-auto" style="width: 30vw; min-width: 400px;">
+<div class="d-flex row">
+    <div class="col-3">
+        <h1>You are donating to</h1>
+        <div class="d-flex justify-content-center">
+            <h3>{{owner}}</h3>
+            <img src="{{S3_LOCATION+image.user.profile_photo}}" style="height: 100px; border-radius: 50px;" alt="">
+        </div>
+        <br/>
+        <img src="{{S3_LOCATION+image.url}}" style="height: 300px;" alt="{{image.url}}">
+        <p>#{{image.id}}</p>
+    </div>
+    <br/>
+    <div class="col-9">
+        <form action="{{url_for('images.braintree_payment',id=image.id)}}" method="POST" class="form-control">
+            <h3>Donation amount</h3>
+            <hr/>
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+            <div class="form-group">
+                <label for="name">Amount (USD):</label>
+                <input type="number" name="donation_amt" min="1" class="form-control" placeholder="20"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="**********"/>
+                <small>Please provide your password to continue.</small>
+            </div>
+            <button class="btn btn-danger" >Submit</button>
+        </form>
+    
+    </div>
 
-    <form id="payment-form" action="{{url_for('images.make_payment')}}" method="POST">
-        <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-
-        <div id="dropin-container"></div>
-        <input class="btn btn-primary" type="submit" value="Pay Now"/>
-        <input type="hidden" id="nonce" name="nonce"/>
-    </form>
-
-    <script type="text/javascript">
-        const form = document.getElementById('payment-form')
-        braintree.dropin.create({
-            authorization: "{{token}}",
-            container: '#dropin-container',
-        },(error,dropinInstance)=>{
-            if(error) console.error(error)
-
-            form.onsubmit('submit', event=>{
-                event.preventDefault()
-
-                dropinInstance.requestPaymentMethod((error,payload)=>{
-                    if(error) console.error(error)
-                    // Step four: when the user is ready to complete their
-                    //   transaction, use the dropinInstance to get a payment
-                    //   method nonce for the user's selected payment method, then add
-                    //   it a the hidden field before submitting the complete form to
-                    //   a server-side integration
-                    document.getElementById('nonce').value = payload.nonce;
-                    form.submit();
-                })
-            })
-        })
-    </script>
 </div>
-
 {% endblock %}
