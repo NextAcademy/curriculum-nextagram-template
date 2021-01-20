@@ -96,7 +96,8 @@ def show(username): # user profile page
 
 @users_blueprint.route('/', methods=["GET"])
 def index():
-    return "USERS"
+    users=User.select()
+    return render_template('users/users.html',users=users,S3_LOCATION=S3_LOCATION)
 
 # ----------- DAY 3 -----------------------------------------------------------
 @users_blueprint.route('/<int:id>/edit', methods=['GET'])
