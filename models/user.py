@@ -10,7 +10,7 @@ class User(BaseModel,UserMixin):
     name = pw.CharField(unique=True ) #username
     email=pw.CharField(unique=True )
     password=pw.TextField(unique=False)
-    profile_photo=pw.CharField(null=False, default="https://img.icons8.com/plasticine/100/000000/name.png")
+    profile_photo=pw.CharField(null=False, default="")
 
     # Validation section
     def validate(self):
