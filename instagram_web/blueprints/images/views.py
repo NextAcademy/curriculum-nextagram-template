@@ -6,11 +6,11 @@ from werkzeug.utils import secure_filename
 import boto3, botocore
 from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 
-# -------------------- Day 5 - Payment -------------------- 
+# -------------------- Day 5 - Payment & email -------------------- 
 import braintree
 import os
 import peewee as pw
-
+import requests
 # from money.money import Money
 # from money.currency import Currency
 from decimal import *
@@ -129,10 +129,31 @@ def make_payment():
 
     if result.is_success:
         flash('Donation received. Thank you.')
+        send_simple_message(amount)
+
+
     else:
         for error in result.errors.deep_errors:
             flash(str(error.message))
         flash('Payment not successful. Please try again')
     return redirect(url_for('home'))
-    
-# -------------------- ---- End -------------------- 
+
+# -------------------- Day 5 Email -------------------- 
+
+def send_simple_message(amount):
+    # import mailgun keys
+    domain = os.getenv('MAILGUN_DOMAIN_NAME')
+    api = os.getenv('MAILGUN_API')
+
+
+    return requests.post(
+        f"https://api.mailgun.net/v3/{domain}/messages",
+        auth=("api",f"{api}"),
+        data={
+            "from": f"Excited User <mailgun@{domain}>",
+            "to": ["tanjoanne128@gmail.com"],
+            "subject": "Thank you for your donation",
+            "text": f"Thank you for your donation of {amount}$! Love @NextAcademy"
+        }
+    )
+# -------------------- Day 5 End -------------------- 
