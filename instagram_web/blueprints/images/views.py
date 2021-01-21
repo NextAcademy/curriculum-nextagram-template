@@ -1,9 +1,8 @@
 from flask import Blueprint, flash, render_template,request,redirect,url_for,abort
 from models.image import Image
 from flask_login import login_required,current_user
-from werkzeug.utils import secure_filename
-
 import boto3, botocore
+
 from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 
 # -------------------- Day 5 - Payment & email -------------------- 
@@ -11,8 +10,6 @@ import braintree
 import os
 import peewee as pw
 import requests
-# from money.money import Money
-# from money.currency import Currency
 from decimal import *
 
 from models.user import User

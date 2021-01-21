@@ -10,7 +10,7 @@
 <div class="container col-6 mx-auto">
     <h1>Log in page</h1>
     <br/>
-    <form action="{{url_for('users.authentication')}}" method="POST" class="form-control col-6">
+    <form action="{{url_for('sessions.authentication')}}" method="POST" class="form-control col-6">
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
         <div class="form-group">
             <label for="name">Username:</label>

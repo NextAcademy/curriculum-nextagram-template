@@ -20,32 +20,8 @@ users_blueprint = Blueprint('users',
                             template_folder='templates')
 
 #---------------------DAY 2--------------------------------------------
-@users_blueprint.route('/login', methods=["GET"])
-def login():
-    return render_template('users/login.html')
 
-@users_blueprint.route('/auth', methods=["POST"])
-def authentication():
-    # username=request.form['name'], password=request.form['password']
-    username = request.form['name']
-    password = request.form['password']
 
-    try:
-        user = User.get(name=username)
-    except:
-        flash('Username does not exist. Please try again.')
-        return redirect(url_for('users.login'))
-
-    login_user(user)
-    flash('Logged in successfully.')
-    return redirect(url_for('home'))
-
-@users_blueprint.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.')
-    return redirect(url_for('home'))
 #-------------------------END----------------------------------------
 
 @users_blueprint.route('/new', methods=['GET'])

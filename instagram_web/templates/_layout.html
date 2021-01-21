@@ -32,29 +32,28 @@
         {% endif %}
     {% endwith %}
     
-    <!--------------------------------------------------------------------->
+    
+    <!----------------------Links----------------------------------------------->
+    <div class="d-flex justify-content-around py-3">
+      <a href="{{url_for('home')}}">Home</a>
+      {% if current_user.is_anonymous %}
+      <a href="{{url_for('users.new')}}">Create an account</a>
+      <a href="{{url_for('sessions.login')}}">Log in</a>
+      {% else %}
+      <a href="{{url_for('sessions.logout')}}">Sign out</a>
+      <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details</a>
+      <a href="{{url_for('users.profile_photo',id=current_user.id)}}">Upload profile photo</a>
+      <a href="{{url_for('users.show',username=current_user.name)}}">My profile</a>
+      {% endif %}
+      <a href="{{url_for('users.index')}}">View all users</a>
+    </div>
+    <br/>
+    <!------------------- Greeting ------------------------------------------->
     {% if current_user.is_authenticated %}
     <h4 style="color:blue">Howdy, {{current_user.name}}!</h4>
     {% else %}
     <h4>You're not logged in. </h4>
     {% endif %}
-    <!--------------------------------------------------------------------->
-
-    <!----------------------Links----------------------------------------------->
-    <div class="d-flex justify-content-around">
-      <a href="{{url_for('home')}}">Home</a>
-      {% if current_user.is_anonymous %}
-        <a href="{{url_for('users.new')}}">Create an account</a>
-        <a href="{{url_for('users.login')}}">Log in</a>
-      {% else %}
-        <a href="{{url_for('users.logout')}}">Sign out</a>
-        <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details</a>
-        <a href="{{url_for('users.profile_photo',id=current_user.id)}}">Upload profile photo</a>
-        <a href="{{url_for('users.show',username=current_user.name)}}">My profile</a>
-      {% endif %}
-      <a href="{{url_for('users.index')}}">View all users</a>
-    </div>
-    <br/>
     <!----------------------Error list----------------------------------------------->
     <ul>
     {% for error in errors if errors|length>0 %}
