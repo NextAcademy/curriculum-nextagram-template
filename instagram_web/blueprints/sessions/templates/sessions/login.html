@@ -7,9 +7,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="container col-6 mx-auto">
+<div class="col-6 mx-auto d-flex flex-column align-items-center">
     <h1>Log in page</h1>
-    <br/>
+    <hr/>
+    <a href="{{url_for('sessions.google_login')}}" class="btn btn-warning">Log in with Google</a>
+    <hr/>
+    <h5>Or </h5>
+    <hr/>
     <form action="{{url_for('sessions.authentication')}}" method="POST" class="form-control col-6">
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
         <div class="form-group">
@@ -20,7 +24,7 @@
             <label for="password">Password</label>
             <input type="password" name="password" class="form-control"/>
         </div>
-        <button class="btn btn-danger" >Submit</button>
+        <input type="submit" class="btn btn-primary" value="Log In"/>
     </form>
 </div>
 {% endblock %}

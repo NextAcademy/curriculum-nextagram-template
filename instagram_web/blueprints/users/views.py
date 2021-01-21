@@ -29,12 +29,18 @@ def new():
     return render_template('users/new.html')
 
 @users_blueprint.route('/', methods=['POST'])
-def create():
-    user = User(
-        name=request.form['name'],
-        email=request.form['email'],
-        password=request.form['password']
-    )
+def create(*args):
+
+    try:
+        user = User(
+            name=request.form['name'],
+            email=request.form['email'],
+            password=request.form['password']
+        )
+    except:
+        for item in args:
+            print("In create new user, except route.")
+            print(item)
 
     # ------------ this part is similar to authentication() function---------
     # to see if can implement DRY

@@ -9,8 +9,7 @@ S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
 #-----------------End-----------------------------------
 #-------------Day 5 OAuth -----------------------------
-G_CLIENT_ID = os.environ.get("G_CLIENT_ID")
-G_CLIENT_SECRET = os.environ.get("G_CLIENT_SECRET")
+
 #-----------------End-----------------------------------
 
 
@@ -20,6 +19,8 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = os.environ.get(
         'SECRET_KEY') or os.urandom(32)
+    G_CLIENT_ID = os.environ.get("G_CLIENT_ID")
+    G_CLIENT_SECRET = os.environ.get("G_CLIENT_SECRET")
 
 
 class ProductionConfig(Config):

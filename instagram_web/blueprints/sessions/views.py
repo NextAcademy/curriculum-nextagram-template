@@ -1,4 +1,5 @@
 from models.user import User
+from instagram_web.util.google_oauth import oauth
 from flask_login import login_user, login_required,logout_user
 from flask import Blueprint,url_for,render_template, flash, redirect, request
 
@@ -34,9 +35,6 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('home'))
 
-
-
-
 # ----------------------------------------------------------------------------------------
 @sessions_blueprint.route('/google_login')
 def google_login():
@@ -45,12 +43,15 @@ def google_login():
 
 @sessions_blueprint.route('/authorize/google')
 def authorize():
+    print("IN SESSIONS AUTHORIZE()")
     oauth.google.authorize_access_token()
     email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+    profile_photo = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
     user = User.get_or_none(User.email==email)
 
     if user:
         login_user(user)
         return redirect(url_for('home'))
     else:
-        return redirect(url_for('home')) #To change back to login page
+        flash("User email not found in database. Please create an account first.")
+        return redirect(url_for('users.new'))

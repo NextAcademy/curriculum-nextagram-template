@@ -3,7 +3,7 @@ from authlib.integrations.flask_client import OAuth
 
 oauth=OAuth()
 
-google = oauth.register(
+oauth.register(
         'google',
         client_id=app.config.get("G_CLIENT_ID"),
         client_secret=app.config.get("G_CLIENT_SECRET"),
