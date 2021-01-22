@@ -11,6 +11,7 @@ class User(BaseModel,UserMixin):
     email=pw.CharField(unique=True )
     password=pw.TextField(unique=False)
     profile_photo=pw.CharField(null=False, default="")
+    private=pw.BooleanField(null=False, default="True")
 
     # Validation section
     def validate(self):

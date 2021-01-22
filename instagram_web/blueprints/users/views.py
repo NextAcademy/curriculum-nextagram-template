@@ -165,6 +165,22 @@ def update_password(id):
         flash("Unable to update password!",'danger')
         return render_template('users/edit_user.html',id=id, errors=user.errors)
 
+# MEthod for changing privacy settings
+@users_blueprint.route('/<int:id>/privacy', methods=['POST'])
+@login_required
+def toggle_privacy(id):
+    if id != current_user.id:
+        abort(403)
+    user=User.get_by_id(id)
+    user.private= not user.private
+
+    if user.save():
+        flash("Privacy settings updated successfuly.")
+    else:
+        flash("Privacy settings could not be changed!")
+    return redirect(url_for('users.edit',id=id))
+
+
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     pass

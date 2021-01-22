@@ -14,6 +14,20 @@
     <br/>
     <h5>Hello, {{current_user.name}}!</h5>
     <br/>
+    <form action="{{url_for('users.toggle_privacy', id=current_user.id)}}" method="post" class="form-control" id="private_profile_form">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+        {% if current_user.private %}
+        <p>Your profile is set to private.</p>
+        <input type="submit" value="Make public" class="btn btn-primary">
+        {% else %}
+        <p>Your profile is set to public</p>
+        <input type="submit" value="Make private" class="btn btn-danger">
+
+        {% endif %}
+        
+        
+    </form>
+    <br/>
     <form action="{{url_for('users.update_email', id=current_user.id)}}" method="POST" class="form-control">
         <h3>Change email</h3>
         <span>Current email is </span>
@@ -54,4 +68,5 @@
     </form>
     <br/>
 </div>
+
 {% endblock %}
