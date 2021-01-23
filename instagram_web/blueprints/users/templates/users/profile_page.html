@@ -26,7 +26,12 @@
             >
         {% endif %}
             <h4>{{user.name}}</h4>
-            <a href="" class="btn btn-primary">Follow</a>
+            {% if current_user.id != user.id %}
+            <form action="{{url_for('followers.create', acc_id=user.id, follower_id=current_user.id)}}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                <input type="submit" value="Follow" class="btn btn-primary">
+            </form>
+            {% endif %}
         </div>
 
         <div style="width: 75%;">

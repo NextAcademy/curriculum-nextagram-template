@@ -21,16 +21,6 @@
 
   </head>
   <body class="mx-auto pl-3">
-    <!-- Flash message -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
     
     
     <!----------------------Links----------------------------------------------->
@@ -44,6 +34,7 @@
       <a href="{{url_for('users.edit', id=current_user.id)}}">Edit User Details</a>
       <a href="{{url_for('users.profile_photo',id=current_user.id)}}">Upload profile photo</a>
       <a href="{{url_for('users.show',username=current_user.name)}}">My profile</a>
+      <a href="{{url_for('followers.index',acc_id=current_user.id)}}">Review follow requests</a>
       {% endif %}
       <a href="{{url_for('users.index')}}">View all users</a>
     </div>
@@ -54,6 +45,16 @@
     {% else %}
     <h4>You're not logged in. </h4>
     {% endif %}
+    <!------------------- Flash messages ------------------------------------------->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <!----------------------Error list----------------------------------------------->
     <ul>
     {% for error in errors if errors|length>0 %}

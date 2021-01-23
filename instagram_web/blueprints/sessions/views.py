@@ -43,7 +43,6 @@ def google_login():
 
 @sessions_blueprint.route('/authorize/google')
 def authorize():
-    print("IN SESSIONS AUTHORIZE()")
     oauth.google.authorize_access_token()
     email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
     profile_photo = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']

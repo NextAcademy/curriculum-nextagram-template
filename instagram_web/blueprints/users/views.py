@@ -14,20 +14,19 @@ from config import S3_KEY, S3_SECRET, S3_BUCKET,S3_LOCATION
 import peewee as pw
 from models.image import Image
 #-----------------------END------------------------------------------
+from models.account_follower import Account_follower
+
 
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
 
-#---------------------DAY 2--------------------------------------------
-
-
-#-------------------------END----------------------------------------
 
 @users_blueprint.route('/new', methods=['GET'])
 def new():
     return render_template('users/new.html')
 
+# Create new user
 @users_blueprint.route('/', methods=['POST'])
 def create(*args):
 
@@ -62,26 +61,33 @@ def create(*args):
         return render_template('users/new.html', errors=user.errors) 
 
 #---------------------DAY 2--------------------------------------------
+# Shows user profile page
 @users_blueprint.route('/<username>', methods=["GET"])
-def show(username): # user profile page
+def show(username): 
     try:
         user = User.get(name=username)
     except:
         abort(404)
     
+    
     image_list = pw.prefetch(Image.select().where(Image.user_id==user.id),User)
+    followers = User.select().where(User.id==user.id).join(Account_follower,on=(User.id==Account_follower.account_id))
 
-    print(f"image_list length: {len(image_list)}")
-    print(f"username: {username}")
+    for follower in followers: #<----- NEXT TO CHECK
+        print("Followers: ") 
+        print(follower.name)
+
     return render_template('users/profile_page.html',user=user,S3_LOCATION=S3_LOCATION,image_list=image_list)
 #-------------------------END----------------------------------------
 
+# Indexes all users
 @users_blueprint.route('/', methods=["GET"])
 def index():
     users=User.select()
     return render_template('users/users.html',users=users,S3_LOCATION=S3_LOCATION)
 
 # ----------- DAY 3 -----------------------------------------------------------
+# Edit user settings page
 @users_blueprint.route('/<int:id>/edit', methods=['GET'])
 @login_required
 def edit(id):
@@ -165,7 +171,7 @@ def update_password(id):
         flash("Unable to update password!",'danger')
         return render_template('users/edit_user.html',id=id, errors=user.errors)
 
-# MEthod for changing privacy settings
+# Method for changing privacy settings
 @users_blueprint.route('/<int:id>/privacy', methods=['POST'])
 @login_required
 def toggle_privacy(id):
@@ -180,17 +186,14 @@ def toggle_privacy(id):
         flash("Privacy settings could not be changed!")
     return redirect(url_for('users.edit',id=id))
 
-
-@users_blueprint.route('/<id>', methods=['POST'])
-def update(id):
-    pass
-
 # --------------- Day 3 Upload profile photo ----------------------------
+# Upload profile photo page
 @users_blueprint.route('/<int:id>/profile_photo', methods=["GET"])
 @login_required
 def profile_photo(id, image=""):
     return render_template('users/profile_photo.html',image=image)
 
+# Uploads file to Amazon S3
 @users_blueprint.route('/<int:id>/upload_profile_photo', methods=["POST"])
 @login_required
 def upload_file_to_s3(id):
@@ -228,3 +231,4 @@ def upload_file_to_s3(id):
         flash("Unable to save profile photo to database.",'danger')
     return render_template('users/profile_photo.html', image=file_loc,errors=user.errors)
 # ----------------------- END -----------------------------------------
+
