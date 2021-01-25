@@ -13,13 +13,9 @@ class Account_follower(BaseModel):
         # check if same relationship already exists
 
         # 1. get all relationships for this account:
-        relationships = Account_follower.select().where(Account_follower.account_id==self.account)
+        relationships = Account_follower.select().where(Account_follower.account==self.account)
         # 2. check all the followers for this account
         for r in relationships:
-            if self.id==r.id: #referring to same row in Account_follower table
-                if self.approved == r.approved: # if there are no changes to approved status
-                    print("Self.approved:")
-                    print(self.approved)
-                    print("r.approved:")
-                    print(r.approved)
-                    self.errors.append("You are already following this account.")
+            print(r.account)
+            if (self.approved==r.approved) and (self.account==r.account) and (self.follower==r.follower): # if no difference at all
+                self.errors.append("You are already following this account.")

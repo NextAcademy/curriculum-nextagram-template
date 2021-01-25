@@ -9,4 +9,29 @@
 
 {% block content %}
   <h1>Homepage</h1>
+  <br/>
+  {% if current_user.is_anonymous %}
+  <span class="h3">Please </span>
+  <a href="{{url_for('sessions.login')}}" class="h3">log in</a>  
+  <span class="h3">to view feed.</span> 
+  {% else %}
+  <div class="container  col-9 d-flex flex-wrap justify-content-around">
+  {% for user in user_list %}
+    {% if user.get_photos() | length == 0 %}
+    <p class="h6">No photos uploaded yet</p>
+    {% else %}
+      {% for image in user.get_photos() %}
+      <div class="card my-2" style="width: 20rem;">
+        <img class="card-img-top" src="{{image.full_image_path}}" alt="{{image.full_image_path}}" style="height: 200px; ">
+        <div class="card-body text-center">
+          <img src="{{user.full_profile_photo}}" alt="{{user.full_profile_photo}}" style="width:25px;border-radius: 10px;">
+          <a href="{{url_for('users.show',username=user.name)}}">{{user.name}}</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  </div>
+  {% endif %}
+
 {% endblock %}

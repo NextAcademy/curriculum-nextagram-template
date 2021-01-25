@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-between">
         <div class="d-flex flex-column align-items-center justify-content-around" style="width: 25%; height: 35vh;">
         {% if user.profile_photo %}
-            <img src="{{S3_LOCATION+user.profile_photo}}" alt="{{user.profile_photo}}" 
+            <img src="{{user.full_profile_photo}}" alt="{{user.profile_photo}}" 
             style=
             "height: 200px;
             border-radius: 15px;
@@ -26,34 +26,56 @@
             >
         {% endif %}
             <h4>{{user.name}}</h4>
-            {% if current_user.id != user.id %}
-            <form action="{{url_for('followers.create', acc_id=user.id, follower_id=current_user.id)}}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
-                <input type="submit" value="Follow" class="btn btn-primary">
-            </form>
+            {% if not current_user.is_anonymous and current_user.id != user.id %}
+
+                {% if button=="Follow" %}
+                <form action="{{url_for('followers.create', acc_id=user.id, follower_id=current_user.id)}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                    <input type="submit" value="Follow" class="btn btn-primary">
+                </form>
+                {% elif button=="Pending"%}
+                <form action="{{url_for('followers.destroy', acc_id=user.id, follower_id=current_user.id)}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                    <input type="submit" value="Pending" class="btn btn-secondary">
+                </form>
+                {% else %}
+                <form action="{{url_for('followers.destroy', acc_id=user.id, follower_id=current_user.id)}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}" />
+                    <input type="submit" value="Following" class="btn btn-success">
+                </form>
+                {% endif %}
+
             {% endif %}
         </div>
 
         <div style="width: 75%;">
-            {% if user.private and user.name!=current_user.name %}
-            <p class="h5">This is a private profile. Follow {{user.name}} to see their photos.</p>
+            {% if current_user.is_anonymous and user.private %}
+            <p class="h5">This is a private profile. Please log in to see their photos.</p>
+
+            {% elif (user.private and user.name!=current_user.name and button !="Following") %}
+                <p class="h5">This is a private profile. Follow {{user.name}} to see their photos.</p>
             {% else %}
             <h4>{{user.name}}'s photos</h4>
-            {% if user.name == current_user.name %}
+            {% if user.name == current_user.name  %}
                 <a href="{{url_for('images.upload')}}">Upload photos</a>
                 {% else %}
                 <p>Click on any photo to donate</p>
-                {% endif %}
+            {% endif %}
             <div class="d-flex flex-wrap" ">
                 {% if not image_list %}
-                <h4>No images uploaded yet :(</h4>
+                    <h4>No images uploaded yet :(</h4>
                 {% endif %}
                 {% if image_list|length >0 %}
                     {% for image in image_list %}
                         {% if image.user_id == user.id %}
                         <div class="card">
-                            <img src="{{S3_LOCATION+image.url}}" class="m-3" alt="{{image.url}}" style="width: 18rem; max-height: 12rem;">
-                            {% if user.name!=current_user.name %}
+                            <img src="{{image.full_image_path}}" 
+                            class="m-3" 
+                            alt="{{image.full_image_path}}" 
+                            style="width: 18rem; max-height: 12rem;"
+                            />
+
+                            {% if user.name!=current_user.name and not current_user.is_anonymous %}
                             <a href="{{url_for('images.new_payment', id=image.id)}}"
                                 <p class="mx-auto">#{{image.id}}</p>
                             </a>

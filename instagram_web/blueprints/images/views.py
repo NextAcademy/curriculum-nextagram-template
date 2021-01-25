@@ -84,7 +84,7 @@ def new_payment(id):
         owner=image.user.name
         image=image
 
-    return render_template('images/payment.html',owner=owner,image=image,S3_LOCATION=S3_LOCATION)
+    return render_template('images/payment.html',owner=owner,image=image)
 
 
 @images_blueprint.route('<int:id>/payment-page-2', methods=["POST"])

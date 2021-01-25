@@ -2,6 +2,7 @@ import re
 import peewee as pw
 from flask_login import UserMixin
 from models.base_model import BaseModel
+from playhouse.hybrid import hybrid_property
 # from models.account_follower import Account_follower
 from werkzeug.security import generate_password_hash
 
@@ -12,42 +13,97 @@ class User(BaseModel,UserMixin):
     profile_photo=pw.CharField(null=False, default="")
     private=pw.BooleanField(null=False, default="True")
 
-    # List of account who follows self + to review
-    def get_followers_tba(self):
-        followers =(
-            User.select()
-            .join(Account_follower,on=(User.id==Account_follower.follower))
-            .where(
-                (Account_follower.acc_id==self.id)
-                &
-                (Account_follower.approved==False)
-            )
-        )
+    @hybrid_property
+    def full_profile_photo(self):
+        if self.profile_photo:
+            from config import S3_LOCATION
+            
+            return S3_LOCATION + self.profile_photo
+        else:
+            return ""
+
+    def get_photos(self):
+        from models.image import Image
+        image_list = pw.prefetch(Image.select().where(Image.user_id==self.id),User)
+        return image_list
+
+    
+    # Ideally, place the logic as functions:
+    # def follow(self, account):
+    #     pass
+    
+    # def unfollow(self,account):
+    #     from models.account_follower import Account_follower
+    #     pass
+
+    def get_followers(self):
+        # Get followers of self's account
+        from models.account_follower import Account_follower
+        followers = Account_follower.select().where(Account_follower.account==self.id)
         return followers
 
-    # List of account who follows self + approved    
-    def get_followers_approved(self):
-        followers=(
+    def get_following(self):
+        # Get accounts self is following
+        from models.account_follower import Account_follower
+        accounts = (
             User.select()
-            .join(Account_follower,on=(User.id==Account_follower.follower))
-            .where(
-                (Account_follower.acc_id==self.id)
-                &
-                (Account_follower.approved==True)
-            )
+            .join(Account_follower, on=(User.id==Account_follower.account))
+            .where(Account_follower.follower==self.id)
         )
 
+        return accounts
+
+    # def follow_exists(self, account):
+    #     from models.account_follower import Account_follower
+    #     return Account_follower.get_or_none(Account_follower.account = account, Account_follower.follower=self.id)
+
+    # def approve_follow(self,follower):
+    #     pass
+    
+    # def reject_follow(self,follower):
+    #     pass
+
+    # List of account who follows self + to review
+    # def get_followers_tba(self):
+    #     from models.account_follower import Account_follower
+    #     followers =(
+    #         User.select()
+    #         .join(Account_follower,on=(User.id==Account_follower.follower))
+    #         .where(
+    #             (Account_follower.acc_id==self.id)
+    #             &
+    #             (Account_follower.approved==False)
+    #         )
+    #     )
+    #     return followers
+
+
+
+    # List of account who follows self + approved    
+    # def get_followers_approved(self):
+    #     from models.account_follower import Account_follower
+    #     followers=(
+    #         User.select()
+    #         .join(Account_follower,on=(User.id==Account_follower.follower))
+    #         .where(
+    #             (Account_follower.acc_id==self.id)
+    #             &
+    #             (Account_follower.approved==True)
+    #         )
+    #     )
+
     # List of account self is following
-    def get_following(self):
-        following = (
-            User.select()
-            .join(Account_follower,on=(User.id==Account_follower.acc_id))
-            .where(
-                (Account_follower.follower==self.id)
-                &
-                (Account_follower.approved==True)
-            )
-        )
+    # def get_following(self):
+    #     from models.account_follower import Account_follower
+    #     following = (
+    #         User.select()
+    #         .join(Account_follower,on=(User.id==Account_follower.acc_id))
+    #         .where(
+    #             (Account_follower.follower==self.id)
+    #             &
+    #             (Account_follower.approved==True)
+    #         )
+    #     )
 
 
     # Validation section

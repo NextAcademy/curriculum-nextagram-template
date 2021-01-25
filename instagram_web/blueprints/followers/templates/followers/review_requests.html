@@ -19,9 +19,8 @@
 {% for follower in followers %}
 <div class="container d-flex my-5" style="width: 50%;">
   <div class="container d-flex flex-column align-items-center" >
-    <img src="{{S3_LOCATION+follower.profile_photo}}" alt="follower.profile_photo" style="width:200px; border-radius:100px">
+    <img src="{{follower.full_profile_photo}}" alt="follower.full_profile_photo" style="width:200px; border-radius:100px">
     <a href="{{url_for('users.show', username=follower.name)}}">{{follower.name}}</a>
-    <p></p>
   </div>
   <div class="container d-flex align-items-center" >
     <a href="{{url_for('followers.update',acc_id=current_user.id, follower_id=follower.id, accept=1) }}" 

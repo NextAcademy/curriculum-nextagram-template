@@ -68,23 +68,31 @@ def show(username):
         user = User.get(name=username)
     except:
         abort(404)
-    
-    
-    image_list = pw.prefetch(Image.select().where(Image.user_id==user.id),User)
-    followers = User.select().where(User.id==user.id).join(Account_follower,on=(User.id==Account_follower.account_id))
 
-    for follower in followers: #<----- NEXT TO CHECK
-        print("Followers: ") 
-        print(follower.name)
+    image_list = user.get_photos()
 
-    return render_template('users/profile_page.html',user=user,S3_LOCATION=S3_LOCATION,image_list=image_list)
+    # Get status of combination of :
+    # account id = profile owner's id
+    # viewer id = current_user's id
+    acc_relationships = Account_follower.select().where(Account_follower.account==user.id)
+
+    button="Follow"
+    if not current_user.is_anonymous:
+        for r in acc_relationships:
+            if str(r.follower) == str(current_user.id):
+                if r.approved == True:
+                    button="Following"
+                else:
+                    button="Pending"
+
+    return render_template('users/profile_page.html',user=user,image_list=image_list,button=button)
 #-------------------------END----------------------------------------
 
 # Indexes all users
 @users_blueprint.route('/', methods=["GET"])
 def index():
     users=User.select()
-    return render_template('users/users.html',users=users,S3_LOCATION=S3_LOCATION)
+    return render_template('users/users.html',users=users)
 
 # ----------- DAY 3 -----------------------------------------------------------
 # Edit user settings page
