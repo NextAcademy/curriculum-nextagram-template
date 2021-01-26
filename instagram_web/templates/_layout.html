@@ -26,14 +26,28 @@
 </head>
 
 <body>
-  {% block content %}
-  {% endblock %}
+  {% include 'nav.html' %}
+  <div className="container-fluid">
 
-  <footer>
-    Made with &hearts; at <a target="_blank"
-      href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT
-      Academy</a>
-  </footer>
+    <div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+      <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+      Made with &hearts; at <a target="_blank"
+        href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT
+        Academy by Iman Aqilah</a>
+    </footer>
+  </div>
 </body>
 
 </html>

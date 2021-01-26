@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div>
+        <a class="navbar-brand mr-auto" href="{{ url_for('home') }}">Nextagram with Python</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('users.show', username=current_user.username) }}">My
+                    Profile</a>
+            </li>
+
+            <li class="nav-item" style="margin-left:10px;">
+                <form action="{{ url_for('sessions.destroy') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="submit" class="btn btn-danger" value="Logout">
+                </form>
+            </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('sessions.new') }}">Sign In</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('users.new') }}">Sign Up</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

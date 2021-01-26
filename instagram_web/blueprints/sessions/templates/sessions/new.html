@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Sessions#new</h1>
+<h1>Sign In</h1>
 <form action="{{url_for('sessions.create')}}" method="POST">
     <input type="hidden" name="csrf_token" value={{ csrf_token() }} />
 
@@ -14,5 +14,9 @@
 
     <input type="submit" />
 </form>
+
+<a href="{{ url_for('sessions.google_login') }}">
+    Sign in via Google
+</a>
 
 {% endblock %}

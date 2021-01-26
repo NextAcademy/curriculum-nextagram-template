@@ -1,8 +1,48 @@
 {% extends '_layout.html' %}
 
 {% block content %}
-<h1>This is {{user.username}}'s Profile</h1>
-{% if current_user.id == user.id %}
-<a href="{{url_for('users.edit', id=current_user.id)}}">Edit Profile</a>
-{% endif %}
+
+<div class="col col-md-3">
+
+    <h4>This is {{user.username}}'s Profile</h4>
+    {% if current_user.is_private %}
+    <h6>This profile is private</h6>
+    {% else %}
+    <h6>This profile is public</h6>
+    {% endif %}
+
+    <img src="{{user.full_image_path}}">
+
+    {% if current_user.id == user.id %}
+    <a class="d-block btn btn-primary" href="{{url_for('users.edit', id=current_user.id)}}">Edit Profile</a>
+    <br>
+    <a class="d-block btn btn-primary" href="{{url_for('images.new')}}">Upload Image</a>
+
+    {% else %}
+    {% if current_user.follow_status(user) %}
+    <form action="{{ url_for('users.unfollow', idol_id == user.id) }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="submit" value="Unfollow" class="btn btn-primary" />
+    </form>
+    {% else %}
+    <form action="{{ url_for('users.follow', idol_id == user.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="submit" value="Follow" class="btn btn-primary" />
+    </form>
+    {% endif %}
+    {% endif %}
+
+
+</div>
+<div class="container">
+    {% for image in user.images %}
+    <div>
+        <img src="{{image.full_image_path}}" width="350" />
+        <p>Donations received: ${{ image.donations | sum(attribute="amount") }}</p>
+        <a class="btn btn-primary" href="{{url_for('donations.new', image_id=image.id)}}">Donate</a>
+    </div>
+    {% endfor %}
+</div>
+
+
 {% endblock %}
