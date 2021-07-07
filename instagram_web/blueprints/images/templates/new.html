@@ -1,0 +1,74 @@
+{% extends '_layout.html'%}
+
+{% block content %}
+<h4> &nbsp Add a photo to your gallery...</h4>
+<hr>
+
+<figure id='preview' class='d-flex justify-content-center align-items-center'>
+</figure>
+
+<form action="{{url_for('images.create', id= current_user.id)}}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <br>
+    <input type="file" id='imageUpload' name="user_file">
+    <br>
+
+    <div id=caption-container>
+        Caption: <span style="font-size: small;">(max 50 characters)</span>
+        <br>
+        <input id='caption-input' type="text" name='caption'>
+    </div>
+
+    <br>
+
+    <button type="submit" class="btn btn-secondary">Upload</button>
+</form>
+
+<script>
+    $(document).ready(() => {
+        // Disables button if either caption is too long or filename is not allowed.
+        buttonUpdate = () => {
+            let subButt = $('.btn-secondary')
+            if (subButt.hasClass('filenameError') || subButt.hasClass('captionError')) {
+                subButt.attr('disabled', true)
+                subButt.attr('aria-disabled', 'true')
+            }
+            else {
+                subButt.removeAttr('aria-disabled')
+                subButt.removeAttr('disabled')
+            }
+        };
+        $('#imageUpload').change((e) => {
+            let subButt = $('.btn-secondary')
+            imgSrc = URL.createObjectURL(e.target.files[0])
+            $('#preview').empty()
+            $('#preview').append(`<img id='preview-img' src=${imgSrc} alt="preview">`)
+            // regex check for filename
+            let re = /^[A-Za-z0-9_-]+\.[A-Za-z0-9]{3,4}$/;
+            if (re.test(e.target.files[0].name)) {
+                subButt.removeClass('filenameError')
+            }
+            else {
+                subButt.addClass('filenameError')
+                alert('Filenames can only be alphanumeric and use the following characters:\n  _ . - \n Please select another file or rename the file.')
+            }
+            buttonUpdate()
+        })
+        // Checking caption length.
+        $('#caption-input').change((e) => {
+            let subButt = $('.btn-secondary')
+            let capInput = e.target.value
+            if (capInput.length > 50) {
+                subButt.addClass('captionError')
+            }
+            else {
+                subButt.removeClass('captionError')
+            }
+            buttonUpdate()
+        })
+
+    })
+</script>
+{% endblock %}
+<!-- 
+'https://www.petmd.com/sites/default/files/Acute-Dog-Diarrhea-47066074.jpg' -->

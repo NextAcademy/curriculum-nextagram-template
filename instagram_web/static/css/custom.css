@@ -1,8 +1,9 @@
-body {
+#layout-body {
   margin: 0;
   padding-bottom: 15px;
   position: relative;
   min-height: 100vh;
+  padding-top: 3.5em;
 }
 
 footer {
@@ -18,4 +19,287 @@ footer {
 footer a {
   text-decoration: none;
   color: #303030;
+}
+
+#innerBody{
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 2em;
+}
+
+h4{
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.pictures{
+  margin-left: 1em;
+  margin-right: 1em;
+  
+}
+.pictures:hover{
+  border: 2px solid blue;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.follows{
+  font-size: large;
+  font-weight: bold;
+}
+
+.follow-btn{
+  text-decoration:none;
+  font-size: large;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.follow-btn:hover{
+  text-decoration: none;
+  background-color: lightgray;
+  border: 2px solid gray;
+}
+
+.caption{
+  margin-top: 2em;
+}
+
+.card{
+  margin-bottom: 3em;
+}
+
+.card-img-top:hover + .caption-index{
+  opacity: .8;
+}
+
+.caption-index{
+  position: absolute;
+  bottom: 4.5em;
+  opacity: 0;
+  background-color: white;
+  min-height: 2em;
+  width: 100%;
+  padding: 5px;
+  transition: opacity 0.5;
+}
+
+.caption-index:hover{
+  opacity: .8;
+}
+
+.card-body{
+  height: 4.5em;
+}
+
+.card-text:hover{
+  cursor: pointer;
+}
+
+.fa-dollar-sign{
+  color: goldenrod;
+  font-size: 1.5em;
+}
+
+.dollar-box{
+  border: 1px solid #303030;
+  box-sizing: border-box;
+  width: 2em;
+  height: 2em;
+  border-radius: 5px;
+ 
+}
+
+.dollar-box:hover{
+   text-decoration: none;
+   background-color: #d1d1d1cc;
+}
+
+.card-text a{
+  text-decoration: none;
+  color: #303030;
+}
+
+.navbar{
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
+  height: 3.5em;
+}
+
+.navbar-collapse{
+  background-color: #f8f9fa;
+}
+
+#dono-button{
+  border-radius: 5px;
+  padding: 0.5em;
+}
+
+.fa-plus-circle{
+  color: #db30db;
+}
+
+.fa-plus-circle:hover{
+  color: #962296;
+  /* cursor: pointer; */
+}
+
+#gallery-title{
+  /* height: 2.5em; */
+  box-sizing: border-box;
+}
+
+
+/* New gallery pic styles */
+#caption-container{
+  margin-top: 2em;
+}
+
+#caption-input{
+  width: 100%;
+  border-radius: 5px;
+
+}
+
+#preview{
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+#preview-img{
+  width: 90%;
+}
+
+@media screen and (min-width:600px){
+  #preview-img{
+  width: 75%;
+}
+#caption-input{
+  width: 75%;
+}
+}
+
+
+@media screen and (min-width: 1000px){
+  #caption-input{
+    width: 50%;
+  }
+  #preview-img{
+  width: 60%;
+}
+}
+
+/* Search results page */
+#search-container{
+box-sizing: border-box;
+}
+
+.search-result{
+height: 100px;
+box-sizing: border-box;
+border: 1px solid gray;
+margin-bottom: 2em;
+font-family: 'Comfortaa', cursive;
+font-size: 1.75em;
+color: black;
+}
+
+.search-result:hover{
+  border: 2px solid #a59595;
+  cursor: pointer;
+}
+
+.search-img{
+  max-width: 20%;
+  max-height: 100%;
+}
+
+
+
+
+
+/* Styling for monopoly board */
+
+#mon-body{
+  width: 100vw;
+  box-sizing: border-box;
+  padding: 1em;
+  padding-left: 2em;
+}
+
+#mon-nav{
+  margin-right: 1em;
+}
+.mon-section{
+  height: 5em;
+  border: 1px solid black;
+  box-sizing: border-box;
+  width: 100%;
+  padding: .5em;
+}
+
+.mon-blank{
+  border: none;
+}
+
+.mon-col{
+  padding: 0px;
+}
+
+.mon-red{
+  background-color: rgba(255, 0, 0, 0.74);
+}
+
+.mon-yellow{
+  background-color: yellow;
+}
+
+.mon-blue{
+  background-color: blue;
+  color: lightgoldenrodyellow;
+}
+
+.mon-green{
+  background-color: green;
+  color: white;
+}
+
+.mon-brown{
+  background-color: brown;
+  color: white;
+}
+
+.mon-pink{
+  background-color: #e4179f;
+  color: white;
+}
+
+.mon-light-blue{
+  background-color: lightblue;
+}
+
+.mon-orange{
+  background-color: orange;
+}
+
+.activity-box{
+ width: 250%;
+}
+
+.user-location{
+  margin-left: 1em;
+  width: 250%;
+}
+
+#ownership-div{
+  width: 250%;
+}
+
+.prop:hover{
+  border: 2px black solid;
+  /* filter: brightness(150%); */
+  cursor: pointer;
 }

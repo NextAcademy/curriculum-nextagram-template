@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    {% assets "home_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    {% assets "home_js" %}
+    <script src="https://kit.fontawesome.com/1816c993a6.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <title>New Property!</title>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class=flashes>
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form action="{{url_for('monopoly.create_property')}}" method='POST' enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <label for="name-input">Property Name:</label>
+        <input type="text" name="name" id='name-input'>
+        <label for="house-price-input">Price of a House(if applicable):</label>
+        <input type="text" name='house-price' id='house-price-input'>
+        <label for="category-input">Category(colour, utility, station)</label>
+        <input type="text" name='category' id='category-input'>
+        <hr>
+        <input type="file" name="image-file" id="image-file">
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        $(document).ready(() => {
+            $('#image-file').change((e) => {
+                console.log(e.target.value)
+            })
+        })
+    </script>
+</body>
+
+</html>
